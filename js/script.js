@@ -26,11 +26,24 @@ const nextSlide = document.getElementById("nextSlide");
 let currentSlide = 0;
 let heroInterval;
 
+const heroDots = document.querySelectorAll("#heroDots button");
+
 function showSlide(index) {
   slides[currentSlide].classList.remove("active");
+  heroDots[currentSlide].classList.remove("active");
+
   currentSlide = (index + slides.length) % slides.length;
+
   slides[currentSlide].classList.add("active");
+  heroDots[currentSlide].classList.add("active");
 }
+
+heroDots.forEach((dot, index) => {
+  dot.addEventListener("click", () => {
+    showSlide(index);
+    resetHeroCarousel();
+  });
+});
 
 function startHeroCarousel() {
   heroInterval = setInterval(() => {
@@ -98,4 +111,15 @@ contactForm.addEventListener("submit", (event) => {
     .join("%0A");
 
   window.open(`https://wa.me/51975862207?text=${whatsappMessage}`, "_blank");
+});
+const animatedImageCards = document.querySelectorAll(".service-card, .project-card");
+
+animatedImageCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    card.classList.toggle("image-active");
+
+    setTimeout(() => {
+      card.classList.remove("image-active");
+    }, 900);
+  });
 });
