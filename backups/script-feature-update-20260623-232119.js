@@ -2,48 +2,6 @@
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.getElementById("navMenu");
 const navLinks = document.querySelectorAll(".nav-links a");
-const loaderPhrases = [
-  "Preparando espacios modernos para vivir e invertir.",
-  "Cargando detalles de Torre 89.",
-  "Optimizando recorridos 360 para tu visita.",
-  "Conectando departamentos, oficinas y salón VIP.",
-  "La buena inversión empieza con una buena vista."
-];
-
-const preloader = document.getElementById("preloader");
-const acceptCookies = document.getElementById("acceptCookies");
-const loaderPhrase = document.getElementById("loaderPhrase");
-const loaderProgress = document.getElementById("loaderProgress");
-
-if (loaderPhrase) {
-  loaderPhrase.textContent = loaderPhrases[Math.floor(Math.random() * loaderPhrases.length)];
-}
-
-function hidePreloader() {
-  if (!preloader) return;
-  localStorage.setItem("torre89_cookies_ok", "1");
-  preloader.classList.add("hide");
-  setTimeout(() => preloader.remove(), 520);
-}
-
-if (preloader) {
-  const alreadyAccepted = localStorage.getItem("torre89_cookies_ok") === "1";
-  if (alreadyAccepted) {
-    preloader.classList.add("hide");
-    setTimeout(() => preloader.remove(), 300);
-  } else {
-    let loaderValue = 0;
-    const loaderTimer = setInterval(() => {
-      loaderValue = Math.min(loaderValue + Math.random() * 18, 92);
-      if (loaderProgress) loaderProgress.style.width = `${loaderValue}%`;
-      if (loaderValue >= 92) clearInterval(loaderTimer);
-    }, 260);
-    window.addEventListener("load", () => {
-      if (loaderProgress) loaderProgress.style.width = "100%";
-    });
-    acceptCookies?.addEventListener("click", hidePreloader);
-  }
-}
 
 function closeMenu() {
   navMenu.classList.remove("active");
@@ -287,14 +245,8 @@ revealItems.forEach((item) => revealObserver.observe(item));
 const techButton = document.getElementById("toggleTech");
 const techPanel = document.getElementById("techPanel");
 techButton.addEventListener("click", () => {
-  const isOpen = techPanel.classList.toggle("open");
-  techButton.textContent = isOpen ? "Ocultar detalles técnicos" : "Ver detalles técnicos";
-
-  if (isOpen) {
-    setTimeout(() => {
-      techPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
-  }
+  techPanel.classList.toggle("open");
+  techButton.textContent = techPanel.classList.contains("open") ? "Ocultar detalles técnicos" : "Ver detalles técnicos";
 });
 
 const dayNightToggle = document.getElementById("dayNightToggle");
@@ -316,39 +268,20 @@ if (dayNightToggle) {
   });
 }
 
-const progressSlides = document.querySelectorAll(".progress-slide");
-const progressDots = document.querySelectorAll("#progressDots button");
-const progressPrev = document.getElementById("progressPrev");
-const progressNext = document.getElementById("progressNext");
-let progressIndex = 0;
-let progressTimer;
-
-function showProgressSlide(index) {
-  if (!progressSlides.length) return;
-  progressSlides[progressIndex].classList.remove("active");
-  progressDots[progressIndex]?.classList.remove("active");
-  progressIndex = (index + progressSlides.length) % progressSlides.length;
-  progressSlides[progressIndex].classList.add("active");
-  progressDots[progressIndex]?.classList.add("active");
-}
-
-function startProgressCarousel() {
-  clearInterval(progressTimer);
-  if (progressSlides.length > 1) {
-    progressTimer = setInterval(() => showProgressSlide(progressIndex + 1), 5200);
-  }
-}
-
-progressPrev?.addEventListener("click", () => { showProgressSlide(progressIndex - 1); startProgressCarousel(); });
-progressNext?.addEventListener("click", () => { showProgressSlide(progressIndex + 1); startProgressCarousel(); });
-progressDots.forEach((dot, index) => dot.addEventListener("click", () => { showProgressSlide(index); startProgressCarousel(); }));
-startProgressCarousel();
-
-document.querySelectorAll("[data-viewer-src]").forEach((button) => {
+document.querySelectorAll("[data-build-state]").forEach((button) => {
   button.addEventListener("click", () => {
-    const viewer = document.getElementById("depaViewer360");
-    document.querySelectorAll("[data-viewer-src]").forEach((item) => item.classList.toggle("active", item === button));
-    if (viewer && viewer.src !== button.dataset.viewerSrc) viewer.src = button.dataset.viewerSrc;
+    const state = button.dataset.buildState;
+    document.querySelectorAll("[data-build-state]").forEach((item) => item.classList.toggle("active", item === button));
+
+    document.querySelectorAll(".construction-photos img").forEach((photo) => {
+      photo.style.opacity = "0";
+      photo.style.transform = "scale(0.985)";
+      setTimeout(() => {
+        photo.src = state === "done" ? photo.dataset.done : photo.dataset.work;
+        photo.style.opacity = "1";
+        photo.style.transform = "scale(1)";
+      }, 240);
+    });
   });
 });
 
@@ -365,16 +298,8 @@ document.querySelectorAll("[data-finance-option]").forEach((button) => {
 });
 
 document.querySelectorAll("[data-promo] .promo-track").forEach((track) => {
-  if (track.dataset.cloned !== "true") {
-    track.innerHTML += track.innerHTML;
-    track.dataset.cloned = "true";
-  }
-
-  track.addEventListener("pointerdown", () => track.classList.add("promo-paused"));
-  track.addEventListener("pointerup", () => {
-    setTimeout(() => track.classList.remove("promo-paused"), 800);
-  });
-  track.addEventListener("pointerleave", () => track.classList.remove("promo-paused"));
+  if (track.classList.contains("promo-buttons")) return;
+  track.innerHTML += track.innerHTML;
 });
 
 document.querySelectorAll("[data-service-toggle]").forEach((button) => {
@@ -393,7 +318,7 @@ const modalData = {
     normalPrice: "$134,000.00",
     presalePrice: "$129,900.00",
     text: "Distribución funcional para vivir o invertir, con ambientes optimizados y acabados modernos.",
-    images: ["imagenes/proyectos/depa interior 1.jpg", "imagenes/proyectos/cocina 1.jpg"]
+    images: ["imagenes/proyectos/depa-vertical.jpg", "imagenes/proyectos/torre-departamentos.jpg"]
   },
   tipoB: {
     title: "Departamento Tipo III",
@@ -402,7 +327,7 @@ const modalData = {
     normalPrice: "$138,000.00",
     presalePrice: "$133,900.00",
     text: "Opción familiar con mayor amplitud social, dormitorios bien iluminados y espacios adaptables.",
-    images: ["imagenes/proyectos/depa interior 2.jpg", "imagenes/proyectos/interior 5.jpg"]
+    images: ["imagenes/proyectos/torre-detalle-1.jpg", "imagenes/proyectos/torre-detalle-3.jpg"]
   },
   tipoC: {
     title: "Departamento Tipo IV",
@@ -411,7 +336,7 @@ const modalData = {
     normalPrice: "$200,000.00",
     presalePrice: "$193,900.00",
     text: "Formato premium con mayor área útil, mejor amplitud y acabados superiores para una experiencia residencial más exclusiva.",
-    images: ["imagenes/proyectos/interior 6.jpg", "imagenes/proyectos/depa interior 1.jpg"]
+    images: ["imagenes/proyectos/torre-detalle-2.jpg", "imagenes/proyectos/plano-tecnico.jpg"]
   }
 };
 
@@ -420,17 +345,11 @@ const modalBody = document.getElementById("modalBody");
 const modalClose = document.getElementById("modalClose");
 
 const promoData = {
-  promo1: { category: "Promociones venta de departamentos", title: "Promo 1", separation: "20%", benefit: "Gratis los accesorios para sus muebles bajos de cocina." },
-  promo2: { category: "Promociones venta de departamentos", title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavandería con lavadora y mueble." },
-  promo3: { category: "Promociones venta de departamentos", title: "Promo 3", separation: "60%", benefit: "Gratis le damos el mueble de entretenimiento para la sala." },
-  promo4: { category: "Promociones venta de departamentos", title: "Promo 4", separation: "80%", benefit: "Gratis su cocina + campana empotrada." },
-  promo5: { category: "Promociones venta de departamentos", title: "Promo 5", separation: "100%", benefit: "Gratis refrigeradora + horno empotrado + horno microondas empotrado." },
-  office1: { category: "Promoción oficinas", title: "Oficina equipada", conditionLabel: "Incluye", separation: "Implementación", benefit: "Primer mes con asesoría para distribuir mobiliario, puntos de trabajo y presentación corporativa." },
-  office2: { category: "Promoción oficinas", title: "Servicios incluidos", conditionLabel: "Incluye", separation: "Todo listo", benefit: "WiFi, luz, agua y limpieza de áreas comunes incluidos para iniciar operaciones con mayor comodidad." },
-  office3: { category: "Promoción oficinas", title: "Plan trimestral", conditionLabel: "Condición", separation: "Ahorro", benefit: "Tarifa preferencial para empresas o profesionales que separen alquiler por tres meses anticipados." },
-  event1: { category: "Promoción Salón VIP", title: "Reserva tu fecha", conditionLabel: "Incluye", separation: "Decoración", benefit: "Decoración base y coordinación inicial incluida para reuniones privadas, familiares o presentaciones." },
-  event2: { category: "Promoción Salón VIP", title: "Evento corporativo", conditionLabel: "Incluye", separation: "Preferencial", benefit: "Tarifa especial para capacitaciones, reuniones empresariales y actividades institucionales." },
-  event3: { category: "Promoción Salón VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." }
+  promo1: { title: "Promo 1", separation: "20%", benefit: "Gratis los accesorios para sus muebles bajos de cocina." },
+  promo2: { title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavandería con lavadora y mueble." },
+  promo3: { title: "Promo 3", separation: "60%", benefit: "Gratis le damos el mueble de entretenimiento para la sala." },
+  promo4: { title: "Promo 4", separation: "80%", benefit: "Gratis su cocina + campana empotrada." },
+  promo5: { title: "Promo 5", separation: "100%", benefit: "Gratis refrigeradora + horno empotrado + horno microondas empotrado." }
 };
 
 document.querySelectorAll("[data-modal]").forEach((button) => {
@@ -471,10 +390,10 @@ document.querySelectorAll("[data-promo-modal]").forEach((button) => {
     const data = promoData[button.dataset.promoModal];
     modalBody.innerHTML = `
       <div class="modal-depa-header promo-modal-content">
-        <span>${data.category || "Promoción Torre 89"}</span>
+        <span>Promociones venta de departamentos</span>
         <h2>${data.title}</h2>
         <div class="modal-depa-summary">
-          <div><small>${data.conditionLabel || "Separación"}</small><strong>${data.separation}</strong></div>
+          <div><small>Separación</small><strong>${data.separation}</strong></div>
           <div><small>Beneficio</small><strong>${data.benefit}</strong></div>
         </div>
         <p>Promoción sujeta a disponibilidad y validación comercial. IA Construcciones confirmará condiciones finales al momento de la reserva.</p>
@@ -572,4 +491,3 @@ floatingWhatsapp.addEventListener("click", (event) => {
     moved = false;
   }
 });
-

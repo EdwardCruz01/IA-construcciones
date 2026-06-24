@@ -1282,8 +1282,19 @@ body.night-view .day-night-photo {
 }
 
 .promo-copy-track {
-  width: max-content;
-  flex-wrap: nowrap;
+  width: 100%;
+  flex-wrap: wrap;
+  animation: none;
+}
+
+.promo-copy-track span {
+  flex: 1 1 190px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--executive-orange), #f09a3d);
+  color: var(--white);
+  font-weight: 900;
+  box-shadow: 0 16px 34px rgba(200, 90, 23, .22);
 }
 
 .btn-call {
@@ -1360,7 +1371,7 @@ body.night-view .day-night-photo {
 }
 
 .promo-track button {
-  flex: 0 0 168px;
+  flex: 0 0 150px;
   min-height: 86px;
   border: 1px solid rgba(245, 196, 81, .42);
   border-radius: 18px;
@@ -1372,25 +1383,13 @@ body.night-view .day-night-photo {
 }
 
 .promo-track.promo-buttons {
-  width: max-content;
-  flex-wrap: nowrap;
-  animation: promoSlideFast 8s linear infinite;
+  width: 100%;
+  flex-wrap: wrap;
+  animation: none;
 }
 
-.promo-track,
-.promo-copy-track {
-  animation: promoSlideFast 8s linear infinite;
-}
-
-.promo-track:hover,
-.promo-track:focus-within,
-.promo-track.promo-paused {
-  animation-play-state: paused;
-}
-
-.promo-track.promo-buttons button,
-.promo-copy-track button {
-  flex: 0 0 168px;
+.promo-track.promo-buttons button {
+  flex: 1 1 128px;
 }
 
 .promo-track button small {
@@ -1406,11 +1405,6 @@ body.night-view .day-night-photo {
 
 .promo-modal-content .modal-depa-summary {
   grid-template-columns: .7fr 1.3fr;
-}
-
-@keyframes promoSlideFast {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 .rewards-section {

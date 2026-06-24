@@ -857,58 +857,6 @@
     height: min(58vw, 260px);
   }
 
-  .progress-carousel {
-    min-height: 610px;
-  }
-
-  .progress-slide {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    transform: translateY(16px);
-  }
-
-  .progress-slide img {
-    height: 250px;
-  }
-
-  .progress-flow {
-    width: 46px;
-    height: 46px;
-    font-size: 28px;
-    margin: -6px auto;
-    transform: rotate(90deg);
-  }
-
-  @keyframes arrowPulse {
-    50% { transform: rotate(90deg) translateX(6px); box-shadow: 0 0 0 9px rgba(245, 196, 81, .13); }
-  }
-
-  .progress-prev {
-    left: 10px;
-  }
-
-  .progress-next {
-    right: 10px;
-  }
-
-  .viewer-selector {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  #departamentos .product-grid {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #departamentos .day-night-photo {
-    order: 1;
-  }
-
-  #departamentos .product-copy {
-    order: 2;
-  }
-
   .vertical-photo {
     width: 100%;
     height: auto;
@@ -928,15 +876,6 @@
   .promo-track button {
     flex-basis: 132px;
     min-height: 78px;
-  }
-
-  .preloader-card {
-    padding: 28px 22px;
-  }
-
-  .preloader-card img {
-    width: 86px;
-    height: 86px;
   }
 }
 

@@ -896,19 +896,6 @@
     grid-template-columns: 1fr;
   }
 
-  #departamentos .product-grid {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #departamentos .day-night-photo {
-    order: 1;
-  }
-
-  #departamentos .product-copy {
-    order: 2;
-  }
-
   .vertical-photo {
     width: 100%;
     height: auto;

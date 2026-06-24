@@ -20,16 +20,6 @@
   <link rel="stylesheet" href="style/responsive.css">
 </head>
 <body>
-  <div class="preloader" id="preloader" role="dialog" aria-label="Cargando Torre 89">
-    <div class="preloader-card">
-      <img src="imagenes/logos/logo-ia-construcciones.png" alt="IA Construcciones">
-      <div class="preloader-glow"></div>
-      <strong>Torre 89</strong>
-      <p id="loaderPhrase">Preparando espacios modernos para vivir e invertir.</p>
-      <div class="loader-bar"><span id="loaderProgress"></span></div>
-      <button id="acceptCookies" type="button">Aceptar cookies y continuar</button>
-    </div>
-  </div>
   <div class="music-player" id="musicPlayer" aria-label="Reproductor de música">
     <audio id="backgroundAudio" src="musicas/Life Time (Extended Mix).mp3" preload="auto" autoplay loop></audio>
     <button class="music-toggle" id="musicToggle" type="button" aria-label="Reproducir música">
@@ -114,7 +104,7 @@
       <div class="hero-working">
         <span>Estamos trabajando</span>
         <div class="working-media">
-          <video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212313/videos/minimalista_solo_silueta_es_pa_ufks3v.mp4" autoplay muted loop playsinline preload="none" aria-label="Estamos trabajando"></video>
+          <video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212313/videos/minimalista_solo_silueta_es_pa_ufks3v.mp4" autoplay muted loop playsinline aria-label="Estamos trabajando"></video>
         </div>
       </div>
       <a class="scroll-cue" href="#servicios" aria-label="Bajar">&lt;&lt;&lt;</a>
@@ -148,9 +138,9 @@
         <p>Elige el espacio que quieres explorar. Cada módulo te lleva a su sección dentro de esta landing.</p>
       </div>
       <div class="container gateway-grid">
-        <a class="gateway-card reveal" href="#oficinas"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212314/videos/oficina_1_ri41rw.mp4" autoplay muted loop playsinline preload="none"></video><span>Oficinas</span><b>&lt;&lt;&lt;</b></a>
+        <a class="gateway-card reveal" href="#oficinas"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212314/videos/oficina_1_ri41rw.mp4" autoplay muted loop playsinline></video><span>Oficinas</span><b>&lt;&lt;&lt;</b></a>
         <a class="gateway-card reveal" href="#departamentos"><img src="https://res.cloudinary.com/dpaqxfvlg/image/upload/v1782212226/depa_interior_1_nnf6ea.jpg" alt="Departamentos Torre 89"><span>Departamentos</span><b>&lt;&lt;&lt;</b></a>
-        <a class="gateway-card reveal" href="#locales"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/comercio_1_euj725.mp4" autoplay muted loop playsinline preload="none"></video><span>Salón de eventos</span><b>&lt;&lt;&lt;</b></a>
+        <a class="gateway-card reveal" href="#locales"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/comercio_1_euj725.mp4" autoplay muted loop playsinline></video><span>Salón de eventos</span><b>&lt;&lt;&lt;</b></a>
       </div>
     </section>
 
@@ -195,11 +185,11 @@
       </div>
       <div class="container reels-grid">
         <a class="reel-card reveal" href="https://www.tiktok.com/@coco_inmobiliaria?_r=1&_t=ZS-97K9lv4X272" target="_blank" rel="noopener" aria-label="Ver video en TikTok">
-          <video src="videos/0617.mp4" poster="imagenes/proyectos/portada2.jpg" autoplay muted loop playsinline preload="none"></video>
+          <video src="videos/0617.mp4" poster="imagenes/proyectos/portada2.jpg" autoplay muted loop playsinline></video>
           <span>TikTok</span>
         </a>
         <a class="reel-card reveal" href="https://www.tiktok.com/@coco_inmobiliaria?_r=1&_t=ZS-97K9lv4X272" target="_blank" rel="noopener" aria-label="Ver video en TikTok">
-          <video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/0618_vxu3ok.mp4" poster="imagenes/proyectos/oficinas1.jpg" autoplay muted loop playsinline preload="none"></video>
+          <video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/0618_vxu3ok.mp4" poster="imagenes/proyectos/oficinas1.jpg" autoplay muted loop playsinline></video>
           <span>TikTok</span>
         </a>
       </div>
@@ -210,18 +200,12 @@
 
     <section class="section product-section" id="departamentos">
       <div class="container product-grid">
-        <img class="vertical-photo reveal day-night-photo" src="imagenes/proyectos/portada2.jpg" data-day="imagenes/proyectos/portada2.jpg" data-night="imagenes/proyectos/noche1.jpg" alt="Departamentos Torre 89">
         <div class="product-copy reveal">
           <span class="eyebrow">Torre 89</span>
           <h2>Departamentos</h2>
           <p>Ambientes pensados para vivir con comodidad, iluminación natural y distribución eficiente. Cada tipo puede adaptarse a necesidades familiares o de inversión.</p>
           <button class="view-toggle" id="dayNightToggle" type="button" aria-pressed="false">Vista de noche</button>
-          <div class="viewer-selector" aria-label="Seleccionar recorrido 360">
-            <button class="active" type="button" data-viewer-src="https://panoraven.com/es/embed/bNogpY7XQD">360 Tipo II</button>
-            <button type="button" data-viewer-src="https://panoraven.com/es/embed/bNogpY7XQD">360 Tipo III</button>
-            <button type="button" data-viewer-src="https://panoraven.com/es/embed/bNogpY7XQD">360 Tipo IV</button>
-          </div>
-          <div class="viewer-360"><iframe id="depaViewer360" src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
+          <div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
           <div class="type-buttons"><button data-modal="tipoA">Tipo II</button><button data-modal="tipoB">Tipo III</button><button data-modal="tipoC">Tipo IV</button></div>
           <a class="btn btn-primary" href="#contacto">Cotiza este espacio</a>
           <div class="promo-strip" data-promo>
@@ -235,6 +219,7 @@
             </div>
           </div>
         </div>
+        <img class="vertical-photo reveal day-night-photo" src="imagenes/proyectos/portada2.jpg" data-day="imagenes/proyectos/portada2.jpg" data-night="imagenes/proyectos/noche1.jpg" alt="Departamentos Torre 89">
       </div>
     </section>
 
@@ -242,29 +227,17 @@
       <div class="container section-heading reveal">
         <span class="eyebrow">Modelo de construcción</span>
         <h2>Visualiza el avance antes y después</h2>
-        <p>Compara el proceso de obra con una vista referencial del resultado final. El carrusel cambia solo y también puedes navegarlo manualmente.</p>
+        <p>Este bloque queda listo para comparar el proceso constructivo y el resultado final.</p>
       </div>
       <div class="container construction-card reveal">
-        <button class="progress-arrow progress-prev" id="progressPrev" type="button" aria-label="Anterior">&#10094;</button>
-        <div class="progress-carousel" id="progressCarousel">
-          <article class="progress-slide active">
-            <img src="imagenes/proyectos/construccion1.jpg" loading="lazy" alt="Avance en construcción Torre 89">
-            <span class="progress-flow">→</span>
-            <img src="imagenes/proyectos/finalizado 1.jpg" loading="lazy" alt="Resultado final Torre 89">
-          </article>
-          <article class="progress-slide">
-            <img src="imagenes/proyectos/construccion 3.jpg" loading="lazy" alt="Detalle constructivo Torre 89">
-            <span class="progress-flow">→</span>
-            <img src="imagenes/proyectos/finzalizado 2.jpg" loading="lazy" alt="Ambiente final Torre 89">
-          </article>
-          <article class="progress-slide">
-            <img src="imagenes/proyectos/DJI_20260610_113000_544.jpg" loading="lazy" alt="Vista de obra Torre 89">
-            <span class="progress-flow">→</span>
-            <img src="imagenes/proyectos/portada3.jpg" loading="lazy" alt="Vista terminada Torre 89">
-          </article>
+        <div class="construction-actions">
+          <button class="state-pill active" data-build-state="work" type="button">En construcción</button>
+          <button class="state-pill" data-build-state="done" type="button">Finalizado</button>
         </div>
-        <button class="progress-arrow progress-next" id="progressNext" type="button" aria-label="Siguiente">&#10095;</button>
-        <div class="progress-dots" id="progressDots"><button class="active"></button><button></button><button></button></div>
+        <div class="construction-photos">
+          <img src="imagenes/proyectos/construccion1.jpg" data-work="imagenes/proyectos/construccion1.jpg" data-done="imagenes/proyectos/finzalizado 2.jpg" alt="Modelo de construcción 1">
+          <img src="imagenes/proyectos/construccion 3.jpg" data-work="imagenes/proyectos/construccion 3.jpg" data-done="imagenes/proyectos/finalizado 1.jpg" alt="Modelo de construcción 2">
+        </div>
       </div>
     </section>
 
@@ -274,18 +247,18 @@
           <span class="eyebrow">Torre 89</span>
           <h2>Oficinas</h2>
           <p>Espacios corporativos para profesionales, emprendimientos y empresas que buscan ubicación, imagen y funcionalidad en un entorno moderno.</p>
-          <div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
+          <div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
           <a class="btn btn-primary" href="#contacto">Cotiza oficina</a>
           <div class="promo-strip" data-promo>
             <span>Promociones</span>
-            <div class="promo-track promo-copy-track">
-              <button type="button" data-promo-modal="office1">Oficina equipada <small>Implementación</small></button>
-              <button type="button" data-promo-modal="office2">Servicios incluidos <small>Todo listo</small></button>
-              <button type="button" data-promo-modal="office3">Plan trimestral <small>Ahorro</small></button>
+            <div class="promo-track">
+              <img src="imagenes/proyectos/promo-1.jpg" alt="Promoción oficinas">
+              <img src="imagenes/proyectos/promo-2.jpg" alt="Promoción oficinas">
+              <img src="imagenes/proyectos/promo-3.jpg" alt="Promoción oficinas">
             </div>
           </div>
         </div>
-        <video class="vertical-photo vertical-video reveal" src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212315/videos/oficina_2_lemuq5.mp4" autoplay muted loop playsinline preload="none" aria-label="Oficinas Torre 89"></video>
+        <video class="vertical-photo vertical-video reveal" src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212315/videos/oficina_2_lemuq5.mp4" autoplay muted loop playsinline aria-label="Oficinas Torre 89"></video>
       </div>
     </section>
 
@@ -295,18 +268,18 @@
           <span class="eyebrow">Torre 89</span>
           <h2>Salón VIP / Eventos</h2>
           <p>Ambiente versátil para reuniones, presentaciones y actividades privadas, pensado para complementar el flujo del edificio con una experiencia cómoda y moderna.</p>
-          <div class="viewer-pair"><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true"></iframe></div><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true"></iframe></div></div>
+          <div class="viewer-pair"><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" allowfullscreen="true"></iframe></div><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" allowfullscreen="true"></iframe></div></div>
           <a class="btn btn-primary" href="#contacto">Cotiza salón</a>
           <div class="promo-strip" data-promo>
             <span>Promociones Salón VIP</span>
-            <div class="promo-track promo-copy-track">
-              <button type="button" data-promo-modal="event1">Reserva tu fecha <small>Decoración</small></button>
-              <button type="button" data-promo-modal="event2">Evento corporativo <small>Preferencial</small></button>
-              <button type="button" data-promo-modal="event3">Horas adicionales <small>Paquete VIP</small></button>
+            <div class="promo-track">
+              <img src="imagenes/proyectos/promo-1.jpg" alt="Promoción locales">
+              <img src="imagenes/proyectos/promo-2.jpg" alt="Promoción sótano">
+              <img src="imagenes/proyectos/promo-3.jpg" alt="Promoción locales">
             </div>
           </div>
         </div>
-        <video class="vertical-photo vertical-video reveal" src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212318/videos/locales_3_tzm36l.mp4" autoplay muted loop playsinline preload="none" aria-label="Locales Torre 89"></video>
+        <video class="vertical-photo vertical-video reveal" src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212318/videos/locales_3_tzm36l.mp4" autoplay muted loop playsinline aria-label="Locales Torre 89"></video>
       </div>
     </section>
 
@@ -338,7 +311,7 @@
           <span class="eyebrow">Contacto</span><h2>Oficina principal</h2><p>Visítanos o coordina una reunión virtual.</p>
           <div class="office-list"><p><span>📍</span> Jr. 2 de Mayo N° 758, Huánuco</p><p><span>☎</span> +51 955 042 736</p><p><span>✉</span> contacto@iaconstrucciones.com</p><p><span>🕒</span> Lun - Sáb · 8:00 a 18:00</p></div>
           <a class="btn btn-whatsapp shine" href="https://wa.me/955042736" target="_blank" rel="noopener"><img src="imagenes/logos/whatsapp-logo.png" alt="">Escríbenos al WhatsApp</a>
-          <div class="map-box"><a href="https://maps.app.goo.gl/e9x7QqUK7o4xvHCy5" target="_blank" rel="noopener">Abrir en Maps</a><iframe title="Mapa IA Construcciones Huánuco" src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d245.62584781315735!2d-76.24262320122337!3d-9.932827847973563!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2spe!4v1782303390807!5m2!1ses!2spe" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe><img src="imagenes/logos/logo-ia-construcciones.png" alt="IA Construcciones"></div>
+          <div class="map-box"><a href="https://maps.app.goo.gl/H3d7RqcoxxR8vbr76" target="_blank" rel="noopener">Abrir en Maps</a><iframe title="Mapa IA Construcciones Huánuco" src="https://www.google.com/maps?q=Jr.%202%20de%20Mayo%20758,%20Hu%C3%A1nuco,%20Per%C3%BA&output=embed" loading="lazy"></iframe><img src="imagenes/logos/logo-ia-construcciones.png" alt="IA Construcciones"></div>
         </div>
         <form class="contact-form reveal" id="contactForm">
           <div class="form-row"><label>Nombre<input id="nombre" type="text" placeholder="Tu nombre completo" required></label><label>Teléfono<input id="telefono" type="tel" placeholder="Ej. 999 999 999" required></label></div>
@@ -353,7 +326,7 @@
           <button class="btn btn-primary" type="submit">Enviar por WhatsApp</button>
         </form>
       </div>
-      <div class="container contact-360 reveal"><h3>Recorrido referencial 360°</h3><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true"></iframe></div></div>
+      <div class="container contact-360 reveal"><h3>Recorrido referencial 360°</h3><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" allowfullscreen="true"></iframe></div></div>
     </section>
 
     <section class="section team-section">
@@ -404,4 +377,3 @@
   <script src="js/script.js"></script>
 </body>
 </html>
-

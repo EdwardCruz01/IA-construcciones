@@ -287,14 +287,8 @@ revealItems.forEach((item) => revealObserver.observe(item));
 const techButton = document.getElementById("toggleTech");
 const techPanel = document.getElementById("techPanel");
 techButton.addEventListener("click", () => {
-  const isOpen = techPanel.classList.toggle("open");
-  techButton.textContent = isOpen ? "Ocultar detalles técnicos" : "Ver detalles técnicos";
-
-  if (isOpen) {
-    setTimeout(() => {
-      techPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
-  }
+  techPanel.classList.toggle("open");
+  techButton.textContent = techPanel.classList.contains("open") ? "Ocultar detalles técnicos" : "Ver detalles técnicos";
 });
 
 const dayNightToggle = document.getElementById("dayNightToggle");
@@ -365,16 +359,8 @@ document.querySelectorAll("[data-finance-option]").forEach((button) => {
 });
 
 document.querySelectorAll("[data-promo] .promo-track").forEach((track) => {
-  if (track.dataset.cloned !== "true") {
-    track.innerHTML += track.innerHTML;
-    track.dataset.cloned = "true";
-  }
-
-  track.addEventListener("pointerdown", () => track.classList.add("promo-paused"));
-  track.addEventListener("pointerup", () => {
-    setTimeout(() => track.classList.remove("promo-paused"), 800);
-  });
-  track.addEventListener("pointerleave", () => track.classList.remove("promo-paused"));
+  if (track.classList.contains("promo-buttons")) return;
+  track.innerHTML += track.innerHTML;
 });
 
 document.querySelectorAll("[data-service-toggle]").forEach((button) => {
@@ -420,17 +406,11 @@ const modalBody = document.getElementById("modalBody");
 const modalClose = document.getElementById("modalClose");
 
 const promoData = {
-  promo1: { category: "Promociones venta de departamentos", title: "Promo 1", separation: "20%", benefit: "Gratis los accesorios para sus muebles bajos de cocina." },
-  promo2: { category: "Promociones venta de departamentos", title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavandería con lavadora y mueble." },
-  promo3: { category: "Promociones venta de departamentos", title: "Promo 3", separation: "60%", benefit: "Gratis le damos el mueble de entretenimiento para la sala." },
-  promo4: { category: "Promociones venta de departamentos", title: "Promo 4", separation: "80%", benefit: "Gratis su cocina + campana empotrada." },
-  promo5: { category: "Promociones venta de departamentos", title: "Promo 5", separation: "100%", benefit: "Gratis refrigeradora + horno empotrado + horno microondas empotrado." },
-  office1: { category: "Promoción oficinas", title: "Oficina equipada", conditionLabel: "Incluye", separation: "Implementación", benefit: "Primer mes con asesoría para distribuir mobiliario, puntos de trabajo y presentación corporativa." },
-  office2: { category: "Promoción oficinas", title: "Servicios incluidos", conditionLabel: "Incluye", separation: "Todo listo", benefit: "WiFi, luz, agua y limpieza de áreas comunes incluidos para iniciar operaciones con mayor comodidad." },
-  office3: { category: "Promoción oficinas", title: "Plan trimestral", conditionLabel: "Condición", separation: "Ahorro", benefit: "Tarifa preferencial para empresas o profesionales que separen alquiler por tres meses anticipados." },
-  event1: { category: "Promoción Salón VIP", title: "Reserva tu fecha", conditionLabel: "Incluye", separation: "Decoración", benefit: "Decoración base y coordinación inicial incluida para reuniones privadas, familiares o presentaciones." },
-  event2: { category: "Promoción Salón VIP", title: "Evento corporativo", conditionLabel: "Incluye", separation: "Preferencial", benefit: "Tarifa especial para capacitaciones, reuniones empresariales y actividades institucionales." },
-  event3: { category: "Promoción Salón VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." }
+  promo1: { title: "Promo 1", separation: "20%", benefit: "Gratis los accesorios para sus muebles bajos de cocina." },
+  promo2: { title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavandería con lavadora y mueble." },
+  promo3: { title: "Promo 3", separation: "60%", benefit: "Gratis le damos el mueble de entretenimiento para la sala." },
+  promo4: { title: "Promo 4", separation: "80%", benefit: "Gratis su cocina + campana empotrada." },
+  promo5: { title: "Promo 5", separation: "100%", benefit: "Gratis refrigeradora + horno empotrado + horno microondas empotrado." }
 };
 
 document.querySelectorAll("[data-modal]").forEach((button) => {
@@ -471,10 +451,10 @@ document.querySelectorAll("[data-promo-modal]").forEach((button) => {
     const data = promoData[button.dataset.promoModal];
     modalBody.innerHTML = `
       <div class="modal-depa-header promo-modal-content">
-        <span>${data.category || "Promoción Torre 89"}</span>
+        <span>Promociones venta de departamentos</span>
         <h2>${data.title}</h2>
         <div class="modal-depa-summary">
-          <div><small>${data.conditionLabel || "Separación"}</small><strong>${data.separation}</strong></div>
+          <div><small>Separación</small><strong>${data.separation}</strong></div>
           <div><small>Beneficio</small><strong>${data.benefit}</strong></div>
         </div>
         <p>Promoción sujeta a disponibilidad y validación comercial. IA Construcciones confirmará condiciones finales al momento de la reserva.</p>

@@ -1049,243 +1049,6 @@ body.night-view .day-night-photo {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background:
-    radial-gradient(circle at 18% 18%, rgba(255, 211, 94, .28), transparent 28%),
-    radial-gradient(circle at 82% 70%, rgba(255, 255, 255, .16), transparent 24%),
-    linear-gradient(135deg, #9d3f12, var(--executive-orange));
-  color: var(--white);
-  transition: opacity .45s ease, visibility .45s ease;
-}
-
-.preloader.hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.preloader-card {
-  position: relative;
-  width: min(390px, 92vw);
-  text-align: center;
-  padding: 34px 28px;
-  border: 1px solid rgba(255, 255, 255, .18);
-  border-radius: 28px;
-  background: rgba(42, 31, 24, .28);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, .28);
-  backdrop-filter: blur(18px);
-  overflow: hidden;
-}
-
-.preloader-card img {
-  width: 104px;
-  height: 104px;
-  object-fit: contain;
-  margin: 0 auto 14px;
-  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, .28));
-}
-
-.preloader-card strong {
-  display: block;
-  color: var(--gold-2);
-  font-family: Montserrat, Arial, sans-serif;
-  font-size: 31px;
-  line-height: 1;
-}
-
-.preloader-card p {
-  margin: 12px auto 18px;
-  color: rgba(255, 255, 255, .86);
-  font-weight: 600;
-}
-
-.preloader-glow {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  top: -55px;
-  right: -55px;
-  border-radius: 50%;
-  background: rgba(255, 213, 91, .26);
-  filter: blur(12px);
-  animation: preloaderGlow 2.8s ease-in-out infinite;
-}
-
-.loader-bar {
-  height: 8px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .18);
-}
-
-.loader-bar span {
-  display: block;
-  width: 0%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--gold-2), #fff2a0);
-  transition: width .3s ease;
-}
-
-.preloader-card button {
-  margin-top: 18px;
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 18px;
-  background: var(--gold);
-  color: var(--ink);
-  font-weight: 900;
-  cursor: pointer;
-}
-
-@keyframes preloaderGlow {
-  50% { transform: scale(1.18); opacity: .72; }
-}
-
-.section-heading h2,
-.split-intro h2,
-.story-copy h2,
-.product-copy h2,
-.finance-card h2,
-.office-panel h2,
-.soon-card h2,
-.rewards-card h2 {
-  color: var(--executive-orange);
-}
-
-.eyebrow,
-.section-heading .eyebrow,
-.product-copy .eyebrow,
-.story-copy .eyebrow {
-  color: var(--gold-2);
-}
-
-.viewer-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 22px 0 -6px;
-}
-
-.viewer-selector button {
-  border: 1px solid rgba(200, 90, 23, .24);
-  border-radius: 999px;
-  padding: 11px 15px;
-  background: var(--bone);
-  color: var(--executive-orange);
-  font-weight: 900;
-  cursor: pointer;
-  transition: background .3s ease, color .3s ease, transform .3s ease;
-}
-
-.viewer-selector button.active,
-.viewer-selector button:hover {
-  background: var(--executive-orange);
-  color: var(--white);
-  transform: translateY(-1px);
-}
-
-.construction-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-carousel {
-  position: relative;
-  min-height: 360px;
-}
-
-.progress-slide {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 22px;
-  align-items: center;
-  opacity: 0;
-  transform: translateX(22px);
-  pointer-events: none;
-  transition: opacity .55s ease, transform .55s ease;
-}
-
-.progress-slide.active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
-}
-
-.progress-slide img {
-  height: 360px;
-  border-radius: 22px;
-  box-shadow: 0 24px 56px rgba(113, 68, 30, .18);
-}
-
-.progress-flow {
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--gold);
-  color: var(--ink);
-  font-size: 34px;
-  font-weight: 900;
-  animation: arrowPulse 1.4s ease-in-out infinite;
-}
-
-.progress-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 3;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(245, 196, 81, .55);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .82);
-  color: var(--executive-orange);
-  font-size: 24px;
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-
-.progress-prev { left: 18px; }
-.progress-next { right: 18px; }
-
-.progress-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.progress-dots button {
-  width: 11px;
-  height: 7px;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(200, 90, 23, .28);
-}
-
-.progress-dots button.active {
-  width: 34px;
-  background: var(--gold);
-}
-
-@keyframes arrowPulse {
-  50% { transform: translateX(6px); box-shadow: 0 0 0 9px rgba(245, 196, 81, .13); }
-}
-
-.promo-copy-track {
-  width: max-content;
-  flex-wrap: nowrap;
-}
-
 .btn-call {
   background: rgba(255, 255, 255, 0.14);
   color: var(--white);
@@ -1360,7 +1123,7 @@ body.night-view .day-night-photo {
 }
 
 .promo-track button {
-  flex: 0 0 168px;
+  flex: 0 0 150px;
   min-height: 86px;
   border: 1px solid rgba(245, 196, 81, .42);
   border-radius: 18px;
@@ -1372,25 +1135,13 @@ body.night-view .day-night-photo {
 }
 
 .promo-track.promo-buttons {
-  width: max-content;
-  flex-wrap: nowrap;
-  animation: promoSlideFast 8s linear infinite;
+  width: 100%;
+  flex-wrap: wrap;
+  animation: none;
 }
 
-.promo-track,
-.promo-copy-track {
-  animation: promoSlideFast 8s linear infinite;
-}
-
-.promo-track:hover,
-.promo-track:focus-within,
-.promo-track.promo-paused {
-  animation-play-state: paused;
-}
-
-.promo-track.promo-buttons button,
-.promo-copy-track button {
-  flex: 0 0 168px;
+.promo-track.promo-buttons button {
+  flex: 1 1 128px;
 }
 
 .promo-track button small {
@@ -1406,11 +1157,6 @@ body.night-view .day-night-photo {
 
 .promo-modal-content .modal-depa-summary {
   grid-template-columns: .7fr 1.3fr;
-}
-
-@keyframes promoSlideFast {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 .rewards-section {
