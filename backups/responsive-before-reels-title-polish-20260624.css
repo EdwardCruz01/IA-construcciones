@@ -1109,16 +1109,9 @@
     margin-bottom: 18px;
   }
 
-  .reels-grid {
-    grid-template-columns: minmax(220px, 330px) !important;
-    justify-content: center;
-  }
-
   .reel-card,
   .reel-card video {
-    aspect-ratio: 9 / 16;
-    height: auto !important;
-    max-height: 430px;
+    height: 230px !important;
     min-height: 0 !important;
   }
 }

@@ -4,56 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Torre 89 | Proyecto Inmobiliario Smart - IA Construcciones</title>
-  <meta name="description" content="Torre 89 en Huánuco: proyecto inmobiliario smart de IA Construcciones con departamentos en venta, oficinas en alquiler, salón VIP, visualización 360 y asesoría comercial.">
-  <meta name="keywords" content="Torre 89, IA Construcciones, departamentos en Huánuco, oficinas en alquiler Huánuco, constructora Huánuco, proyecto inmobiliario, salón VIP Huánuco">
+  <meta name="description" content="Torre 89, proyecto inmobiliario de IA Construcciones con departamentos en venta, oficinas en alquiler, salón VIP, visualización 360 y asesoría integral.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#C85A17">
   <meta name="author" content="IA Construcciones">
-  <meta property="og:title" content="Torre 89 | Proyecto inmobiliario smart en Huánuco">
-  <meta property="og:description" content="Departamentos en venta, oficinas en alquiler y salón VIP con visualización 360. Un proyecto de IA Construcciones.">
+  <meta property="og:title" content="Torre 89 | IA Construcciones">
+  <meta property="og:description" content="Proyecto inmobiliario smart con departamentos, oficinas y salón VIP para eventos.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_PE">
-  <meta property="og:image" content="imagenes/proyectos/portada3.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Torre 89 | IA Construcciones">
-  <meta name="twitter:description" content="Proyecto inmobiliario smart en Huánuco con departamentos, oficinas y salón VIP.">
-  <meta name="twitter:image" content="imagenes/proyectos/portada3.jpg">
+  <meta property="og:image" content="imagenes/hero/hero-1.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://res.cloudinary.com">
-  <link rel="preconnect" href="https://panoraven.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="style/responsive.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ApartmentComplex",
-    "@id": "#torre89",
-    "name": "Torre 89",
-    "description": "Proyecto inmobiliario smart en Huánuco con departamentos en venta, oficinas en alquiler, salón VIP y recorridos 360.",
-    "brand": {
-      "@type": "Organization",
-      "name": "IA Construcciones"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Jr. 2 de Mayo N° 758",
-      "addressLocality": "Huánuco",
-      "addressCountry": "PE"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -9.932827847973563,
-      "longitude": -76.24262320122337
-    },
-    "telephone": "+51955042736",
-    "sameAs": [
-      "https://www.facebook.com/profile.php?id=61586709327829",
-      "https://www.tiktok.com/@coco_inmobiliaria"
-    ]
-  }
-  </script>
 </head>
 <body>
   <div class="preloader" id="preloader" role="dialog" aria-label="Cargando Torre 89">
@@ -63,7 +27,7 @@
       <strong>Torre 89</strong>
       <p id="loaderPhrase">Preparando espacios modernos para vivir e invertir.</p>
       <div class="loader-bar"><span id="loaderProgress"></span></div>
-      <button id="acceptCookies" type="button">Aceptar condiciones</button>
+      <button id="acceptCookies" type="button">Aceptar cookies y continuar</button>
     </div>
   </div>
   <div class="music-player" id="musicPlayer" aria-label="Reproductor de música">
@@ -72,9 +36,10 @@
       <span class="music-icon">▶</span>
     </button>
     <div class="music-controls">
+      <div class="music-progress"><span id="musicProgress"></span></div>
       <label class="volume-control" aria-label="Volumen de música">
         <span></span>
-        <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.2">
+        <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.45">
       </label>
     </div>
   </div>
@@ -120,8 +85,8 @@
       <div class="hero-slide hero-slide-video">
         <video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212316/videos/video_prese2_mozzf7.mp4" muted playsinline preload="metadata"></video>
       </div>
-      <div class="hero-slide" style="background-image:url('imagenes/proyectos/depa 4.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('imagenes/hero/foto horizontal 1.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('imagenes/proyectos/depa\ 4.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('imagenes/hero/foto\ horizontal\ 1.jpg')"></div>
       <div class="hero-overlay"></div>
 
       <button class="hero-arrow hero-arrow-left" id="prevSlide" aria-label="Imagen anterior">&#10094;</button>
@@ -131,7 +96,7 @@
       <div class="container hero-content hero-content-centered reveal visible">
         <span class="eyebrow hero-badge">Proyecto más visitado</span>
         <img class="hero-project-logo hero-project-logo-main" src="imagenes/logos/torre-89-transparente.png" alt="Logo Torre 89">
-        <h1 class="sr-only">Torre 89, proyecto inmobiliario smart en Huánuco por IA Construcciones</h1>
+        <h1></h1>
         <p>Un proyecto inmobiliario smart con espacios modernos para vivir, invertir y trabajar en una ubicación estratégica.</p>
         <div class="hero-metrics">
           <div><strong>1,800 m²</strong><span>Área proyectada</span></div>
@@ -163,7 +128,7 @@
           <p>Te acompañamos desde la idea inicial hasta la entrega del proyecto, integrando diseño, planificación, obra y visualización 3D.</p>
         </div>
         <article class="services-card reveal">
-          <img src="imagenes/servicios/flyer-servicios-general.jpg" loading="lazy" decoding="async" alt="Servicios IA Construcciones">
+          <img src="imagenes/servicios/flyer-servicios-general.jpg" alt="Servicios IA Construcciones">
           <div class="services-list">
             <button type="button" data-service-toggle>Construcción de obras civiles</button><p>Ejecutamos obras con planificación técnica, control de calidad y seguimiento de cada etapa para viviendas, edificios y espacios comerciales.</p>
             <button type="button" data-service-toggle>Desarrollo inmobiliario</button><p>Integramos idea, diseño, permisos, construcción y comercialización para proyectos con visión de inversión.</p>
@@ -179,12 +144,12 @@
     <section class="section project-gateway" id="proyecto">
       <div class="container section-heading reveal">
         <span class="eyebrow">Proyectos vigentes</span>
-        <img class="hero-project-logo hero-project-logo-main" src="imagenes/logos/torre-89-transparente.png" loading="lazy" decoding="async" alt="Logo Torre 89">
+        <img class="hero-project-logo hero-project-logo-main" src="imagenes/logos/torre-89-transparente.png" alt="Logo Torre 89">
         <p>Elige el espacio que quieres explorar. Cada módulo te lleva a su sección dentro de esta landing.</p>
       </div>
       <div class="container gateway-grid">
         <a class="gateway-card reveal" href="#oficinas"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212314/videos/oficina_1_ri41rw.mp4" autoplay muted loop playsinline preload="none"></video><span>Oficinas</span><b>&lt;&lt;&lt;</b></a>
-        <a class="gateway-card reveal" href="#departamentos"><img src="https://res.cloudinary.com/dpaqxfvlg/image/upload/f_auto,q_auto,w_720/v1782212226/depa_interior_1_nnf6ea.jpg" loading="lazy" decoding="async" alt="Departamentos Torre 89"><span>Departamentos</span><b>&lt;&lt;&lt;</b></a>
+        <a class="gateway-card reveal" href="#departamentos"><img src="https://res.cloudinary.com/dpaqxfvlg/image/upload/v1782212226/depa_interior_1_nnf6ea.jpg" alt="Departamentos Torre 89"><span>Departamentos</span><b>&lt;&lt;&lt;</b></a>
         <a class="gateway-card reveal" href="#locales"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/comercio_1_euj725.mp4" autoplay muted loop playsinline preload="none"></video><span>Salón de eventos</span><b>&lt;&lt;&lt;</b></a>
       </div>
     </section>
@@ -203,13 +168,13 @@
           <button class="btn btn-primary" id="toggleTech">Ver detalles técnicos</button>
         </div>
         <div class="stacked-photos reveal">
-          <img src="imagenes/proyectos/detalles2.jpg" loading="lazy" decoding="async" alt="Detalles Torre 89">
-          <img src="imagenes/proyectos/depa interior 2.jpg" loading="lazy" decoding="async" alt="Interior de departamento Torre 89">
-          <img src="imagenes/proyectos/paneo1.jpg" loading="lazy" decoding="async" alt="Paneo Torre 89">
+          <img src="imagenes/proyectos/detalles2.jpg" alt="Detalles Torre 89">
+          <img src="imagenes/proyectos/depa interior 2.jpg" alt="Interior de departamento Torre 89">
+          <img src="imagenes/proyectos/paneo1.jpg" alt="Paneo Torre 89">
         </div>
       </div>
       <div class="container tech-panel" id="techPanel">
-        <img src="imagenes/proyectos/detalles4.jpg" loading="lazy" decoding="async" alt="Plano técnico genérico">
+        <img src="imagenes/proyectos/detalles4.jpg" alt="Plano técnico genérico">
         <div>
           <h3>Detalles técnicos preliminares</h3>
           <ul>
@@ -230,11 +195,11 @@
       </div>
       <div class="container reels-grid">
         <a class="reel-card reveal" href="https://www.tiktok.com/@coco_inmobiliaria?_r=1&_t=ZS-97K9lv4X272" target="_blank" rel="noopener" aria-label="Ver video en TikTok">
-          <video class="reel-video" src="https://res.cloudinary.com/dpaqxfvlg/video/upload/f_auto,q_auto,w_540/v1782330629/0617_1_wdtync.mp4" autoplay muted loop playsinline preload="auto"></video>
+          <video src="videos/0617.mp4" poster="imagenes/proyectos/portada2.jpg" autoplay muted loop playsinline preload="none"></video>
           <span>TikTok</span>
         </a>
         <a class="reel-card reveal" href="https://www.tiktok.com/@coco_inmobiliaria?_r=1&_t=ZS-97K9lv4X272" target="_blank" rel="noopener" aria-label="Ver video en TikTok">
-          <video class="reel-video" src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/0618_vxu3ok.mp4" poster="imagenes/proyectos/oficinas1.jpg" autoplay muted loop playsinline preload="none"></video>
+          <video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212319/videos/0618_vxu3ok.mp4" poster="imagenes/proyectos/oficinas1.jpg" autoplay muted loop playsinline preload="none"></video>
           <span>TikTok</span>
         </a>
       </div>
@@ -245,18 +210,18 @@
 
     <section class="section product-section" id="departamentos">
       <div class="container product-grid">
-        <img class="vertical-photo reveal day-night-photo" src="imagenes/proyectos/vistas1.jpeg" data-day="imagenes/proyectos/vistas1.jpeg" data-night="imagenes/proyectos/noche1.jpg" loading="lazy" decoding="async" alt="Departamentos Torre 89">
+        <img class="vertical-photo reveal day-night-photo" src="imagenes/proyectos/portada2.jpg" data-day="imagenes/proyectos/portada2.jpg" data-night="imagenes/proyectos/noche1.jpg" alt="Departamentos Torre 89">
         <div class="product-copy reveal">
           <span class="eyebrow">Torre 89</span>
           <h2>Departamentos</h2>
           <p>Ambientes pensados para vivir con comodidad, iluminación natural y distribución eficiente. Cada tipo puede adaptarse a necesidades familiares o de inversión.</p>
           <button class="view-toggle" id="dayNightToggle" type="button" aria-pressed="false">Vista de noche</button>
           <div class="viewer-selector" aria-label="Seleccionar recorrido 360">
-            <button class="active" type="button" data-viewer-src="https://panoraven.com/es/embed/jSCGUGG1fm">360 Tipo II</button>
-            <button type="button" data-viewer-src="https://panoraven.com/es/embed/jSCGUGG1fm">360 Tipo III</button>
-            <button type="button" data-viewer-src="https://panoraven.com/es/embed/jSCGUGG1fm">360 Tipo IV</button>
+            <button class="active" type="button" data-viewer-src="https://panoraven.com/es/embed/bNogpY7XQD">360 Tipo II</button>
+            <button type="button" data-viewer-src="https://panoraven.com/es/embed/bNogpY7XQD">360 Tipo III</button>
+            <button type="button" data-viewer-src="https://panoraven.com/es/embed/bNogpY7XQD">360 Tipo IV</button>
           </div>
-          <div class="viewer-360"><iframe id="depaViewer360" src="https://panoraven.com/es/embed/jSCGUGG1fm" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
+          <div class="viewer-360"><iframe id="depaViewer360" src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
           <div class="type-buttons"><button data-modal="tipoA">Tipo II</button><button data-modal="tipoB">Tipo III</button><button data-modal="tipoC">Tipo IV</button></div>
           <a class="btn btn-primary" href="#contacto">Cotiza este espacio</a>
           <div class="promo-strip" data-promo>
@@ -283,19 +248,19 @@
         <button class="progress-arrow progress-prev" id="progressPrev" type="button" aria-label="Anterior">&#10094;</button>
         <div class="progress-carousel" id="progressCarousel">
           <article class="progress-slide active">
-            <img src="imagenes/proyectos/construccion1.jpg" loading="lazy" decoding="async" alt="Avance en construcción Torre 89">
+            <img src="imagenes/proyectos/construccion1.jpg" loading="lazy" alt="Avance en construcción Torre 89">
             <span class="progress-flow">→</span>
-            <img src="imagenes/proyectos/finalizado 1.jpg" loading="lazy" decoding="async" alt="Resultado final Torre 89">
+            <img src="imagenes/proyectos/finalizado 1.jpg" loading="lazy" alt="Resultado final Torre 89">
           </article>
           <article class="progress-slide">
-            <img src="imagenes/proyectos/construccion 3.jpg" loading="lazy" decoding="async" alt="Detalle constructivo Torre 89">
+            <img src="imagenes/proyectos/construccion 3.jpg" loading="lazy" alt="Detalle constructivo Torre 89">
             <span class="progress-flow">→</span>
-            <img src="imagenes/proyectos/finzalizado 2.jpg" loading="lazy" decoding="async" alt="Ambiente final Torre 89">
+            <img src="imagenes/proyectos/finzalizado 2.jpg" loading="lazy" alt="Ambiente final Torre 89">
           </article>
           <article class="progress-slide">
-            <img src="imagenes/proyectos/DJI_20260610_113000_544.jpg" loading="lazy" decoding="async" alt="Vista de obra Torre 89">
+            <img src="imagenes/proyectos/DJI_20260610_113000_544.jpg" loading="lazy" alt="Vista de obra Torre 89">
             <span class="progress-flow">→</span>
-            <img src="imagenes/proyectos/portada3.jpg" loading="lazy" decoding="async" alt="Vista terminada Torre 89">
+            <img src="imagenes/proyectos/portada3.jpg" loading="lazy" alt="Vista terminada Torre 89">
           </article>
         </div>
         <button class="progress-arrow progress-next" id="progressNext" type="button" aria-label="Siguiente">&#10095;</button>
@@ -309,7 +274,7 @@
           <span class="eyebrow">Torre 89</span>
           <h2>Oficinas</h2>
           <p>Espacios corporativos para profesionales, emprendimientos y empresas que buscan ubicación, imagen y funcionalidad en un entorno moderno.</p>
-          <div class="viewer-360"><iframe src="https://panoraven.com/es/embed/jSCGUGG1fm" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
+          <div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div>
           <a class="btn btn-primary" href="#contacto">Cotiza oficina</a>
           <div class="promo-strip" data-promo>
             <span>Promociones</span>
@@ -330,7 +295,7 @@
           <span class="eyebrow">Torre 89</span>
           <h2>Salón VIP / Eventos</h2>
           <p>Ambiente versátil para reuniones, presentaciones y actividades privadas, pensado para complementar el flujo del edificio con una experiencia cómoda y moderna.</p>
-          <div class="viewer-pair"><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/jSCGUGG1fm" loading="lazy" allowfullscreen="true"></iframe></div><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/jSCGUGG1fm" loading="lazy" allowfullscreen="true"></iframe></div></div>
+          <div class="viewer-pair"><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true"></iframe></div><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true"></iframe></div></div>
           <a class="btn btn-primary" href="#contacto">Cotiza salón</a>
           <div class="promo-strip" data-promo>
             <span>Promociones Salón VIP</span>
@@ -388,16 +353,16 @@
           <button class="btn btn-primary" type="submit">Enviar por WhatsApp</button>
         </form>
       </div>
-      <div class="container contact-360 reveal"><h3>Recorrido referencial 360°</h3><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/jSCGUGG1fm" loading="lazy" allowfullscreen="true"></iframe></div></div>
+      <div class="container contact-360 reveal"><h3>Recorrido referencial 360°</h3><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/bNogpY7XQD" loading="lazy" allowfullscreen="true"></iframe></div></div>
     </section>
 
     <section class="section team-section">
       <div class="container section-heading reveal"><span class="eyebrow">Equipo</span><h2>Personas detrás del proyecto</h2><p>Deja estas tarjetas listas para colocar fotos, nombres reales y ocupaciones del equipo.</p></div>
       <div class="container team-grid">
-        <article class="team-card reveal"><img src="imagenes/logos/logo-ia-construcciones.png" loading="lazy" decoding="async" alt="IA Construcciones"><h3>Dirigido por</h3><p>IA Construcciones</p></article>
-        <article class="team-card reveal"><img src="imagenes/equipo/equipo-2.jpg" loading="lazy" decoding="async" alt="Equipo de arquitectura IA Construcciones"><h3>Nombre Apellido</h3><p>Arquitectura</p></article>
-        <article class="team-card reveal"><img src="imagenes/equipo/equipo-3.jpg" loading="lazy" decoding="async" alt="Equipo de ingeniería IA Construcciones"><h3>Nombre Apellido</h3><p>Ingeniería</p></article>
-        <article class="team-card reveal"><img src="imagenes/equipo/equipo-4.jpg" loading="lazy" decoding="async" alt="Asesoría comercial Torre 89"><h3>Nombre Apellido</h3><p>Asesoría comercial</p></article>
+        <article class="team-card reveal"><img src="imagenes/logos/logo-ia-construcciones.png" alt="IA Construcciones"><h3>Dirigido por</h3><p>IA Construcciones</p></article>
+        <article class="team-card reveal"><img src="imagenes/equipo/equipo-2.jpg" alt="Equipo"><h3>Nombre Apellido</h3><p>Arquitectura</p></article>
+        <article class="team-card reveal"><img src="imagenes/equipo/equipo-3.jpg" alt="Equipo"><h3>Nombre Apellido</h3><p>Ingeniería</p></article>
+        <article class="team-card reveal"><img src="imagenes/equipo/equipo-4.jpg" alt="Equipo"><h3>Nombre Apellido</h3><p>Asesoría comercial</p></article>
       </div>
     </section>
 
@@ -419,22 +384,22 @@
     </section>
 
     <section class="section soon-section">
-      <div class="container soon-card reveal"><img src="imagenes/logos/logo-ia-construcciones.png" loading="lazy" decoding="async" alt="IA Construcciones"><div><span class="eyebrow">IA Construcciones</span><h2>Próximamente</h2><p>Nuevos proyectos inmobiliarios y soluciones constructivas estarán disponibles en esta sección.</p></div></div>
+      <div class="container soon-card reveal"><img src="imagenes/logos/logo-ia-construcciones.png" alt="IA Construcciones"><div><span class="eyebrow">IA Construcciones</span><h2>Próximamente</h2><p>Nuevos proyectos inmobiliarios y soluciones constructivas estarán disponibles en esta sección.</p></div></div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container footer-grid">
-      <div><img class="footer-logo" src="imagenes/logos/logo-ia-construcciones.png" loading="lazy" decoding="async" alt="Logo IA Construcciones"><p>Construcción, diseño, remodelación y desarrollo inmobiliario con calidad, innovación y compromiso.</p></div>
+      <div><img class="footer-logo" src="imagenes/logos/logo-ia-construcciones.png" alt="Logo IA Construcciones"><p>Construcción, diseño, remodelación y desarrollo inmobiliario con calidad, innovación y compromiso.</p></div>
       <div><h3>Enlaces</h3><a href="#inicio">Inicio</a><a href="#proyecto">Torre 89</a><a href="#departamentos">Departamentos</a><a href="#contacto">Contacto</a></div>
       <div><h3>Legal</h3><a class="claim-book" href="#">Libro de reclamaciones</a><p>© 2026 IA Construcciones.</p></div>
-      <div class="edu-box"><h3>edu edu</h3><p>Firma digital</p><img src="imagenes/logos/edu-firma-lujo.png" loading="lazy" decoding="async" alt="Firma digital edu edu"></div>
+      <div class="edu-box"><h3>EDU</h3><p>Espacio guía para firma o crédito visual.</p><img src="imagenes/logos/edu-placeholder.jpg" alt="Edu placeholder"></div>
     </div>
   </footer>
 
   <a class="floating-whatsapp shine" id="floatingWhatsapp" href="https://wa.me/955042736" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="imagenes/logos/whatsapp-logo.png" alt="WhatsApp"></a>
 
-  <div class="modal" id="infoModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose" type="button" aria-label="Cerrar ventana">×</button><div id="modalBody"></div></div></div>
+  <div class="modal" id="infoModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
 
   <script src="js/script.js"></script>
 </body>

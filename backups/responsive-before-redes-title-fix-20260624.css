@@ -1100,27 +1100,6 @@
     right: 12px;
     bottom: 76px;
   }
-
-  .social-reels {
-    padding: 54px 0;
-  }
-
-  .social-reels .section-heading {
-    margin-bottom: 18px;
-  }
-
-  .reels-grid {
-    grid-template-columns: minmax(220px, 330px) !important;
-    justify-content: center;
-  }
-
-  .reel-card,
-  .reel-card video {
-    aspect-ratio: 9 / 16;
-    height: auto !important;
-    max-height: 430px;
-    min-height: 0 !important;
-  }
 }
 
 

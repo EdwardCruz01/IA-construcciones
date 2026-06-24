@@ -16,52 +16,33 @@ const loaderPhrase = document.getElementById("loaderPhrase");
 const loaderProgress = document.getElementById("loaderProgress");
 
 if (loaderPhrase) {
-  const firstPhraseIndex = Math.floor(Math.random() * loaderPhrases.length);
-  loaderPhrase.textContent = loaderPhrases[firstPhraseIndex];
-
-  setTimeout(() => {
-    const nextPhrases = loaderPhrases.filter((_, index) => index !== firstPhraseIndex);
-    loaderPhrase.textContent = nextPhrases[Math.floor(Math.random() * nextPhrases.length)];
-  }, 1500);
+  loaderPhrase.textContent = loaderPhrases[Math.floor(Math.random() * loaderPhrases.length)];
 }
 
-async function hidePreloader() {
+function hidePreloader() {
   if (!preloader) return;
-  const audio = document.getElementById("backgroundAudio");
-  const player = document.getElementById("musicPlayer");
-  const icon = document.querySelector("#musicToggle .music-icon");
-
-  if (audio) {
-    audio.volume = 0.2;
-    try {
-      await audio.play();
-      player?.classList.remove("music-error");
-      player?.classList.add("playing");
-      if (icon) icon.textContent = "Ⅱ";
-    } catch (error) {
-      player?.classList.add("music-error");
-      if (icon) icon.textContent = "!";
-    }
-  }
-
-  sessionStorage.setItem("torre89_conditions_ok", "1");
+  localStorage.setItem("torre89_cookies_ok", "1");
   preloader.classList.add("hide");
   setTimeout(() => preloader.remove(), 520);
 }
 
 if (preloader) {
-  let loaderValue = 0;
-  const loaderTimer = setInterval(() => {
-    loaderValue = Math.min(loaderValue + Math.random() * 9, 92);
-    if (loaderProgress) loaderProgress.style.width = `${loaderValue}%`;
-    if (loaderValue >= 92) clearInterval(loaderTimer);
-  }, 380);
-
-  window.addEventListener("load", () => {
-    if (loaderProgress) loaderProgress.style.width = "100%";
-  });
-
-  acceptCookies?.addEventListener("click", hidePreloader);
+  const alreadyAccepted = localStorage.getItem("torre89_cookies_ok") === "1";
+  if (alreadyAccepted) {
+    preloader.classList.add("hide");
+    setTimeout(() => preloader.remove(), 300);
+  } else {
+    let loaderValue = 0;
+    const loaderTimer = setInterval(() => {
+      loaderValue = Math.min(loaderValue + Math.random() * 18, 92);
+      if (loaderProgress) loaderProgress.style.width = `${loaderValue}%`;
+      if (loaderValue >= 92) clearInterval(loaderTimer);
+    }, 260);
+    window.addEventListener("load", () => {
+      if (loaderProgress) loaderProgress.style.width = "100%";
+    });
+    acceptCookies?.addEventListener("click", hidePreloader);
+  }
 }
 
 function closeMenu() {
@@ -220,23 +201,11 @@ const musicPlayer = document.getElementById("musicPlayer");
 const backgroundAudio = document.getElementById("backgroundAudio");
 const musicToggle = document.getElementById("musicToggle");
 const musicIcon = musicToggle ? musicToggle.querySelector(".music-icon") : null;
+const musicProgress = document.getElementById("musicProgress");
 const musicVolume = document.getElementById("musicVolume");
 
 if (musicPlayer && backgroundAudio && musicToggle) {
-  const initialVolume = 0.2;
-  backgroundAudio.volume = initialVolume;
-  if (musicVolume) musicVolume.value = String(initialVolume);
-  let musicHideTimer;
-
-  function expandMusicControls() {
-    musicPlayer.classList.add("expanded");
-    clearTimeout(musicHideTimer);
-  }
-
-  function scheduleHideMusicControls() {
-    clearTimeout(musicHideTimer);
-    musicHideTimer = setTimeout(() => musicPlayer.classList.remove("expanded"), 1300);
-  }
+  backgroundAudio.volume = musicVolume ? Number(musicVolume.value) : 0.45;
 
   const tryPlayMusic = async () => {
     try {
@@ -272,20 +241,10 @@ if (musicPlayer && backgroundAudio && musicToggle) {
       musicVolume.style.background = `linear-gradient(90deg, var(--gold-2) ${value}%, rgba(255, 255, 255, 0.24) ${value}%)`;
     };
 
-    musicPlayer.addEventListener("pointerdown", expandMusicControls);
-    musicPlayer.addEventListener("mouseenter", expandMusicControls);
-    musicPlayer.addEventListener("mouseleave", scheduleHideMusicControls);
-    document.addEventListener("pointerdown", (event) => {
-      if (!musicPlayer.contains(event.target)) musicPlayer.classList.remove("expanded");
-    });
-
     musicVolume.addEventListener("input", () => {
       backgroundAudio.volume = Number(musicVolume.value);
-      expandMusicControls();
       paintVolume();
     });
-
-    musicVolume.addEventListener("change", scheduleHideMusicControls);
 
     paintVolume();
   }
@@ -300,6 +259,12 @@ if (musicPlayer && backgroundAudio && musicToggle) {
     musicPlayer.classList.remove("playing");
     musicToggle.setAttribute("aria-label", "Reproducir música");
     if (musicIcon) musicIcon.textContent = "▶";
+  });
+
+  backgroundAudio.addEventListener("timeupdate", () => {
+    if (!musicProgress || !backgroundAudio.duration) return;
+    const percent = (backgroundAudio.currentTime / backgroundAudio.duration) * 100;
+    musicProgress.style.width = `${Math.min(percent, 100)}%`;
   });
 
   backgroundAudio.addEventListener("error", () => {
@@ -318,37 +283,6 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.14 });
 revealItems.forEach((item) => revealObserver.observe(item));
-
-const reelVideos = document.querySelectorAll(".reel-video");
-
-function playReelVideo(video) {
-  video.muted = true;
-  video.playsInline = true;
-  if (video.readyState < 2) video.load();
-  video.play().catch(() => {});
-}
-
-const reelObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    const video = entry.target;
-    if (entry.isIntersecting) {
-      playReelVideo(video);
-    } else {
-      video.pause();
-    }
-  });
-}, { threshold: 0.28 });
-
-reelVideos.forEach((video) => {
-  reelObserver.observe(video);
-  video.addEventListener("loadeddata", () => playReelVideo(video), { once: true });
-});
-
-["pointerdown", "touchstart", "keydown"].forEach((eventName) => {
-  window.addEventListener(eventName, () => {
-    reelVideos.forEach(playReelVideo);
-  }, { once: true, passive: true });
-});
 
 const techButton = document.getElementById("toggleTech");
 const techPanel = document.getElementById("techPanel");
@@ -595,56 +529,47 @@ contactForm.addEventListener("submit", (event) => {
 });
 
 const floatingWhatsapp = document.getElementById("floatingWhatsapp");
+let dragStart = null;
+let moved = false;
 
-function makeDraggable(element, size = 68) {
-  if (!element) return;
-  let dragStart = null;
-  let moved = false;
-
-  function pointerDown(event) {
-    if (event.target.matches("input")) return;
-    const point = event.touches ? event.touches[0] : event;
-    const rect = element.getBoundingClientRect();
-    dragStart = { x: point.clientX, y: point.clientY, offsetX: point.clientX - rect.left, offsetY: point.clientY - rect.top };
-    moved = false;
-    element.classList.add("dragging");
-  }
-
-  function pointerMove(event) {
-    if (!dragStart) return;
-    const point = event.touches ? event.touches[0] : event;
-    const dx = Math.abs(point.clientX - dragStart.x);
-    const dy = Math.abs(point.clientY - dragStart.y);
-    if (dx + dy > 6) moved = true;
-    const x = Math.min(window.innerWidth - size, Math.max(8, point.clientX - dragStart.offsetX));
-    const y = Math.min(window.innerHeight - size, Math.max(8, point.clientY - dragStart.offsetY));
-    element.style.left = `${x}px`;
-    element.style.top = `${y}px`;
-    element.style.right = "auto";
-    element.style.bottom = "auto";
-    event.preventDefault();
-  }
-
-  function pointerUp() {
-    dragStart = null;
-    element.classList.remove("dragging");
-  }
-
-  element.addEventListener("mousedown", pointerDown);
-  window.addEventListener("mousemove", pointerMove, { passive: false });
-  window.addEventListener("mouseup", pointerUp);
-  element.addEventListener("touchstart", pointerDown, { passive: true });
-  window.addEventListener("touchmove", pointerMove, { passive: false });
-  window.addEventListener("touchend", pointerUp);
-  element.addEventListener("click", (event) => {
-    if (moved) {
-      event.preventDefault();
-      event.stopPropagation();
-      moved = false;
-    }
-  });
+function pointerDown(event) {
+  const point = event.touches ? event.touches[0] : event;
+  const rect = floatingWhatsapp.getBoundingClientRect();
+  dragStart = { x: point.clientX, y: point.clientY, offsetX: point.clientX - rect.left, offsetY: point.clientY - rect.top };
+  moved = false;
+  floatingWhatsapp.classList.add("dragging");
 }
 
-makeDraggable(floatingWhatsapp);
-makeDraggable(musicPlayer, 76);
+function pointerMove(event) {
+  if (!dragStart) return;
+  const point = event.touches ? event.touches[0] : event;
+  const dx = Math.abs(point.clientX - dragStart.x);
+  const dy = Math.abs(point.clientY - dragStart.y);
+  if (dx + dy > 6) moved = true;
+  const x = Math.min(window.innerWidth - 68, Math.max(8, point.clientX - dragStart.offsetX));
+  const y = Math.min(window.innerHeight - 68, Math.max(8, point.clientY - dragStart.offsetY));
+  floatingWhatsapp.style.left = `${x}px`;
+  floatingWhatsapp.style.top = `${y}px`;
+  floatingWhatsapp.style.right = "auto";
+  floatingWhatsapp.style.bottom = "auto";
+  event.preventDefault();
+}
+
+function pointerUp() {
+  dragStart = null;
+  floatingWhatsapp.classList.remove("dragging");
+}
+
+floatingWhatsapp.addEventListener("mousedown", pointerDown);
+window.addEventListener("mousemove", pointerMove, { passive: false });
+window.addEventListener("mouseup", pointerUp);
+floatingWhatsapp.addEventListener("touchstart", pointerDown, { passive: true });
+window.addEventListener("touchmove", pointerMove, { passive: false });
+window.addEventListener("touchend", pointerUp);
+floatingWhatsapp.addEventListener("click", (event) => {
+  if (moved) {
+    event.preventDefault();
+    moved = false;
+  }
+});
 

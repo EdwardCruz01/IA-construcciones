@@ -25,43 +25,30 @@ if (loaderPhrase) {
   }, 1500);
 }
 
-async function hidePreloader() {
+function hidePreloader() {
   if (!preloader) return;
-  const audio = document.getElementById("backgroundAudio");
-  const player = document.getElementById("musicPlayer");
-  const icon = document.querySelector("#musicToggle .music-icon");
-
-  if (audio) {
-    audio.volume = 0.2;
-    try {
-      await audio.play();
-      player?.classList.remove("music-error");
-      player?.classList.add("playing");
-      if (icon) icon.textContent = "Ⅱ";
-    } catch (error) {
-      player?.classList.add("music-error");
-      if (icon) icon.textContent = "!";
-    }
-  }
-
-  sessionStorage.setItem("torre89_conditions_ok", "1");
+  localStorage.setItem("torre89_cookies_ok", "1");
   preloader.classList.add("hide");
   setTimeout(() => preloader.remove(), 520);
 }
 
 if (preloader) {
-  let loaderValue = 0;
-  const loaderTimer = setInterval(() => {
-    loaderValue = Math.min(loaderValue + Math.random() * 9, 92);
-    if (loaderProgress) loaderProgress.style.width = `${loaderValue}%`;
-    if (loaderValue >= 92) clearInterval(loaderTimer);
-  }, 380);
-
-  window.addEventListener("load", () => {
-    if (loaderProgress) loaderProgress.style.width = "100%";
-  });
-
-  acceptCookies?.addEventListener("click", hidePreloader);
+  const alreadyAccepted = localStorage.getItem("torre89_cookies_ok") === "1";
+  if (alreadyAccepted) {
+    preloader.classList.add("hide");
+    setTimeout(() => preloader.remove(), 300);
+  } else {
+    let loaderValue = 0;
+    const loaderTimer = setInterval(() => {
+      loaderValue = Math.min(loaderValue + Math.random() * 9, 92);
+      if (loaderProgress) loaderProgress.style.width = `${loaderValue}%`;
+      if (loaderValue >= 92) clearInterval(loaderTimer);
+    }, 380);
+    window.addEventListener("load", () => {
+      if (loaderProgress) loaderProgress.style.width = "100%";
+    });
+    acceptCookies?.addEventListener("click", hidePreloader);
+  }
 }
 
 function closeMenu() {
@@ -318,37 +305,6 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.14 });
 revealItems.forEach((item) => revealObserver.observe(item));
-
-const reelVideos = document.querySelectorAll(".reel-video");
-
-function playReelVideo(video) {
-  video.muted = true;
-  video.playsInline = true;
-  if (video.readyState < 2) video.load();
-  video.play().catch(() => {});
-}
-
-const reelObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    const video = entry.target;
-    if (entry.isIntersecting) {
-      playReelVideo(video);
-    } else {
-      video.pause();
-    }
-  });
-}, { threshold: 0.28 });
-
-reelVideos.forEach((video) => {
-  reelObserver.observe(video);
-  video.addEventListener("loadeddata", () => playReelVideo(video), { once: true });
-});
-
-["pointerdown", "touchstart", "keydown"].forEach((eventName) => {
-  window.addEventListener(eventName, () => {
-    reelVideos.forEach(playReelVideo);
-  }, { once: true, passive: true });
-});
 
 const techButton = document.getElementById("toggleTech");
 const techPanel = document.getElementById("techPanel");
