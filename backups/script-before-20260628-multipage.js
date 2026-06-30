@@ -2,15 +2,6 @@
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.getElementById("navMenu");
 const navLinks = document.querySelectorAll(".nav-links a");
-const isInsidePages = location.pathname.replace(/\\/g, "/").includes("/pages/");
-const assetPrefix = isInsidePages ? "../" : "";
-const contactHref = document.body.dataset.contactHref || (isInsidePages ? "contacto.html#contacto" : "pages/contacto.html#contacto");
-const supabaseConfig = {
-  url: "",
-  anonKey: "",
-  leadsTable: "leads",
-  visitsEndpoint: ""
-};
 const loaderPhrases = [
   "Preparando espacios modernos para vivir e invertir.",
   "Cargando detalles de Torre 89.",
@@ -23,7 +14,6 @@ const preloader = document.getElementById("preloader");
 const acceptCookies = document.getElementById("acceptCookies");
 const loaderPhrase = document.getElementById("loaderPhrase");
 const loaderProgress = document.getElementById("loaderProgress");
-const hasAcceptedConditions = localStorage.getItem("torre89_conditions_ok") === "1";
 
 if (loaderPhrase) {
   const firstPhraseIndex = Math.floor(Math.random() * loaderPhrases.length);
@@ -54,15 +44,12 @@ async function hidePreloader() {
     }
   }
 
-  localStorage.setItem("torre89_conditions_ok", "1");
+  sessionStorage.setItem("torre89_conditions_ok", "1");
   preloader.classList.add("hide");
   setTimeout(() => preloader.remove(), 520);
 }
 
 if (preloader) {
-  if (hasAcceptedConditions) {
-    preloader.remove();
-  } else {
   let loaderValue = 0;
   const loaderTimer = setInterval(() => {
     loaderValue = Math.min(loaderValue + Math.random() * 9, 92);
@@ -75,24 +62,22 @@ if (preloader) {
   });
 
   acceptCookies?.addEventListener("click", hidePreloader);
-  }
 }
 
 function closeMenu() {
-  if (!navMenu || !menuToggle) return;
   navMenu.classList.remove("active");
   document.body.classList.remove("menu-open");
   menuToggle.setAttribute("aria-expanded", "false");
 }
 
 window.addEventListener("scroll", () => {
-  header?.classList.toggle("scrolled", window.scrollY > 60);
+  header.classList.toggle("scrolled", window.scrollY > 60);
 });
 
-menuToggle?.addEventListener("click", () => {
-  const isOpen = navMenu?.classList.toggle("active");
-  document.body.classList.toggle("menu-open", Boolean(isOpen));
-  menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+menuToggle.addEventListener("click", () => {
+  const isOpen = navMenu.classList.toggle("active");
+  document.body.classList.toggle("menu-open", isOpen);
+  menuToggle.setAttribute("aria-expanded", isOpen);
 });
 
 navLinks.forEach((link) => {
@@ -102,13 +87,13 @@ navLinks.forEach((link) => {
 });
 
 document.addEventListener("pointerdown", (event) => {
-  if (!navMenu || !menuToggle || !navMenu.classList.contains("active")) return;
+  if (!navMenu.classList.contains("active")) return;
   if (navMenu.contains(event.target) || menuToggle.contains(event.target)) return;
   closeMenu();
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && navMenu?.classList.contains("active")) closeMenu();
+  if (event.key === "Escape" && navMenu.classList.contains("active")) closeMenu();
 });
 
 const slides = document.querySelectorAll(".hero-slide");
@@ -141,17 +126,15 @@ function playActiveSlideMedia() {
 }
 
 function showSlide(index) {
-  if (!slides.length) return;
   slides[currentSlide].classList.remove("active");
-  dots[currentSlide]?.classList.remove("active");
+  dots[currentSlide].classList.remove("active");
   currentSlide = (index + slides.length) % slides.length;
   slides[currentSlide].classList.add("active");
-  dots[currentSlide]?.classList.add("active");
+  dots[currentSlide].classList.add("active");
   playActiveSlideMedia();
 }
 
 function startCarousel() {
-  if (!slides.length) return;
   clearTimeout(heroTimer);
   const activeSlide = slides[currentSlide];
   const activeVideo = activeSlide.querySelector("video");
@@ -176,8 +159,8 @@ function resetCarousel() {
   startCarousel();
 }
 
-prevSlide?.addEventListener("click", () => { showSlide(currentSlide - 1); resetCarousel(); });
-nextSlide?.addEventListener("click", () => { showSlide(currentSlide + 1); resetCarousel(); });
+prevSlide.addEventListener("click", () => { showSlide(currentSlide - 1); resetCarousel(); });
+nextSlide.addEventListener("click", () => { showSlide(currentSlide + 1); resetCarousel(); });
 dots.forEach((dot, index) => dot.addEventListener("click", () => { showSlide(index); resetCarousel(); }));
 slides.forEach((slide, index) => {
   const video = slide.querySelector("video");
@@ -188,25 +171,16 @@ slides.forEach((slide, index) => {
     resetCarousel();
   });
 });
-if (slides.length) {
-  playActiveSlideMedia();
-  startCarousel();
-}
+playActiveSlideMedia();
+startCarousel();
 
 const visitCounter = document.getElementById("visitCounter");
 
 async function getVisitCountFromSupabase() {
-  if (typeof supabaseConfig !== "undefined" && supabaseConfig.visitsEndpoint) {
-    const response = await fetch(supabaseConfig.visitsEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ page: location.pathname })
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
-    return Number(data.total || data.count || 0) || null;
-  }
-
+  // Listo para conectar luego:
+  // 1. Crea una tabla en Supabase, por ejemplo "site_visits".
+  // 2. Reemplaza esta función con una llamada fetch a tu Edge Function o REST endpoint.
+  // 3. Devuelve el total real desde la base de datos.
   return null;
 }
 
@@ -250,16 +224,8 @@ const musicVolume = document.getElementById("musicVolume");
 
 if (musicPlayer && backgroundAudio && musicToggle) {
   const initialVolume = 0.2;
-  const savedVolume = Number(localStorage.getItem("torre89_music_volume") || initialVolume);
-  const savedTime = Number(localStorage.getItem("torre89_music_time") || 0);
-  const shouldPlayMusic = localStorage.getItem("torre89_music_playing") === "1" || localStorage.getItem("torre89_conditions_ok") === "1";
-  backgroundAudio.volume = Number.isFinite(savedVolume) ? Math.min(Math.max(savedVolume, 0), 1) : initialVolume;
-  if (musicVolume) musicVolume.value = String(backgroundAudio.volume);
-  if (Number.isFinite(savedTime) && savedTime > 0) {
-    backgroundAudio.addEventListener("loadedmetadata", () => {
-      if (savedTime < backgroundAudio.duration) backgroundAudio.currentTime = savedTime;
-    }, { once: true });
-  }
+  backgroundAudio.volume = initialVolume;
+  if (musicVolume) musicVolume.value = String(initialVolume);
   let musicHideTimer;
 
   function expandMusicControls() {
@@ -275,14 +241,13 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   const tryPlayMusic = async () => {
     try {
       await backgroundAudio.play();
-      localStorage.setItem("torre89_music_playing", "1");
       musicPlayer.classList.remove("music-error");
     } catch (error) {
       musicPlayer.classList.remove("playing");
     }
   };
 
-  if (shouldPlayMusic) setTimeout(tryPlayMusic, 250);
+  tryPlayMusic();
 
   ["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
     window.addEventListener(eventName, tryPlayMusic, { once: true, passive: true });
@@ -292,10 +257,8 @@ if (musicPlayer && backgroundAudio && musicToggle) {
     try {
       if (backgroundAudio.paused) {
         await backgroundAudio.play();
-        localStorage.setItem("torre89_music_playing", "1");
       } else {
         backgroundAudio.pause();
-        localStorage.setItem("torre89_music_playing", "0");
       }
     } catch (error) {
       musicPlayer.classList.add("music-error");
@@ -318,7 +281,6 @@ if (musicPlayer && backgroundAudio && musicToggle) {
 
     musicVolume.addEventListener("input", () => {
       backgroundAudio.volume = Number(musicVolume.value);
-      localStorage.setItem("torre89_music_volume", String(backgroundAudio.volume));
       expandMusicControls();
       paintVolume();
     });
@@ -329,14 +291,12 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   }
 
   backgroundAudio.addEventListener("play", () => {
-    localStorage.setItem("torre89_music_playing", "1");
     musicPlayer.classList.add("playing");
     musicToggle.setAttribute("aria-label", "Pausar música");
     if (musicIcon) musicIcon.textContent = "Ⅱ";
   });
 
   backgroundAudio.addEventListener("pause", () => {
-    localStorage.setItem("torre89_music_playing", "0");
     musicPlayer.classList.remove("playing");
     musicToggle.setAttribute("aria-label", "Reproducir música");
     if (musicIcon) musicIcon.textContent = "▶";
@@ -345,10 +305,6 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   backgroundAudio.addEventListener("error", () => {
     musicPlayer.classList.add("music-error");
     if (musicIcon) musicIcon.textContent = "!";
-  });
-
-  backgroundAudio.addEventListener("timeupdate", () => {
-    localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime));
   });
 }
 
@@ -396,8 +352,7 @@ reelVideos.forEach((video) => {
 
 const techButton = document.getElementById("toggleTech");
 const techPanel = document.getElementById("techPanel");
-techButton?.addEventListener("click", () => {
-  if (!techPanel) return;
+techButton.addEventListener("click", () => {
   const isOpen = techPanel.classList.toggle("open");
   techButton.textContent = isOpen ? "Ocultar detalles técnicos" : "Ver detalles técnicos";
 
@@ -410,8 +365,6 @@ techButton?.addEventListener("click", () => {
 
 const dayNightToggle = document.getElementById("dayNightToggle");
 const dayNightPhotos = document.querySelectorAll(".day-night-photo");
-const vipLightToggle = document.getElementById("vipLightToggle");
-const vipLightPhotos = document.querySelectorAll(".vip-light-photo");
 
 if (dayNightToggle) {
   dayNightToggle.addEventListener("click", () => {
@@ -420,23 +373,6 @@ if (dayNightToggle) {
     dayNightToggle.setAttribute("aria-pressed", String(isNight));
 
     dayNightPhotos.forEach((photo) => {
-      photo.style.opacity = "0";
-      setTimeout(() => {
-        photo.src = isNight ? photo.dataset.night : photo.dataset.day;
-        photo.style.opacity = "1";
-      }, 240);
-    });
-  });
-}
-
-if (vipLightToggle) {
-  vipLightToggle.addEventListener("click", () => {
-    const isNight = document.body.classList.toggle("night-view");
-    vipLightToggle.textContent = isNight ? "Modo con luz" : "Modo sin luz";
-    vipLightToggle.setAttribute("aria-pressed", String(isNight));
-
-    vipLightPhotos.forEach((photo) => {
-      if (!photo.dataset.day || !photo.dataset.night) return;
       photo.style.opacity = "0";
       setTimeout(() => {
         photo.src = isNight ? photo.dataset.night : photo.dataset.day;
@@ -523,7 +459,7 @@ const modalData = {
     normalPrice: "$134,000.00",
     presalePrice: "$129,900.00",
     text: "Distribución funcional para vivir o invertir, con ambientes optimizados y acabados modernos.",
-    images: [`${assetPrefix}imagenes/proyectos/depa interior 1.jpg`, `${assetPrefix}imagenes/proyectos/cocina 1.jpg`]
+    images: ["imagenes/proyectos/depa interior 1.jpg", "imagenes/proyectos/cocina 1.jpg"]
   },
   tipoB: {
     title: "Departamento Tipo III",
@@ -532,7 +468,7 @@ const modalData = {
     normalPrice: "$138,000.00",
     presalePrice: "$133,900.00",
     text: "Opción familiar con mayor amplitud social, dormitorios bien iluminados y espacios adaptables.",
-    images: [`${assetPrefix}imagenes/proyectos/depa interior 2.jpg`, `${assetPrefix}imagenes/proyectos/interior 5.jpg`]
+    images: ["imagenes/proyectos/depa interior 2.jpg", "imagenes/proyectos/interior 5.jpg"]
   },
   tipoC: {
     title: "Departamento Tipo IV",
@@ -541,7 +477,7 @@ const modalData = {
     normalPrice: "$200,000.00",
     presalePrice: "$193,900.00",
     text: "Formato premium con mayor área útil, mejor amplitud y acabados superiores para una experiencia residencial más exclusiva.",
-    images: [`${assetPrefix}imagenes/proyectos/interior 6.jpg`, `${assetPrefix}imagenes/proyectos/depa interior 1.jpg`]
+    images: ["imagenes/proyectos/interior 6.jpg", "imagenes/proyectos/depa interior 1.jpg"]
   }
 };
 
@@ -566,7 +502,6 @@ const promoData = {
 document.querySelectorAll("[data-modal]").forEach((button) => {
   button.addEventListener("click", () => {
     const data = modalData[button.dataset.modal];
-    if (!modal || !modalBody || !data) return;
     modalBody.innerHTML = `
       <div class="modal-depa-header">
         <span>Torre 89</span>
@@ -590,7 +525,7 @@ document.querySelectorAll("[data-modal]").forEach((button) => {
       <div class="modal-gallery">
         ${data.images.map((src) => `<img src="${src}" alt="${data.title}">`).join("")}
       </div>
-      <a class="btn btn-primary modal-reserve" href="${contactHref}">Reserva ya</a>
+      <a class="btn btn-primary modal-reserve" href="#contacto">Reserva ya</a>
     `;
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
@@ -600,7 +535,6 @@ document.querySelectorAll("[data-modal]").forEach((button) => {
 document.querySelectorAll("[data-promo-modal]").forEach((button) => {
   button.addEventListener("click", () => {
     const data = promoData[button.dataset.promoModal];
-    if (!modal || !modalBody || !data) return;
     modalBody.innerHTML = `
       <div class="modal-depa-header promo-modal-content">
         <span>${data.category || "Promoción Torre 89"}</span>
@@ -610,7 +544,7 @@ document.querySelectorAll("[data-promo-modal]").forEach((button) => {
           <div><small>Beneficio</small><strong>${data.benefit}</strong></div>
         </div>
         <p>Promoción sujeta a disponibilidad y validación comercial. IA Construcciones confirmará condiciones finales al momento de la reserva.</p>
-        <a class="btn btn-primary modal-reserve" href="${contactHref}">Quiero esta promoción</a>
+        <a class="btn btn-primary modal-reserve" href="#contacto">Quiero esta promoción</a>
       </div>
     `;
     modal.classList.add("open");
@@ -619,12 +553,11 @@ document.querySelectorAll("[data-promo-modal]").forEach((button) => {
 });
 
 function closeModal() {
-  if (!modal) return;
   modal.classList.remove("open");
   modal.setAttribute("aria-hidden", "true");
 }
-modalClose?.addEventListener("click", closeModal);
-modal?.addEventListener("click", (event) => {
+modalClose.addEventListener("click", closeModal);
+modal.addEventListener("click", (event) => {
   if (event.target === modal) closeModal();
   if (event.target.closest(".modal-reserve")) closeModal();
 });
@@ -637,24 +570,7 @@ document.querySelectorAll(".gateway-card, .services-card, .vertical-photo, .stac
 });
 
 const contactForm = document.getElementById("contactForm");
-async function sendLeadToSupabase(payload) {
-  if (!supabaseConfig.url || !supabaseConfig.anonKey) return false;
-
-  const response = await fetch(`${supabaseConfig.url}/rest/v1/${supabaseConfig.leadsTable}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: supabaseConfig.anonKey,
-      Authorization: `Bearer ${supabaseConfig.anonKey}`,
-      Prefer: "return=minimal"
-    },
-    body: JSON.stringify(payload)
-  });
-
-  return response.ok;
-}
-
-contactForm?.addEventListener("submit", async (event) => {
+contactForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const nombre = document.getElementById("nombre").value.trim();
   const telefono = document.getElementById("telefono").value.trim();
@@ -664,21 +580,6 @@ contactForm?.addEventListener("submit", async (event) => {
   const distrito = document.getElementById("distritoContacto").value.trim();
   const tipoProyecto = document.getElementById("tipoProyecto").value;
   const mensaje = document.getElementById("mensaje").value.trim();
-  const leadPayload = {
-    nombre,
-    telefono,
-    correo,
-    pais,
-    region,
-    distrito,
-    tipo_proyecto: tipoProyecto,
-    mensaje,
-    pagina: location.pathname,
-    created_at: new Date().toISOString()
-  };
-
-  sendLeadToSupabase(leadPayload).catch(() => false);
-
   const whatsappMessage = [
     "Hola, quiero recibir información sobre Torre 89 e IA Construcciones.",
     nombre ? `Nombre: ${nombre}` : "",
