@@ -2223,3 +2223,60 @@ body.night-view .section-nav a {
   gap: 14px;
 }
 
+.mini-contact-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 16px;
+}
+
+.mini-contact-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mini-contact-form input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(200,90,23,.18);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: inherit;
+  outline: 0;
+  background: rgba(255,255,255,.88);
+}
+
+.mini-contact-form input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(242,181,68,.16);
+}
+
+.mini-contact-form .btn {
+  min-height: 44px;
+  padding: 10px 18px;
+}
+
+.compact-contact-section {
+  padding: 38px 0;
+  background: linear-gradient(180deg, var(--bone), #fff8ec);
+}
+
+.hero-content-centered .hero-metrics {
+  width: min(760px, 100%);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.hero-content-centered .hero-metrics div {
+  min-height: 84px;
+  border-radius: 18px;
+  background: rgba(31,31,29,.28);
+  border: 1px solid rgba(255,208,106,.22);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+}
+

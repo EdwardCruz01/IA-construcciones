@@ -1276,6 +1276,19 @@
   .unit-card-expanded img {
     height: 230px;
   }
+
+  .mini-contact-form {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-contact-form .btn {
+    width: 100%;
+  }
+
+  .hero-content-centered .hero-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
 }
 
 @media (max-width: 430px) {

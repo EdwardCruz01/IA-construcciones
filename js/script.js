@@ -654,6 +654,20 @@ async function sendLeadToSupabase(payload) {
   return response.ok;
 }
 
+function buildWhatsAppMessage(data) {
+  return [
+    "Hola, quiero recibir información sobre Torre 89 e IA Construcciones.",
+    data.nombre ? `Nombre: ${data.nombre}` : "",
+    data.telefono ? `Teléfono: ${data.telefono}` : "",
+    data.correo ? `Correo: ${data.correo}` : "",
+    data.pais ? `País: ${data.pais}` : "",
+    data.region ? `Región/Departamento: ${data.region}` : "",
+    data.distrito ? `Distrito: ${data.distrito}` : "",
+    data.tipo_proyecto ? `Interés: ${data.tipo_proyecto}` : "",
+    data.mensaje ? `Mensaje: ${data.mensaje}` : ""
+  ].filter(Boolean).join("\n");
+}
+
 contactForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const nombre = document.getElementById("nombre").value.trim();
@@ -679,18 +693,42 @@ contactForm?.addEventListener("submit", async (event) => {
 
   sendLeadToSupabase(leadPayload).catch(() => false);
 
-  const whatsappMessage = [
-    "Hola, quiero recibir información sobre Torre 89 e IA Construcciones.",
-    nombre ? `Nombre: ${nombre}` : "",
-    telefono ? `Teléfono: ${telefono}` : "",
-    correo ? `Correo: ${correo}` : "",
-    pais ? `País: ${pais}` : "",
-    region ? `Región/Departamento: ${region}` : "",
-    distrito ? `Distrito: ${distrito}` : "",
-    tipoProyecto ? `Interés: ${tipoProyecto}` : "",
-    mensaje ? `Mensaje: ${mensaje}` : ""
-  ].filter(Boolean).join("\n");
+  const whatsappMessage = buildWhatsAppMessage(leadPayload);
   window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+});
+
+document.querySelectorAll(".section-contact").forEach((box) => {
+  if (box.querySelector(".mini-contact-form")) return;
+  const title = box.querySelector("strong")?.textContent?.trim() || "Consulta";
+  const form = document.createElement("form");
+  form.className = "mini-contact-form";
+  form.innerHTML = `
+    <label>Nombre<input name="nombre" type="text" placeholder="Tu nombre" required></label>
+    <label>Teléfono<input name="telefono" type="tel" placeholder="Tu número" required></label>
+    <input name="mensaje" type="hidden" value="${title}">
+    <button class="btn btn-quote" type="submit">Enviar consulta</button>
+  `;
+  box.appendChild(form);
+});
+
+document.querySelectorAll(".mini-contact-form").forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const leadPayload = {
+      nombre: String(formData.get("nombre") || "").trim(),
+      telefono: String(formData.get("telefono") || "").trim(),
+      tipo_proyecto: String(formData.get("mensaje") || "").trim(),
+      mensaje: "Formulario corto de sección",
+      pagina: location.pathname,
+      created_at: new Date().toISOString()
+    };
+
+    sendLeadToSupabase(leadPayload).catch(() => false);
+    const whatsappMessage = buildWhatsAppMessage(leadPayload);
+    window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+    form.reset();
+  });
 });
 
 const floatingWhatsapp = document.getElementById("floatingWhatsapp");

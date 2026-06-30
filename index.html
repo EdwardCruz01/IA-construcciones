@@ -51,7 +51,7 @@
   </div>
 
   <div class="music-player" id="musicPlayer" aria-label="Reproductor de música">
-    <audio id="backgroundAudio" src="musicas/Life Time (Extended Mix).mp3" preload="auto" autoplay loop></audio>
+    <audio id="backgroundAudio" src="musicas/Life Time (Extended Mix).mp3" preload="metadata" autoplay loop></audio>
     <button class="music-toggle" id="musicToggle" type="button" aria-label="Reproducir música"><span class="music-icon">▶</span></button>
     <div class="music-controls"><label class="volume-control" aria-label="Volumen de música"><span></span><input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.2"></label></div>
   </div>
@@ -83,7 +83,7 @@
     <section class="hero" id="inicio">
       <div class="hero-slide active hero-slide-video"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212317/videos/video_prese1_pexma3.mp4" muted playsinline preload="metadata"></video></div>
       <div class="hero-slide" style="background-image:url('imagenes/proyectos/depa3.jpg')"></div>
-      <div class="hero-slide hero-slide-video"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212316/videos/video_prese2_mozzf7.mp4" muted playsinline preload="metadata"></video></div>
+      <div class="hero-slide hero-slide-video"><video src="https://res.cloudinary.com/dpaqxfvlg/video/upload/v1782212316/videos/video_prese2_mozzf7.mp4" muted playsinline preload="none"></video></div>
       <div class="hero-slide" style="background-image:url('imagenes/proyectos/depa 4.jpg')"></div>
       <div class="hero-slide" style="background-image:url('imagenes/hero/foto horizontal 1.jpg')"></div>
       <div class="hero-overlay"></div>
@@ -97,7 +97,10 @@
         <img class="hero-project-logo hero-project-logo-main" src="imagenes/logos/torre-89-transparente.png" alt="Logo Torre 89">
         <h1 class="sr-only">Torre 89, proyecto inmobiliario smart en Huánuco por IA Construcciones</h1>
         <p>Un proyecto inmobiliario smart con espacios modernos para vivir, invertir y trabajar en una ubicación estratégica.</p>
-        <div class="hero-metrics hero-metrics-compact">
+        <div class="hero-metrics">
+          <div><strong>1,800 m²</strong><span>Área proyectada</span></div>
+          <div><strong>$975/m²</strong><span>Precio desde</span></div>
+          <div><strong>184</strong><span>Familias atendidas</span></div>
           <div class="visit-counter"><strong id="visitCounter">0</strong><span>Visitas en web</span></div>
         </div>
         <div class="hero-actions">
