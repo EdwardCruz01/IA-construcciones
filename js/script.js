@@ -6,11 +6,15 @@ const isInsidePages = location.pathname.replace(/\\/g, "/").includes("/pages/");
 const assetPrefix = isInsidePages ? "../" : "";
 const contactHref = document.body.dataset.contactHref || (isInsidePages ? "contacto.html#contacto" : "pages/contacto.html#contacto");
 const supabaseConfig = {
-  url: "",
-  anonKey: "",
+  url: "https://ofypbbakwyocnpvrjwzf.supabase.co",
+  anonKey: "sb_publishable_FcxML6YOq9hqVNOXmqLsmg_6vb97tPi",
   leadsTable: "leads",
-  visitsEndpoint: ""
+  profilesTable: "profiles",
+  noticesTable: "notices",
+  registerVisitRpc: "register_web_visit"
 };
+const supabaseRestUrl = `${supabaseConfig.url}/rest/v1`;
+const supabaseAuthUrl = `${supabaseConfig.url}/auth/v1`;
 const loaderPhrases = [
   "Preparando espacios modernos para vivir e invertir.",
   "Cargando detalles de Torre 89.",
@@ -196,18 +200,36 @@ if (slides.length) {
 const visitCounter = document.getElementById("visitCounter");
 
 async function getVisitCountFromSupabase() {
-  if (typeof supabaseConfig !== "undefined" && supabaseConfig.visitsEndpoint) {
-    const response = await fetch(supabaseConfig.visitsEndpoint, {
+  if (!supabaseConfig.url || !supabaseConfig.anonKey || !supabaseConfig.registerVisitRpc) return null;
+
+  try {
+    let sessionId = localStorage.getItem("torre89_session_id");
+    if (!sessionId) {
+      sessionId = window.crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem("torre89_session_id", sessionId);
+    }
+
+    const response = await fetch(`${supabaseRestUrl}/rpc/${supabaseConfig.registerVisitRpc}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ page: location.pathname })
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`
+      },
+      body: JSON.stringify({
+        p_page_path: location.pathname,
+        p_session_id: sessionId,
+        p_user_agent: navigator.userAgent,
+        p_referrer: document.referrer || null
+      })
     });
+
     if (!response.ok) return null;
     const data = await response.json();
-    return Number(data.total || data.count || 0) || null;
+    return Number(data) || Number(data.total || data.count || 0) || null;
+  } catch (error) {
+    return null;
   }
-
-  return null;
 }
 
 async function initVisitCounter() {
@@ -219,7 +241,7 @@ async function initVisitCounter() {
     return;
   }
 
-  const key = "torre89_demo_visits";
+  const key = "torre89_fallback_visits";
   const currentCount = Number(localStorage.getItem(key) || "1840") + 1;
   localStorage.setItem(key, currentCount);
   animateCounter(visitCounter, currentCount);
@@ -640,18 +662,36 @@ const contactForm = document.getElementById("contactForm");
 async function sendLeadToSupabase(payload) {
   if (!supabaseConfig.url || !supabaseConfig.anonKey) return false;
 
-  const response = await fetch(`${supabaseConfig.url}/rest/v1/${supabaseConfig.leadsTable}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: supabaseConfig.anonKey,
-      Authorization: `Bearer ${supabaseConfig.anonKey}`,
-      Prefer: "return=minimal"
-    },
-    body: JSON.stringify(payload)
-  });
+  const leadRow = {
+    full_name: payload.nombre || payload.full_name || "",
+    phone: payload.telefono || payload.phone || "",
+    email: payload.correo || payload.email || null,
+    country: payload.pais || payload.country || null,
+    region: payload.region || null,
+    district: payload.distrito || payload.district || null,
+    interest: payload.tipo_proyecto || payload.interest || "Consulta web",
+    source_section: payload.pagina || payload.source_section || location.pathname,
+    message: payload.mensaje || payload.message || "",
+    accepted_terms: true,
+    status: "nuevo"
+  };
 
-  return response.ok;
+  try {
+    const response = await fetch(`${supabaseRestUrl}/${supabaseConfig.leadsTable}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(leadRow)
+    });
+
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
 }
 
 function buildWhatsAppMessage(data) {
@@ -784,4 +824,224 @@ function makeDraggable(element, size = 68) {
 
 makeDraggable(floatingWhatsapp);
 makeDraggable(musicPlayer, 76);
+
+const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
+const authMessage = document.getElementById("authMessage");
+const profileData = document.getElementById("profileData");
+const logoutBtn = document.getElementById("logoutBtn");
+const userStorageKey = "torre89_registered_user";
+const sessionStorageKey = "torre89_active_session";
+const supabaseSessionStorageKey = "torre89_supabase_session";
+
+function setAuthMessage(message, isError = false) {
+  if (!authMessage) return;
+  authMessage.textContent = message;
+  authMessage.style.color = isError ? "#b12b12" : "#2f7d32";
+}
+
+function getRegisteredUser() {
+  try {
+    return JSON.parse(localStorage.getItem(userStorageKey) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function hasSupabaseConfig() {
+  return Boolean(supabaseConfig.url && supabaseConfig.anonKey);
+}
+
+function getSupabaseSession() {
+  try {
+    return JSON.parse(localStorage.getItem(supabaseSessionStorageKey) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function setSupabaseSession(session) {
+  if (!session) return;
+  localStorage.setItem(supabaseSessionStorageKey, JSON.stringify(session));
+}
+
+async function supabaseAuthRequest(endpoint, body) {
+  if (!hasSupabaseConfig()) return null;
+
+  const response = await fetch(`${supabaseAuthUrl}${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: supabaseConfig.anonKey
+    },
+    body: JSON.stringify(body)
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error_description || data.msg || data.message || "No se pudo completar la autenticación.");
+  }
+  return data;
+}
+
+async function signUpWithSupabase(user) {
+  return supabaseAuthRequest("/signup", {
+    email: user.email,
+    password: user.password,
+    data: {
+      full_name: user.name,
+      phone: user.phone,
+      country: user.country,
+      occupation: user.occupation
+    }
+  });
+}
+
+async function signInWithSupabase(email, password) {
+  return supabaseAuthRequest("/token?grant_type=password", { email, password });
+}
+
+async function getProfileFromSupabase(session) {
+  if (!session?.access_token || !session?.user?.id) return null;
+
+  const response = await fetch(`${supabaseRestUrl}/${supabaseConfig.profilesTable}?select=full_name,email,phone,country,occupation&id=eq.${session.user.id}&limit=1`, {
+    headers: {
+      apikey: supabaseConfig.anonKey,
+      Authorization: `Bearer ${session.access_token}`
+    }
+  });
+
+  if (!response.ok) return null;
+  const rows = await response.json().catch(() => []);
+  const profile = rows[0];
+  if (profile) return profile;
+
+  return {
+    full_name: session.user.user_metadata?.full_name || "",
+    email: session.user.email || "",
+    phone: session.user.user_metadata?.phone || "",
+    country: session.user.user_metadata?.country || "",
+    occupation: session.user.user_metadata?.occupation || ""
+  };
+}
+
+async function getNoticesFromSupabase() {
+  if (!hasSupabaseConfig()) return [];
+
+  const response = await fetch(`${supabaseRestUrl}/${supabaseConfig.noticesTable}?select=title,body,notice_type&is_active=eq.true&order=created_at.desc&limit=6`, {
+    headers: {
+      apikey: supabaseConfig.anonKey,
+      Authorization: `Bearer ${supabaseConfig.anonKey}`
+    }
+  });
+
+  if (!response.ok) return [];
+  return response.json().catch(() => []);
+}
+
+function renderProfile(user) {
+  if (!profileData || !user) return;
+  profileData.innerHTML = `
+    <p><strong>Nombre:</strong> ${user.full_name || user.name || ""}</p>
+    <p><strong>Correo:</strong> ${user.email || ""}</p>
+    <p><strong>Número:</strong> ${user.phone || ""}</p>
+    <p><strong>País:</strong> ${user.country || ""}</p>
+    <p><strong>Ocupación:</strong> ${user.occupation || ""}</p>
+  `;
+}
+
+function renderNotices(notices) {
+  const noticeList = document.querySelector(".notice-list");
+  if (!noticeList || !Array.isArray(notices) || !notices.length) return;
+
+  noticeList.innerHTML = notices.map((notice) => `
+    <p><strong>${notice.title || "Aviso"}:</strong> ${notice.body || ""}</p>
+  `).join("");
+}
+
+registerForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const user = {
+    name: document.getElementById("registerName").value.trim(),
+    email: document.getElementById("registerEmail").value.trim().toLowerCase(),
+    phone: document.getElementById("registerPhone").value.trim(),
+    country: document.getElementById("registerCountry").value,
+    occupation: document.getElementById("registerOccupation").value.trim(),
+    password: document.getElementById("registerPassword").value,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    const session = await signUpWithSupabase(user);
+    if (session?.access_token) {
+      setSupabaseSession(session);
+      location.href = "perfil.html";
+      return;
+    }
+
+    setAuthMessage("Registro creado. Si Supabase pide confirmación, revisa tu correo antes de iniciar sesión.");
+    localStorage.setItem(userStorageKey, JSON.stringify(user));
+    return;
+  } catch (error) {
+    setAuthMessage("Estamos validando la conexión. Tus datos quedaron guardados para continuar la prueba de acceso.", true);
+  }
+
+  localStorage.setItem(userStorageKey, JSON.stringify(user));
+  localStorage.setItem(sessionStorageKey, user.email);
+  location.href = "perfil.html";
+});
+
+loginForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const user = getRegisteredUser();
+  const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    const session = await signInWithSupabase(email, password);
+    setSupabaseSession(session);
+    location.href = "perfil.html";
+    return;
+  } catch (error) {
+    // Mantiene un respaldo temporal si la autenticación remota todavía no responde.
+  }
+
+  if (!user || user.email !== email || user.password !== password) {
+    setAuthMessage("No encontramos esa cuenta. Revisa correo y contraseña.", true);
+    return;
+  }
+
+  localStorage.setItem(sessionStorageKey, user.email);
+  location.href = "perfil.html";
+});
+
+if (profileData) {
+  (async () => {
+    const supabaseSession = getSupabaseSession();
+    if (supabaseSession?.access_token) {
+      const profile = await getProfileFromSupabase(supabaseSession);
+      if (profile) {
+        renderProfile(profile);
+        renderNotices(await getNoticesFromSupabase());
+        return;
+      }
+    }
+
+    const user = getRegisteredUser();
+    const activeSession = localStorage.getItem(sessionStorageKey);
+
+    if (!user || user.email !== activeSession) {
+      location.href = "registro.html";
+      return;
+    }
+
+    renderProfile(user);
+  })();
+}
+
+logoutBtn?.addEventListener("click", () => {
+  localStorage.removeItem(sessionStorageKey);
+  localStorage.removeItem(supabaseSessionStorageKey);
+  location.href = "registro.html";
+});
 
