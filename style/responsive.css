@@ -1220,23 +1220,24 @@
     min-height: 430px;
   }
 
-  .intro-mosaic img {
+  .intro-mosaic img,
+  .intro-mosaic-slide img {
     border-width: 5px;
     border-radius: 20px;
   }
 
-  .intro-mosaic img:nth-child(1) {
+  .intro-mosaic-slide img:nth-child(1) {
     width: 78%;
     height: 260px;
     top: 44px;
   }
 
-  .intro-mosaic img:nth-child(2) {
+  .intro-mosaic-slide img:nth-child(2) {
     width: 52%;
     height: 190px;
   }
 
-  .intro-mosaic img:nth-child(3) {
+  .intro-mosaic-slide img:nth-child(3) {
     width: 58%;
     height: 190px;
     right: 0;

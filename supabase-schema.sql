@@ -18,6 +18,7 @@ create table if not exists public.web_visits (
 create table if not exists public.leads (
   id uuid primary key default gen_random_uuid(),
   full_name text not null,
+  age integer,
   phone text not null,
   email text,
   country text,
@@ -100,6 +101,26 @@ create table if not exists public.promotion_clicks (
   promotion_key text not null,
   source_section text,
   session_id text,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.section_visits (
+  id uuid primary key default gen_random_uuid(),
+  section_key text not null,
+  page_path text,
+  session_id text,
+  user_agent text,
+  referrer text,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.session_durations (
+  id uuid primary key default gen_random_uuid(),
+  page_path text not null,
+  section_key text,
+  session_id text,
+  duration_seconds integer not null,
+  user_agent text,
   created_at timestamptz not null default now()
 );
 
@@ -257,6 +278,8 @@ alter table public.notices enable row level security;
 alter table public.favorites enable row level security;
 alter table public.reservations enable row level security;
 alter table public.promotion_clicks enable row level security;
+alter table public.section_visits enable row level security;
+alter table public.session_durations enable row level security;
 alter table public.recommendations enable row level security;
 alter table public.products enable row level security;
 
@@ -327,6 +350,18 @@ on public.promotion_clicks for insert
 to anon, authenticated
 with check (true);
 
+drop policy if exists "public can track section visits" on public.section_visits;
+create policy "public can track section visits"
+on public.section_visits for insert
+to anon, authenticated
+with check (true);
+
+drop policy if exists "public can track session durations" on public.session_durations;
+create policy "public can track session durations"
+on public.session_durations for insert
+to anon, authenticated
+with check (true);
+
 drop policy if exists "public can create recommendations" on public.recommendations;
 create policy "public can create recommendations"
 on public.recommendations for insert
@@ -342,6 +377,18 @@ using (is_active = true);
 drop policy if exists "authenticated can read visits" on public.web_visits;
 create policy "authenticated can read visits"
 on public.web_visits for select
+to authenticated
+using (true);
+
+drop policy if exists "authenticated can read section visits" on public.section_visits;
+create policy "authenticated can read section visits"
+on public.section_visits for select
+to authenticated
+using (true);
+
+drop policy if exists "authenticated can read session durations" on public.session_durations;
+create policy "authenticated can read session durations"
+on public.session_durations for select
 to authenticated
 using (true);
 

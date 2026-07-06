@@ -49,6 +49,7 @@ async function hidePreloader() {
     audio.volume = 0.2;
     try {
       await audio.play();
+      localStorage.setItem("torre89_music_playing", "1");
       player?.classList.remove("music-error");
       player?.classList.add("playing");
       if (icon) icon.textContent = "Ⅱ";
@@ -197,6 +198,20 @@ if (slides.length) {
   startCarousel();
 }
 
+const introCarousel = document.querySelector("[data-intro-carousel]");
+if (introCarousel) {
+  const introSlides = Array.from(introCarousel.querySelectorAll(".intro-mosaic-slide"));
+  let introSlideIndex = 0;
+
+  if (introSlides.length > 1) {
+    setInterval(() => {
+      introSlides[introSlideIndex].classList.remove("active");
+      introSlideIndex = (introSlideIndex + 1) % introSlides.length;
+      introSlides[introSlideIndex].classList.add("active");
+    }, 4200);
+  }
+}
+
 const visitCounter = document.getElementById("visitCounter");
 
 async function getVisitCountFromSupabase() {
@@ -274,7 +289,7 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   const initialVolume = 0.2;
   const savedVolume = Number(localStorage.getItem("torre89_music_volume") || initialVolume);
   const savedTime = Number(localStorage.getItem("torre89_music_time") || 0);
-  const shouldPlayMusic = localStorage.getItem("torre89_music_playing") === "1" || localStorage.getItem("torre89_conditions_ok") === "1";
+  const shouldPlayMusic = localStorage.getItem("torre89_music_playing") === "1";
   backgroundAudio.volume = Number.isFinite(savedVolume) ? Math.min(Math.max(savedVolume, 0), 1) : initialVolume;
   if (musicVolume) musicVolume.value = String(backgroundAudio.volume);
   if (Number.isFinite(savedTime) && savedTime > 0) {
@@ -582,7 +597,10 @@ const promoData = {
   office3: { category: "Promoción oficinas", title: "Plan trimestral", conditionLabel: "Condición", separation: "Ahorro", benefit: "Tarifa preferencial para empresas o profesionales que separen alquiler por tres meses anticipados." },
   event1: { category: "Promoción Salón VIP", title: "Reserva tu fecha", conditionLabel: "Incluye", separation: "Decoración", benefit: "Decoración base y coordinación inicial incluida para reuniones privadas, familiares o presentaciones." },
   event2: { category: "Promoción Salón VIP", title: "Evento corporativo", conditionLabel: "Incluye", separation: "Preferencial", benefit: "Tarifa especial para capacitaciones, reuniones empresariales y actividades institucionales." },
-  event3: { category: "Promoción Salón VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." }
+  event3: { category: "Promoción Salón VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." },
+  pcbox1: { category: "Promoción PC Box", title: "Combo tecnológico", conditionLabel: "Beneficio", separation: "Accesorios", benefit: "Combos referenciales para escritorio, estudio u oficina con asesoría para elegir accesorios compatibles." },
+  pcbox2: { category: "Promoción PC Box", title: "Compra con crédito", conditionLabel: "Beneficio", separation: "Financiamiento", benefit: "Opciones de crédito para financiar artículos tecnológicos según evaluación, campaña y disponibilidad." },
+  pcbox3: { category: "Promoción PC Box", title: "Cliente Torre 89", conditionLabel: "Beneficio", separation: "Especial", benefit: "Campañas y atención preferencial para residentes, oficinas y visitantes de Torre 89." }
 };
 
 document.querySelectorAll("[data-modal]").forEach((button) => {
@@ -664,6 +682,7 @@ async function sendLeadToSupabase(payload) {
 
   const leadRow = {
     full_name: payload.nombre || payload.full_name || "",
+    age: payload.edad ? Number(payload.edad) : null,
     phone: payload.telefono || payload.phone || "",
     email: payload.correo || payload.email || null,
     country: payload.pais || payload.country || null,
@@ -671,7 +690,7 @@ async function sendLeadToSupabase(payload) {
     district: payload.distrito || payload.district || null,
     interest: payload.tipo_proyecto || payload.interest || "Consulta web",
     source_section: payload.pagina || payload.source_section || location.pathname,
-    message: payload.mensaje || payload.message || "",
+    message: [payload.edad ? `Edad: ${payload.edad}` : "", payload.mensaje || payload.message || ""].filter(Boolean).join(" | "),
     accepted_terms: true,
     status: "nuevo"
   };
@@ -694,10 +713,30 @@ async function sendLeadToSupabase(payload) {
   }
 }
 
+async function sendSupabaseRow(table, row) {
+  if (!supabaseConfig.url || !supabaseConfig.anonKey || !table) return false;
+  try {
+    const response = await fetch(`${supabaseRestUrl}/${table}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(row)
+    });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
 function buildWhatsAppMessage(data) {
   return [
     "Hola, quiero recibir información sobre Torre 89 e IA Construcciones.",
     data.nombre ? `Nombre: ${data.nombre}` : "",
+    data.edad ? `Edad: ${data.edad}` : "",
     data.telefono ? `Teléfono: ${data.telefono}` : "",
     data.correo ? `Correo: ${data.correo}` : "",
     data.pais ? `País: ${data.pais}` : "",
@@ -711,6 +750,7 @@ function buildWhatsAppMessage(data) {
 contactForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const nombre = document.getElementById("nombre").value.trim();
+  const edad = document.getElementById("edad")?.value.trim() || "";
   const telefono = document.getElementById("telefono").value.trim();
   const correo = document.getElementById("correo").value.trim();
   const pais = document.getElementById("paisContacto").value;
@@ -720,6 +760,7 @@ contactForm?.addEventListener("submit", async (event) => {
   const mensaje = document.getElementById("mensaje").value.trim();
   const leadPayload = {
     nombre,
+    edad,
     telefono,
     correo,
     pais,
@@ -737,13 +778,54 @@ contactForm?.addEventListener("submit", async (event) => {
   window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
 });
 
+const contactNumbers = {
+  departamentos: "955042736",
+  oficinas: "955042736",
+  local: "955042736",
+  "sala-vip": "955042736",
+  constructora: "955042736"
+};
+
+const contactReason = document.getElementById("contactReason");
+const contactReasonActions = document.getElementById("contactReasonActions");
+const contactReasonCall = document.getElementById("contactReasonCall");
+const contactReasonWhatsapp = document.getElementById("contactReasonWhatsapp");
+
+function updateContactReasonActions() {
+  if (!contactReason || !contactReasonActions || !contactReasonCall || !contactReasonWhatsapp) return;
+  const value = contactReason.value;
+  const number = contactNumbers[value];
+  if (!number) {
+    contactReasonActions.hidden = true;
+    return;
+  }
+  const label = contactReason.options[contactReason.selectedIndex]?.textContent || "consulta";
+  contactReasonCall.href = `tel:+51${number}`;
+  contactReasonWhatsapp.href = `https://wa.me/51${number}?text=${encodeURIComponent(`Hola, quiero contactar por ${label}.`)}`;
+  contactReasonActions.hidden = false;
+}
+
+contactReason?.addEventListener("change", updateContactReasonActions);
+updateContactReasonActions();
+
 document.querySelectorAll(".section-contact").forEach((box) => {
   if (box.querySelector(".mini-contact-form")) return;
   const title = box.querySelector("strong")?.textContent?.trim() || "Consulta";
   const form = document.createElement("form");
   form.className = "mini-contact-form";
   form.innerHTML = `
+    <label class="mini-contact-reason">¿Para qué nos contactas?
+      <select name="motivo" required>
+        <option value="">Selecciona una opción</option>
+        <option>Departamentos</option>
+        <option>Oficinas</option>
+        <option>Local comercial</option>
+        <option>Sala VIP</option>
+        <option>Constructora</option>
+      </select>
+    </label>
     <label>Nombre<input name="nombre" type="text" placeholder="Tu nombre" required></label>
+    <label>Edad<input name="edad" type="number" min="16" max="100" placeholder="Tu edad" required></label>
     <label>Teléfono<input name="telefono" type="tel" placeholder="Tu número" required></label>
     <input name="mensaje" type="hidden" value="${title}">
     <button class="btn btn-quote" type="submit">Enviar consulta</button>
@@ -757,8 +839,9 @@ document.querySelectorAll(".mini-contact-form").forEach((form) => {
     const formData = new FormData(form);
     const leadPayload = {
       nombre: String(formData.get("nombre") || "").trim(),
+      edad: String(formData.get("edad") || "").trim(),
       telefono: String(formData.get("telefono") || "").trim(),
-      tipo_proyecto: String(formData.get("mensaje") || "").trim(),
+      tipo_proyecto: String(formData.get("motivo") || formData.get("mensaje") || "").trim(),
       mensaje: "Formulario corto de sección",
       pagina: location.pathname,
       created_at: new Date().toISOString()
@@ -825,6 +908,115 @@ function makeDraggable(element, size = 68) {
 makeDraggable(floatingWhatsapp);
 makeDraggable(musicPlayer, 76);
 
+function emphasizeBrandNames() {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      if (!parent || ["SCRIPT", "STYLE", "TEXTAREA", "INPUT", "SELECT", "OPTION", "STRONG"].includes(parent.tagName)) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return /Torre 89|IA Construcciones/.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach((node) => {
+    const fragment = document.createDocumentFragment();
+    node.nodeValue.split(/(Torre 89|IA Construcciones)/g).forEach((part) => {
+      if (part === "Torre 89" || part === "IA Construcciones") {
+        const strong = document.createElement("strong");
+        strong.className = "brand-emphasis";
+        strong.textContent = part;
+        fragment.appendChild(strong);
+      } else {
+        fragment.appendChild(document.createTextNode(part));
+      }
+    });
+    node.parentNode.replaceChild(fragment, node);
+  });
+}
+
+function addReferenceLabels() {
+  // Desactivado: envolver imágenes alteraba proporciones en galerías y tarjetas.
+}
+
+function getTrackingSessionId() {
+  let sessionId = localStorage.getItem("torre89_session_id");
+  if (!sessionId) {
+    sessionId = window.crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    localStorage.setItem("torre89_session_id", sessionId);
+  }
+  return sessionId;
+}
+
+function getSectionKeyFromPath() {
+  const path = location.pathname.toLowerCase();
+  if (path.includes("departamento-tipo-ii")) return "departamento_tipo_ii";
+  if (path.includes("departamento-tipo-iii")) return "departamento_tipo_iii";
+  if (path.includes("departamento-tipo-iv")) return "departamento_tipo_iv";
+  if (path.includes("departamentos")) return "departamentos";
+  if (path.includes("oficinas")) return "oficinas";
+  if (path.includes("local")) return "local";
+  if (path.includes("sala-vip")) return "sala_vip";
+  return null;
+}
+
+const trackedSectionKey = getSectionKeyFromPath();
+const pageStartedAt = Date.now();
+if (trackedSectionKey) {
+  sendSupabaseRow("section_visits", {
+    section_key: trackedSectionKey,
+    page_path: location.pathname,
+    session_id: getTrackingSessionId(),
+    user_agent: navigator.userAgent,
+    referrer: document.referrer || null
+  }).catch(() => false);
+}
+
+function trackSessionDuration() {
+  const seconds = Math.max(1, Math.round((Date.now() - pageStartedAt) / 1000));
+  const payload = {
+    page_path: location.pathname,
+    session_id: getTrackingSessionId(),
+    duration_seconds: seconds,
+    section_key: trackedSectionKey,
+    user_agent: navigator.userAgent
+  };
+  if (supabaseConfig.url && supabaseConfig.anonKey) {
+    fetch(`${supabaseRestUrl}/session_durations`, {
+      method: "POST",
+      keepalive: true,
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).catch(() => false);
+  }
+}
+
+window.addEventListener("pagehide", trackSessionDuration, { once: true });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") trackSessionDuration();
+}, { once: true });
+
+emphasizeBrandNames();
+
+document.querySelectorAll(".next-step").forEach((section) => {
+  if (section.querySelector(".back-step-btn")) return;
+  const button = document.createElement("button");
+  button.className = "back-step-btn";
+  button.type = "button";
+  button.textContent = "Volver atrás";
+  button.addEventListener("click", () => {
+    if (history.length > 1) history.back();
+    else location.href = isInsidePages ? "../index.html" : "index.html";
+  });
+  section.prepend(button);
+});
+
 const registerForm = document.getElementById("registerForm");
 const loginForm = document.getElementById("loginForm");
 const authMessage = document.getElementById("authMessage");
@@ -833,6 +1025,20 @@ const logoutBtn = document.getElementById("logoutBtn");
 const userStorageKey = "torre89_registered_user";
 const sessionStorageKey = "torre89_active_session";
 const supabaseSessionStorageKey = "torre89_supabase_session";
+
+if (registerForm && loginForm) {
+  loginForm.parentNode.insertBefore(loginForm, registerForm);
+  registerForm.classList.add("auth-card-hidden");
+  const loginSwitch = document.createElement("p");
+  loginSwitch.className = "auth-switch";
+  loginSwitch.innerHTML = '¿No tienes cuenta? <a href="#registro" id="showRegisterForm">Regístrese</a>';
+  loginForm.appendChild(loginSwitch);
+  document.getElementById("showRegisterForm")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    registerForm.classList.remove("auth-card-hidden");
+    registerForm.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
 
 function setAuthMessage(message, isError = false) {
   if (!authMessage) return;
