@@ -290,9 +290,18 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   const savedVolume = Number(localStorage.getItem("torre89_music_volume") || initialVolume);
   const savedTime = Number(localStorage.getItem("torre89_music_time") || 0);
   const shouldPlayMusic = localStorage.getItem("torre89_music_playing") === "1";
+  const musicBasePath = backgroundAudio.getAttribute("src").replace(/[^/\\]+$/, "");
+  const musicPlaylist = [
+    `${musicBasePath}recepcion audio.MP3`,
+    `${musicBasePath}Life Time (Extended Mix).mp3`
+  ];
+  let currentMusicTrack = 0;
+
+  backgroundAudio.loop = false;
+  backgroundAudio.src = musicPlaylist[currentMusicTrack];
   backgroundAudio.volume = Number.isFinite(savedVolume) ? Math.min(Math.max(savedVolume, 0), 1) : initialVolume;
   if (musicVolume) musicVolume.value = String(backgroundAudio.volume);
-  if (Number.isFinite(savedTime) && savedTime > 0) {
+  if (Number.isFinite(savedTime) && savedTime > 0 && currentMusicTrack === 1) {
     backgroundAudio.addEventListener("loadedmetadata", () => {
       if (savedTime < backgroundAudio.duration) backgroundAudio.currentTime = savedTime;
     }, { once: true });
@@ -384,8 +393,20 @@ if (musicPlayer && backgroundAudio && musicToggle) {
     if (musicIcon) musicIcon.textContent = "!";
   });
 
+  backgroundAudio.addEventListener("ended", async () => {
+    if (currentMusicTrack === 0) {
+      currentMusicTrack = 1;
+      backgroundAudio.src = musicPlaylist[currentMusicTrack];
+      backgroundAudio.loop = true;
+      backgroundAudio.currentTime = 0;
+      await tryPlayMusic();
+    }
+  });
+
   backgroundAudio.addEventListener("timeupdate", () => {
-    localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime));
+    if (currentMusicTrack === 1) {
+      localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime));
+    }
   });
 }
 
