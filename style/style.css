@@ -1644,15 +1644,16 @@ body.night-view .day-night-photo {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding: 12px 0;
+  padding: 8px 0;
 }
 
 .section-nav a {
   flex: 0 0 auto;
-  padding: 10px 15px;
+  padding: 7px 12px;
   border-radius: 999px;
   background: rgba(255,255,255,.72);
   color: var(--executive-orange);
+  font-size: 14px;
   font-weight: 800;
   border: 1px solid rgba(200,90,23,.12);
 }
@@ -1724,6 +1725,20 @@ body.night-view .day-night-photo {
 .sales-card img {
   height: 260px;
   border-radius: 18px;
+}
+
+.sales-card.plan-card {
+  position: static;
+}
+
+.sales-card.plan-card .plan-image {
+  width: 100%;
+  height: min(72vh, 760px);
+  min-height: 520px;
+  object-fit: contain;
+  background: #fffaf0;
+  border: 1px solid rgba(200,90,23,.12);
+  padding: 8px;
 }
 
 .gallery-grid {

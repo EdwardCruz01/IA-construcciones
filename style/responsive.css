@@ -1134,6 +1134,16 @@
     top: 58px;
   }
 
+  .section-nav .container {
+    padding: 6px 14px;
+    gap: 8px;
+  }
+
+  .section-nav a {
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+
   .sales-layout,
   .institutional-grid {
     grid-template-columns: 1fr;
@@ -1141,6 +1151,12 @@
 
   .sales-card {
     position: static;
+  }
+
+  .sales-card.plan-card .plan-image {
+    height: auto;
+    min-height: 0;
+    max-height: none;
   }
 
   .feature-grid,
