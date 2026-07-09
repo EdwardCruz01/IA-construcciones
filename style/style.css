@@ -3426,6 +3426,141 @@ body.night-view .page-hero::after {
   display: none !important;
 }
 
+/* Ajuste final: menu movil con iconos y rendimiento */
+.nav-links .menu-icon-svg {
+  display: inline-grid;
+  place-items: center;
+}
+
+.nav-links .menu-icon-svg svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.05;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    scroll-behavior: auto;
+  }
+
+  .section,
+  .next-step,
+  .footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 720px;
+  }
+
+  .site-header,
+  .site-header.scrolled {
+    backdrop-filter: none !important;
+    box-shadow: 0 8px 20px rgba(31, 31, 29, .12);
+  }
+
+  .site-header .nav-links {
+    background:
+      linear-gradient(180deg, rgba(92, 49, 28, .94), rgba(198, 91, 24, .92)) !important;
+    backdrop-filter: none !important;
+    box-shadow: -10px 0 24px rgba(31, 31, 29, .18) !important;
+    will-change: transform;
+    contain: layout paint;
+  }
+
+  .nav-links > a:not(.mobile-menu-cta):not(.mobile-register),
+  .nav-links .mobile-menu-cta {
+    min-height: 62px;
+    padding: 11px 12px !important;
+    border-radius: 16px;
+    background: rgba(255, 247, 233, .1);
+    border: 1px solid rgba(255, 247, 233, .14);
+  }
+
+  .nav-links .menu-icon,
+  .nav-links .menu-icon-svg {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px;
+    border-radius: 14px !important;
+    background: rgba(255, 193, 65, .16) !important;
+    color: var(--gold) !important;
+    box-shadow: none !important;
+  }
+
+  .nav-links .menu-icon-svg svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .nav-links a b {
+    font-size: 15px !important;
+  }
+
+  .nav-links a small {
+    font-size: 11px !important;
+    opacity: .82;
+  }
+
+  .mobile-menu-brand img,
+  .brand img,
+  .hero-project-logo {
+    filter: none !important;
+  }
+
+  .shine,
+  .shine::after,
+  .scroll-cue,
+  .gateway-card b,
+  .promo-track,
+  .promo-copy-track,
+  .preloader-glow,
+  .water-title::after {
+    animation: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .hero-slide {
+    transition: opacity .45s ease !important;
+    transform: none !important;
+  }
+
+  .hero-slide.active {
+    transform: none !important;
+  }
+
+  .gateway-card img,
+  .visual-strip .gallery-grid img,
+  .unit-card img,
+  .office-brand-card,
+  .btn {
+    transition-duration: .18s !important;
+  }
+
+  .sales-copy,
+  .sales-card,
+  .feature-card,
+  .unit-card,
+  .contact-form,
+  .office-panel,
+  .auth-card,
+  .auth-copy,
+  .profile-card {
+    box-shadow: 0 12px 28px rgba(31, 31, 29, .10) !important;
+    backdrop-filter: none !important;
+  }
+}
+
 @media (max-width: 1120px) {
   .unit-grid-four {
     grid-template-columns: repeat(2, minmax(0, 1fr));

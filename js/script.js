@@ -90,9 +90,15 @@ function closeMenu() {
   menuToggle.setAttribute("aria-expanded", "false");
 }
 
+let scrollTicking = false;
 window.addEventListener("scroll", () => {
-  header?.classList.toggle("scrolled", window.scrollY > 60);
-});
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    header?.classList.toggle("scrolled", window.scrollY > 60);
+    scrollTicking = false;
+  });
+}, { passive: true });
 
 menuToggle?.addEventListener("click", () => {
   const isOpen = navMenu?.classList.toggle("active");
@@ -199,7 +205,7 @@ if (slides.length) {
 }
 
 const passiveAutoplayVideos = Array.from(document.querySelectorAll("video[autoplay]"))
-  .filter((video) => !video.closest(".hero-slide"));
+  .filter((video) => !video.closest(".hero-slide") && !video.classList.contains("reel-video"));
 
 if ("IntersectionObserver" in window && passiveAutoplayVideos.length) {
   const videoObserver = new IntersectionObserver((entries) => {
@@ -902,6 +908,7 @@ function makeDraggable(element, size = 68) {
   if (!element) return;
   let dragStart = null;
   let moved = false;
+  let activePointerType = null;
 
   function pointerDown(event) {
     if (event.target.matches("input")) return;
@@ -909,7 +916,16 @@ function makeDraggable(element, size = 68) {
     const rect = element.getBoundingClientRect();
     dragStart = { x: point.clientX, y: point.clientY, offsetX: point.clientX - rect.left, offsetY: point.clientY - rect.top };
     moved = false;
+    activePointerType = event.touches ? "touch" : "mouse";
     element.classList.add("dragging");
+
+    if (activePointerType === "touch") {
+      window.addEventListener("touchmove", pointerMove, { passive: false });
+      window.addEventListener("touchend", pointerUp, { once: true });
+    } else {
+      window.addEventListener("mousemove", pointerMove);
+      window.addEventListener("mouseup", pointerUp, { once: true });
+    }
   }
 
   function pointerMove(event) {
@@ -929,15 +945,14 @@ function makeDraggable(element, size = 68) {
 
   function pointerUp() {
     dragStart = null;
+    window.removeEventListener("mousemove", pointerMove);
+    window.removeEventListener("touchmove", pointerMove);
     element.classList.remove("dragging");
+    activePointerType = null;
   }
 
   element.addEventListener("mousedown", pointerDown);
-  window.addEventListener("mousemove", pointerMove, { passive: false });
-  window.addEventListener("mouseup", pointerUp);
   element.addEventListener("touchstart", pointerDown, { passive: true });
-  window.addEventListener("touchmove", pointerMove, { passive: false });
-  window.addEventListener("touchend", pointerUp);
   element.addEventListener("click", (event) => {
     if (moved) {
       event.preventDefault();
