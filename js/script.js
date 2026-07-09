@@ -198,6 +198,27 @@ if (slides.length) {
   startCarousel();
 }
 
+const passiveAutoplayVideos = Array.from(document.querySelectorAll("video[autoplay]"))
+  .filter((video) => !video.closest(".hero-slide"));
+
+if ("IntersectionObserver" in window && passiveAutoplayVideos.length) {
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, { rootMargin: "120px 0px", threshold: 0.18 });
+
+  passiveAutoplayVideos.forEach((video) => {
+    video.pause();
+    videoObserver.observe(video);
+  });
+}
+
 const introCarousel = document.querySelector("[data-intro-carousel]");
 if (introCarousel) {
   const introSlides = Array.from(introCarousel.querySelectorAll(".intro-mosaic-slide"));
@@ -1050,19 +1071,41 @@ const supabaseSessionStorageKey = "torre89_supabase_session";
 if (registerForm && loginForm) {
   loginForm.parentNode.insertBefore(loginForm, registerForm);
   registerForm.classList.add("auth-card-hidden");
+
+  const showAuthForm = (mode) => {
+    const showRegister = mode === "register";
+    registerForm.classList.toggle("auth-card-hidden", !showRegister);
+    loginForm.classList.toggle("auth-card-hidden", showRegister);
+    setAuthMessage("");
+  };
+
   const loginSwitch = document.createElement("p");
   loginSwitch.className = "auth-switch";
   loginSwitch.innerHTML = '¿No tienes cuenta? <a href="#registro" id="showRegisterForm">Regístrese</a>';
   loginForm.appendChild(loginSwitch);
+
+  const registerSwitch = document.createElement("p");
+  registerSwitch.className = "auth-switch";
+  registerSwitch.innerHTML = '¿Ya tienes cuenta? <a href="#inicio-sesion" id="showLoginForm">Inicie sesión</a>';
+  registerForm.appendChild(registerSwitch);
+
   document.getElementById("showRegisterForm")?.addEventListener("click", (event) => {
     event.preventDefault();
-    registerForm.classList.remove("auth-card-hidden");
-    registerForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    showAuthForm("register");
+  });
+
+  document.getElementById("showLoginForm")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    showAuthForm("login");
   });
 }
 
 function setAuthMessage(message, isError = false) {
   if (!authMessage) return;
+  if (registerForm && loginForm) {
+    const activeForm = registerForm.classList.contains("auth-card-hidden") ? loginForm : registerForm;
+    activeForm.appendChild(authMessage);
+  }
   authMessage.textContent = message;
   authMessage.style.color = isError ? "#b12b12" : "#2f7d32";
 }

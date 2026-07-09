@@ -1162,8 +1162,18 @@
   .feature-grid,
   .unit-grid,
   .gallery-grid,
+  .office-brand-grid,
   .timeline-grid {
     grid-template-columns: 1fr;
+  }
+
+  .office-brand-card {
+    min-height: 170px;
+    padding: 22px;
+  }
+
+  .office-brand-card img {
+    max-height: 120px;
   }
 
   .gallery-grid img,

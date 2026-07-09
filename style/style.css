@@ -1756,6 +1756,66 @@ body.night-view .day-night-photo {
   box-shadow: var(--shadow);
 }
 
+.office-brands-section {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 190, 63, .18), transparent 34%),
+    radial-gradient(circle at 84% 18%, rgba(200, 90, 23, .14), transparent 30%),
+    var(--bone);
+}
+
+.office-brand-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.office-brand-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  padding: 26px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .82);
+  border: 1px solid rgba(200, 90, 23, .14);
+  box-shadow: 0 20px 46px rgba(98, 64, 36, .12);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+
+.office-brand-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(120deg, transparent 35%, rgba(255, 204, 93, .42), transparent 62%);
+  transform: translateX(-55%) rotate(12deg);
+  opacity: 0;
+  transition: transform .65s ease, opacity .3s ease;
+}
+
+.office-brand-card:hover,
+.office-brand-card:active {
+  transform: translateY(-6px);
+  border-color: rgba(255, 190, 63, .52);
+  box-shadow: 0 26px 62px rgba(200, 90, 23, .22), 0 0 28px rgba(255, 190, 63, .18);
+}
+
+.office-brand-card:hover::before,
+.office-brand-card:active::before {
+  opacity: 1;
+  transform: translateX(55%) rotate(12deg);
+}
+
+.office-brand-card img {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 220px);
+  max-height: 140px;
+  object-fit: contain;
+  border-radius: 18px;
+  filter: drop-shadow(0 12px 18px rgba(35, 25, 18, .16));
+}
+
 .unit-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

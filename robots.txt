@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /backups/
 Disallow: /*.backup-before-fix.*
+
+Sitemap: https://iaconstrucciones.com/sitemap.xml
