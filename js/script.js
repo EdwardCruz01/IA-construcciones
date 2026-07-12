@@ -1,4 +1,4 @@
-﻿const header = document.getElementById("header");
+const header = document.getElementById("header");
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.getElementById("navMenu");
 const navLinks = document.querySelectorAll(".nav-links a");
@@ -316,19 +316,20 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   const initialVolume = 0.2;
   const savedVolume = Number(localStorage.getItem("torre89_music_volume") || initialVolume);
   const savedTime = Number(localStorage.getItem("torre89_music_time") || 0);
+  const savedTrack = Number(localStorage.getItem("torre89_music_track") || 0);
   const shouldPlayMusic = localStorage.getItem("torre89_music_playing") === "1";
   const musicBasePath = backgroundAudio.getAttribute("src").replace(/[^/\\]+$/, "");
   const musicPlaylist = [
     `${musicBasePath}recepcion audio.MP3`,
     `${musicBasePath}Life Time (Extended Mix).mp3`
   ];
-  let currentMusicTrack = 0;
+  let currentMusicTrack = Number.isInteger(savedTrack) && savedTrack >= 0 && savedTrack < musicPlaylist.length ? savedTrack : 0;
 
   backgroundAudio.loop = false;
   backgroundAudio.src = musicPlaylist[currentMusicTrack];
   backgroundAudio.volume = Number.isFinite(savedVolume) ? Math.min(Math.max(savedVolume, 0), 1) : initialVolume;
   if (musicVolume) musicVolume.value = String(backgroundAudio.volume);
-  if (Number.isFinite(savedTime) && savedTime > 0 && currentMusicTrack === 1) {
+  if (Number.isFinite(savedTime) && savedTime > 0) {
     backgroundAudio.addEventListener("loadedmetadata", () => {
       if (savedTime < backgroundAudio.duration) backgroundAudio.currentTime = savedTime;
     }, { once: true });
@@ -403,13 +404,13 @@ if (musicPlayer && backgroundAudio && musicToggle) {
 
   backgroundAudio.addEventListener("play", () => {
     localStorage.setItem("torre89_music_playing", "1");
+    localStorage.setItem("torre89_music_track", String(currentMusicTrack));
     musicPlayer.classList.add("playing");
     musicToggle.setAttribute("aria-label", "Pausar música");
     if (musicIcon) musicIcon.textContent = "Ⅱ";
   });
 
   backgroundAudio.addEventListener("pause", () => {
-    localStorage.setItem("torre89_music_playing", "0");
     musicPlayer.classList.remove("playing");
     musicToggle.setAttribute("aria-label", "Reproducir música");
     if (musicIcon) musicIcon.textContent = "▶";
@@ -423,6 +424,8 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   backgroundAudio.addEventListener("ended", async () => {
     if (currentMusicTrack === 0) {
       currentMusicTrack = 1;
+      localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+      localStorage.setItem("torre89_music_time", "0");
       backgroundAudio.src = musicPlaylist[currentMusicTrack];
       backgroundAudio.loop = true;
       backgroundAudio.currentTime = 0;
@@ -431,9 +434,13 @@ if (musicPlayer && backgroundAudio && musicToggle) {
   });
 
   backgroundAudio.addEventListener("timeupdate", () => {
-    if (currentMusicTrack === 1) {
-      localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime));
-    }
+    localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+    localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime));
+  });
+
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+    localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime || 0));
   });
 }
 
@@ -706,6 +713,18 @@ document.querySelectorAll("[data-promo-modal]").forEach((button) => {
   });
 });
 
+
+// Abrir fotos de detalle en ventana modal.
+document.querySelectorAll("[data-image-modal]").forEach((image) => {
+  image.addEventListener("click", () => {
+    if (!modal || !modalBody) return;
+    const src = image.dataset.imageModal || image.currentSrc || image.src;
+    const alt = image.getAttribute("alt") || "Detalle del departamento";
+    modalBody.innerHTML = `<div class="image-modal-view"><img src="${src}" alt="${alt}"></div>`;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  });
+});
 function closeModal() {
   if (!modal) return;
   modal.classList.remove("open");
@@ -1062,7 +1081,7 @@ document.addEventListener("visibilitychange", () => {
 emphasizeBrandNames();
 
 document.querySelectorAll(".next-step").forEach((section) => {
-  if (section.querySelector(".back-step-btn")) return;
+  if (section.querySelector(".back-step-btn") || section.querySelector(".next-step-back")) return;
   const button = document.createElement("button");
   button.className = "back-step-btn";
   button.type = "button";

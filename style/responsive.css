@@ -1543,4 +1543,64 @@
     box-shadow: 0 12px 28px rgba(31, 31, 29, .10) !important;
     backdrop-filter: none !important;
   }
+
+  .nav-patriotic {
+    min-height: 38px;
+    padding: 6px 10px 6px 7px;
+    border-radius: 14px;
+  }
+
+  .nav-patriotic img {
+    width: 34px;
+    height: 24px;
+  }
+
+  .nav-patriotic span {
+    font-size: 12px;
+  }
+
+  .torre-concept-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .torre-quick-360 .viewer-360,
+  .torre-quick-360 .viewer-360 iframe {
+    min-height: 300px;
+  }
+
+  .mixed-carousel-track {
+    grid-template-columns: repeat(8, 78vw);
+    gap: 12px;
+    animation-duration: 22s;
+  }
+
+  .mixed-carousel-track img {
+    width: 78vw;
+    height: 250px;
+  }
+
+  .concept-map-wide .mini-map iframe,
+  .concept-contact-bottom .viewer-360 iframe,
+  .contact-bottom-grid .viewer-360 iframe {
+    height: 290px;
+    min-height: 290px;
+  }
+
+  .torre-detail-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-image-card img {
+    height: 220px;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav-patriotic span {
+    display: none;
+  }
+
+  .nav-patriotic {
+    padding: 6px;
+  }
 }
