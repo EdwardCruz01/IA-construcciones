@@ -1,4 +1,4 @@
-@media (max-width: 1120px){
+﻿@media (max-width: 1120px){
   .nav-links{gap:14px;font-size:13px}.nav-social>a:not(.nav-whatsapp){display:none}.split-intro,.story-grid,.product-grid,.contact-panel,.finance-card{grid-template-columns:1fr}.gateway-grid{grid-template-columns:1fr 1fr}.team-grid{grid-template-columns:repeat(2,1fr)}.vertical-photo{min-height:420px}.stacked-photos{min-height:520px}.footer-grid{grid-template-columns:repeat(2,1fr)}
 }
 
