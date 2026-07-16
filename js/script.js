@@ -881,9 +881,9 @@ document.querySelectorAll(".section-contact").forEach((box) => {
   const form = document.createElement("form");
   form.className = "mini-contact-form";
   form.innerHTML = `
-    <label class="mini-contact-reason">Ã‚Â¿Para quÃƒÂ© nos contactas?
+    <label class="mini-contact-reason">¿Para que nos contactas?
       <select name="motivo" required>
-        <option value="">Selecciona una opciÃƒÂ³n</option>
+        <option value="">Selecciona una opción</option>
         <option>Departamentos</option>
         <option>Oficinas</option>
         <option>Local comercial</option>
@@ -893,7 +893,7 @@ document.querySelectorAll(".section-contact").forEach((box) => {
     </label>
     <label>Nombre<input name="nombre" type="text" placeholder="Tu nombre" required></label>
     <label>Edad<input name="edad" type="number" min="16" max="100" placeholder="Tu edad" required></label>
-    <label>TelÃƒÂ©fono<input name="telefono" type="tel" placeholder="Tu nÃƒÂºmero" required></label>
+    <label>Telefono<input name="telefono" type="tel" placeholder="Tu número" required></label>
     <input name="mensaje" type="hidden" value="${title}">
     <button class="btn btn-quote" type="submit">Enviar consulta</button>
   `;
@@ -1085,7 +1085,7 @@ document.querySelectorAll(".next-step").forEach((section) => {
   const button = document.createElement("button");
   button.className = "back-step-btn";
   button.type = "button";
-  button.textContent = "Volver atrÃƒÂ¡s";
+  button.textContent = "Volver atras";
   button.addEventListener("click", () => {
     if (history.length > 1) history.back();
     else location.href = isInsidePages ? "../index.html" : "index.html";
