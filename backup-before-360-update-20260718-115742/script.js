@@ -502,24 +502,14 @@ techButton?.addEventListener("click", () => {
 
 const dayNightToggle = document.getElementById("dayNightToggle");
 const dayNightPhotos = document.querySelectorAll(".day-night-photo");
-const dayNightViewer = document.getElementById("dayNightViewer");
 const vipLightToggle = document.getElementById("vipLightToggle");
 const vipLightPhotos = document.querySelectorAll(".vip-light-photo");
 
 if (dayNightToggle) {
   dayNightToggle.addEventListener("click", () => {
     const isNight = document.body.classList.toggle("night-view");
-    dayNightToggle.textContent = isNight ? "Vista de d?a" : "Vista de noche";
+    dayNightToggle.textContent = isNight ? "Vista de dÃƒÂ­a" : "Vista de noche";
     dayNightToggle.setAttribute("aria-pressed", String(isNight));
-
-    if (dayNightViewer?.dataset.day && dayNightViewer?.dataset.night) {
-      dayNightViewer.style.opacity = "0";
-      setTimeout(() => {
-        dayNightViewer.src = isNight ? dayNightViewer.dataset.night : dayNightViewer.dataset.day;
-        dayNightViewer.style.opacity = "1";
-      }, 240);
-      return;
-    }
 
     dayNightPhotos.forEach((photo) => {
       photo.style.opacity = "0";
@@ -897,7 +887,7 @@ document.querySelectorAll(".section-contact").forEach((box) => {
         <option>Departamentos</option>
         <option>Oficinas</option>
         <option>Local comercial</option>
-        <option>Salón de eventos</option>
+        <option>Sala VIP</option>
         <option>Constructora</option>
       </select>
     </label>
