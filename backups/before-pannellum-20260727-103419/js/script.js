@@ -1,0 +1,1362 @@
+﻿const header = document.getElementById("header");
+const menuToggle = document.getElementById("menuToggle");
+const navMenu = document.getElementById("navMenu");
+const navLinks = document.querySelectorAll(".nav-links a");
+const isInsidePages = location.pathname.replace(/\\/g, "/").includes("/pages/");
+const assetPrefix = isInsidePages ? "../" : "";
+const contactHref = document.body.dataset.contactHref || (isInsidePages ? "contacto.html#contacto" : "pages/contacto.html#contacto");
+const supabaseConfig = {
+  url: "https://ofypbbakwyocnpvrjwzf.supabase.co",
+  anonKey: "sb_publishable_FcxML6YOq9hqVNOXmqLsmg_6vb97tPi",
+  leadsTable: "leads",
+  profilesTable: "profiles",
+  noticesTable: "notices",
+  registerVisitRpc: "register_web_visit"
+};
+const supabaseRestUrl = `${supabaseConfig.url}/rest/v1`;
+const supabaseAuthUrl = `${supabaseConfig.url}/auth/v1`;
+const loaderPhrases = [
+  "Preparando espacios modernos para vivir e invertir.",
+  "Cargando detalles de Torre 89.",
+  "Optimizando recorridos 360 para tu visita.",
+  "Conectando departamentos, oficinas y salÃƒÂ³n VIP.",
+  "La buena inversiÃƒÂ³n empieza con una buena vista."
+];
+
+const preloader = document.getElementById("preloader");
+const acceptCookies = document.getElementById("acceptCookies");
+const loaderPhrase = document.getElementById("loaderPhrase");
+const loaderProgress = document.getElementById("loaderProgress");
+const hasAcceptedConditions = localStorage.getItem("torre89_conditions_ok") === "1";
+
+if (loaderPhrase) {
+  const firstPhraseIndex = Math.floor(Math.random() * loaderPhrases.length);
+  loaderPhrase.textContent = loaderPhrases[firstPhraseIndex];
+
+  setTimeout(() => {
+    const nextPhrases = loaderPhrases.filter((_, index) => index !== firstPhraseIndex);
+    loaderPhrase.textContent = nextPhrases[Math.floor(Math.random() * nextPhrases.length)];
+  }, 1500);
+}
+
+async function hidePreloader() {
+  if (!preloader) return;
+  const audio = document.getElementById("backgroundAudio");
+  const player = document.getElementById("musicPlayer");
+  const icon = document.querySelector("#musicToggle .music-icon");
+
+  if (audio) {
+    audio.volume = 0.2;
+    try {
+      await audio.play();
+      localStorage.setItem("torre89_music_playing", "1");
+      player?.classList.remove("music-error");
+      player?.classList.add("playing");
+      if (icon) icon.textContent = "Ã¢â€¦Â¡";
+    } catch (error) {
+      player?.classList.add("music-error");
+      if (icon) icon.textContent = "!";
+    }
+  }
+
+  localStorage.setItem("torre89_conditions_ok", "1");
+  preloader.classList.add("hide");
+  setTimeout(() => preloader.remove(), 520);
+}
+
+if (preloader) {
+  if (hasAcceptedConditions) {
+    preloader.remove();
+  } else {
+  let loaderValue = 0;
+  const loaderTimer = setInterval(() => {
+    loaderValue = Math.min(loaderValue + Math.random() * 9, 92);
+    if (loaderProgress) loaderProgress.style.width = `${loaderValue}%`;
+    if (loaderValue >= 92) clearInterval(loaderTimer);
+  }, 380);
+
+  window.addEventListener("load", () => {
+    if (loaderProgress) loaderProgress.style.width = "100%";
+  });
+
+  acceptCookies?.addEventListener("click", hidePreloader);
+  }
+}
+
+function closeMenu() {
+  if (!navMenu || !menuToggle) return;
+  navMenu.classList.remove("active");
+  document.body.classList.remove("menu-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+}
+
+let scrollTicking = false;
+window.addEventListener("scroll", () => {
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    header?.classList.toggle("scrolled", window.scrollY > 60);
+    scrollTicking = false;
+  });
+}, { passive: true });
+
+menuToggle?.addEventListener("click", () => {
+  const isOpen = navMenu?.classList.toggle("active");
+  document.body.classList.toggle("menu-open", Boolean(isOpen));
+  menuToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+});
+
+navLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    closeMenu();
+  });
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (!navMenu || !menuToggle || !navMenu.classList.contains("active")) return;
+  if (navMenu.contains(event.target) || menuToggle.contains(event.target)) return;
+  closeMenu();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && navMenu?.classList.contains("active")) closeMenu();
+});
+
+const slides = document.querySelectorAll(".hero-slide");
+const dots = document.querySelectorAll("#heroDots button");
+const prevSlide = document.getElementById("prevSlide");
+const nextSlide = document.getElementById("nextSlide");
+let currentSlide = 0;
+let heroTimer;
+
+function getSlideDuration(slide) {
+  const video = slide.querySelector("video");
+  if (video && Number.isFinite(video.duration) && video.duration > 0) {
+    return Math.max(video.duration * 1000, 4200);
+  }
+  return 5200;
+}
+
+function playActiveSlideMedia() {
+  slides.forEach((slide, index) => {
+    const video = slide.querySelector("video");
+    if (!video) return;
+
+    if (index === currentSlide) {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  });
+}
+
+function showSlide(index) {
+  if (!slides.length) return;
+  slides[currentSlide].classList.remove("active");
+  dots[currentSlide]?.classList.remove("active");
+  currentSlide = (index + slides.length) % slides.length;
+  slides[currentSlide].classList.add("active");
+  dots[currentSlide]?.classList.add("active");
+  playActiveSlideMedia();
+}
+
+function startCarousel() {
+  if (!slides.length) return;
+  clearTimeout(heroTimer);
+  const activeSlide = slides[currentSlide];
+  const activeVideo = activeSlide.querySelector("video");
+
+  if (activeVideo && (!Number.isFinite(activeVideo.duration) || activeVideo.duration <= 0)) {
+    activeVideo.addEventListener("loadedmetadata", startCarousel, { once: true });
+    heroTimer = setTimeout(() => {
+      showSlide(currentSlide + 1);
+      startCarousel();
+    }, 15000);
+    return;
+  }
+
+  heroTimer = setTimeout(() => {
+    showSlide(currentSlide + 1);
+    startCarousel();
+  }, getSlideDuration(activeSlide));
+}
+
+function resetCarousel() {
+  clearTimeout(heroTimer);
+  startCarousel();
+}
+
+prevSlide?.addEventListener("click", () => { showSlide(currentSlide - 1); resetCarousel(); });
+nextSlide?.addEventListener("click", () => { showSlide(currentSlide + 1); resetCarousel(); });
+dots.forEach((dot, index) => dot.addEventListener("click", () => { showSlide(index); resetCarousel(); }));
+slides.forEach((slide, index) => {
+  const video = slide.querySelector("video");
+  if (!video) return;
+  video.addEventListener("ended", () => {
+    if (currentSlide !== index) return;
+    showSlide(currentSlide + 1);
+    resetCarousel();
+  });
+});
+if (slides.length) {
+  playActiveSlideMedia();
+  startCarousel();
+}
+
+const passiveAutoplayVideos = Array.from(document.querySelectorAll("video[autoplay]"))
+  .filter((video) => !video.closest(".hero-slide") && !video.classList.contains("reel-video"));
+
+if ("IntersectionObserver" in window && passiveAutoplayVideos.length) {
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, { rootMargin: "120px 0px", threshold: 0.18 });
+
+  passiveAutoplayVideos.forEach((video) => {
+    video.pause();
+    videoObserver.observe(video);
+  });
+}
+
+const introCarousel = document.querySelector("[data-intro-carousel]");
+if (introCarousel) {
+  const introSlides = Array.from(introCarousel.querySelectorAll(".intro-mosaic-slide"));
+  let introSlideIndex = 0;
+
+  if (introSlides.length > 1) {
+    setInterval(() => {
+      introSlides[introSlideIndex].classList.remove("active");
+      introSlideIndex = (introSlideIndex + 1) % introSlides.length;
+      introSlides[introSlideIndex].classList.add("active");
+    }, 4200);
+  }
+}
+
+const visitCounter = document.getElementById("visitCounter");
+
+async function getVisitCountFromSupabase() {
+  if (!supabaseConfig.url || !supabaseConfig.anonKey || !supabaseConfig.registerVisitRpc) return null;
+
+  try {
+    let sessionId = localStorage.getItem("torre89_session_id");
+    if (!sessionId) {
+      sessionId = window.crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem("torre89_session_id", sessionId);
+    }
+
+    const response = await fetch(`${supabaseRestUrl}/rpc/${supabaseConfig.registerVisitRpc}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`
+      },
+      body: JSON.stringify({
+        p_page_path: location.pathname,
+        p_session_id: sessionId,
+        p_user_agent: navigator.userAgent,
+        p_referrer: document.referrer || null
+      })
+    });
+
+    if (!response.ok) return null;
+    const data = await response.json();
+    return Number(data) || Number(data.total || data.count || 0) || null;
+  } catch (error) {
+    return null;
+  }
+}
+
+async function initVisitCounter() {
+  if (!visitCounter) return;
+
+  const supabaseCount = await getVisitCountFromSupabase();
+  if (typeof supabaseCount === "number") {
+    animateCounter(visitCounter, supabaseCount);
+    return;
+  }
+
+  const key = "torre89_fallback_visits";
+  const currentCount = Number(localStorage.getItem(key) || "1840") + 1;
+  localStorage.setItem(key, currentCount);
+  animateCounter(visitCounter, currentCount);
+}
+
+function animateCounter(element, target) {
+  const start = Math.max(0, target - 80);
+  const duration = 900;
+  const startedAt = performance.now();
+
+  function tick(now) {
+    const progress = Math.min((now - startedAt) / duration, 1);
+    const value = Math.floor(start + (target - start) * progress);
+    element.textContent = value.toLocaleString("es-PE");
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+initVisitCounter();
+
+const musicPlayer = document.getElementById("musicPlayer");
+const backgroundAudio = document.getElementById("backgroundAudio");
+const musicToggle = document.getElementById("musicToggle");
+const musicIcon = musicToggle ? musicToggle.querySelector(".music-icon") : null;
+const musicVolume = document.getElementById("musicVolume");
+
+if (musicPlayer && backgroundAudio && musicToggle) {
+  const initialVolume = 0.2;
+  const savedVolume = Number(localStorage.getItem("torre89_music_volume") || initialVolume);
+  const savedTime = Number(localStorage.getItem("torre89_music_time") || 0);
+  const savedTrack = Number(localStorage.getItem("torre89_music_track") || 0);
+  const shouldPlayMusic = localStorage.getItem("torre89_music_playing") === "1";
+  const musicBasePath = backgroundAudio.getAttribute("src").replace(/[^/\\]+$/, "");
+  const musicPlaylist = [
+    `${musicBasePath}recepcion audio.MP3`,
+    `${musicBasePath}Life Time (Extended Mix).mp3`
+  ];
+  let currentMusicTrack = Number.isInteger(savedTrack) && savedTrack >= 0 && savedTrack < musicPlaylist.length ? savedTrack : 0;
+
+  backgroundAudio.loop = false;
+  backgroundAudio.src = musicPlaylist[currentMusicTrack];
+  backgroundAudio.volume = Number.isFinite(savedVolume) ? Math.min(Math.max(savedVolume, 0), 1) : initialVolume;
+  if (musicVolume) musicVolume.value = String(backgroundAudio.volume);
+  if (Number.isFinite(savedTime) && savedTime > 0) {
+    backgroundAudio.addEventListener("loadedmetadata", () => {
+      if (savedTime < backgroundAudio.duration) backgroundAudio.currentTime = savedTime;
+    }, { once: true });
+  }
+  let musicHideTimer;
+
+  function expandMusicControls() {
+    musicPlayer.classList.add("expanded");
+    clearTimeout(musicHideTimer);
+  }
+
+  function scheduleHideMusicControls() {
+    clearTimeout(musicHideTimer);
+    musicHideTimer = setTimeout(() => musicPlayer.classList.remove("expanded"), 1300);
+  }
+
+  const tryPlayMusic = async () => {
+    try {
+      await backgroundAudio.play();
+      localStorage.setItem("torre89_music_playing", "1");
+      musicPlayer.classList.remove("music-error");
+    } catch (error) {
+      musicPlayer.classList.remove("playing");
+    }
+  };
+
+  if (shouldPlayMusic) setTimeout(tryPlayMusic, 250);
+
+  ["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
+    window.addEventListener(eventName, tryPlayMusic, { once: true, passive: true });
+  });
+
+  musicToggle.addEventListener("click", async () => {
+    try {
+      if (backgroundAudio.paused) {
+        await backgroundAudio.play();
+        localStorage.setItem("torre89_music_playing", "1");
+      } else {
+        backgroundAudio.pause();
+        localStorage.setItem("torre89_music_playing", "0");
+      }
+    } catch (error) {
+      musicPlayer.classList.add("music-error");
+      if (musicIcon) musicIcon.textContent = "";
+    }
+  });
+
+  if (musicVolume) {
+    const paintVolume = () => {
+      const value = Number(musicVolume.value) * 100;
+      musicVolume.style.background = `linear-gradient(90deg, var(--gold-2) ${value}%, rgba(255, 255, 255, 0.24) ${value}%)`;
+    };
+
+    musicPlayer.addEventListener("pointerdown", expandMusicControls);
+    musicPlayer.addEventListener("mouseenter", expandMusicControls);
+    musicPlayer.addEventListener("mouseleave", scheduleHideMusicControls);
+    document.addEventListener("pointerdown", (event) => {
+      if (!musicPlayer.contains(event.target)) musicPlayer.classList.remove("expanded");
+    });
+
+    musicVolume.addEventListener("input", () => {
+      backgroundAudio.volume = Number(musicVolume.value);
+      localStorage.setItem("torre89_music_volume", String(backgroundAudio.volume));
+      expandMusicControls();
+      paintVolume();
+    });
+
+    musicVolume.addEventListener("change", scheduleHideMusicControls);
+
+    paintVolume();
+  }
+
+  backgroundAudio.addEventListener("play", () => {
+    localStorage.setItem("torre89_music_playing", "1");
+    localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+    musicPlayer.classList.add("playing");
+    musicToggle.setAttribute("aria-label", "Pausar mÃƒÂºsica");
+    if (musicIcon) musicIcon.textContent = "Ã¢â€¦Â¡";
+  });
+
+  backgroundAudio.addEventListener("pause", () => {
+    musicPlayer.classList.remove("playing");
+    musicToggle.setAttribute("aria-label", "Reproducir mÃƒÂºsica");
+    if (musicIcon) musicIcon.textContent = "Ã¢â€“Â¶";
+  });
+
+  backgroundAudio.addEventListener("error", () => {
+    musicPlayer.classList.add("music-error");
+    if (musicIcon) musicIcon.textContent = "";
+  });
+
+  backgroundAudio.addEventListener("ended", async () => {
+    if (currentMusicTrack === 0) {
+      currentMusicTrack = 1;
+      localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+      localStorage.setItem("torre89_music_time", "0");
+      backgroundAudio.src = musicPlaylist[currentMusicTrack];
+      backgroundAudio.loop = true;
+      backgroundAudio.currentTime = 0;
+      await tryPlayMusic();
+    }
+  });
+
+  backgroundAudio.addEventListener("timeupdate", () => {
+    localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+    localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime));
+  });
+
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("torre89_music_track", String(currentMusicTrack));
+    localStorage.setItem("torre89_music_time", String(backgroundAudio.currentTime || 0));
+  });
+}
+
+const revealItems = document.querySelectorAll(".reveal");
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.14 });
+revealItems.forEach((item) => revealObserver.observe(item));
+
+const reelVideos = document.querySelectorAll(".reel-video");
+
+function playReelVideo(video) {
+  video.muted = true;
+  video.playsInline = true;
+  if (video.readyState < 2) video.load();
+  video.play().catch(() => {});
+}
+
+const reelObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    const video = entry.target;
+    if (entry.isIntersecting) {
+      playReelVideo(video);
+    } else {
+      video.pause();
+    }
+  });
+}, { threshold: 0.28 });
+
+reelVideos.forEach((video) => {
+  reelObserver.observe(video);
+  video.addEventListener("loadeddata", () => playReelVideo(video), { once: true });
+});
+
+["pointerdown", "touchstart", "keydown"].forEach((eventName) => {
+  window.addEventListener(eventName, () => {
+    reelVideos.forEach(playReelVideo);
+  }, { once: true, passive: true });
+});
+
+const techButton = document.getElementById("toggleTech");
+const techPanel = document.getElementById("techPanel");
+techButton?.addEventListener("click", () => {
+  if (!techPanel) return;
+  const isOpen = techPanel.classList.toggle("open");
+  techButton.textContent = isOpen ? "Ocultar detalles tÃƒÂ©cnicos" : "Ver detalles tÃƒÂ©cnicos";
+
+  if (isOpen) {
+    setTimeout(() => {
+      techPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }
+});
+
+const dayNightToggle = document.getElementById("dayNightToggle");
+const dayNightPhotos = document.querySelectorAll(".day-night-photo");
+const dayNightViewer = document.getElementById("dayNightViewer");
+const vipLightToggle = document.getElementById("vipLightToggle");
+const vipLightPhotos = document.querySelectorAll(".vip-light-photo");
+
+if (dayNightToggle) {
+  dayNightToggle.addEventListener("click", () => {
+    const isNight = document.body.classList.toggle("night-view");
+    dayNightToggle.textContent = isNight ? "Vista de d?a" : "Vista de noche";
+    dayNightToggle.setAttribute("aria-pressed", String(isNight));
+
+    if (dayNightViewer?.dataset.day && dayNightViewer?.dataset.night) {
+      dayNightViewer.style.opacity = "0";
+      setTimeout(() => {
+        dayNightViewer.src = isNight ? dayNightViewer.dataset.night : dayNightViewer.dataset.day;
+        dayNightViewer.style.opacity = "1";
+      }, 240);
+      return;
+    }
+
+    dayNightPhotos.forEach((photo) => {
+      photo.style.opacity = "0";
+      setTimeout(() => {
+        photo.src = isNight ? photo.dataset.night : photo.dataset.day;
+        photo.style.opacity = "1";
+      }, 240);
+    });
+  });
+}
+
+if (vipLightToggle) {
+  vipLightToggle.addEventListener("click", () => {
+    const isNight = document.body.classList.toggle("night-view");
+    vipLightToggle.textContent = isNight ? "Modo con luz" : "Modo sin luz";
+    vipLightToggle.setAttribute("aria-pressed", String(isNight));
+
+    vipLightPhotos.forEach((photo) => {
+      if (!photo.dataset.day || !photo.dataset.night) return;
+      photo.style.opacity = "0";
+      setTimeout(() => {
+        photo.src = isNight ? photo.dataset.night : photo.dataset.day;
+        photo.style.opacity = "1";
+      }, 240);
+    });
+  });
+}
+
+const progressSlides = document.querySelectorAll(".progress-slide");
+const progressDots = document.querySelectorAll("#progressDots button");
+const progressPrev = document.getElementById("progressPrev");
+const progressNext = document.getElementById("progressNext");
+let progressIndex = 0;
+let progressTimer;
+
+function showProgressSlide(index) {
+  if (!progressSlides.length) return;
+  progressSlides[progressIndex].classList.remove("active");
+  progressDots[progressIndex]?.classList.remove("active");
+  progressIndex = (index + progressSlides.length) % progressSlides.length;
+  progressSlides[progressIndex].classList.add("active");
+  progressDots[progressIndex]?.classList.add("active");
+}
+
+function startProgressCarousel() {
+  clearInterval(progressTimer);
+  if (progressSlides.length > 1) {
+    progressTimer = setInterval(() => showProgressSlide(progressIndex + 1), 5200);
+  }
+}
+
+progressPrev?.addEventListener("click", () => { showProgressSlide(progressIndex - 1); startProgressCarousel(); });
+progressNext?.addEventListener("click", () => { showProgressSlide(progressIndex + 1); startProgressCarousel(); });
+progressDots.forEach((dot, index) => dot.addEventListener("click", () => { showProgressSlide(index); startProgressCarousel(); }));
+startProgressCarousel();
+
+document.querySelectorAll("[data-viewer-src]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const viewer = document.getElementById("depaViewer360");
+    document.querySelectorAll("[data-viewer-src]").forEach((item) => item.classList.toggle("active", item === button));
+    if (viewer && viewer.src !== button.dataset.viewerSrc) viewer.src = button.dataset.viewerSrc;
+  });
+});
+
+document.querySelectorAll("[data-finance-option]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const option = button.dataset.financeOption;
+    document.querySelectorAll("[data-finance-option]").forEach((item) => {
+      item.classList.toggle("active", item === button);
+    });
+    document.querySelectorAll("[data-finance-panel]").forEach((panel) => {
+      panel.classList.toggle("active", panel.dataset.financePanel === option);
+    });
+  });
+});
+
+document.querySelectorAll("[data-promo] .promo-track").forEach((track) => {
+  if (track.dataset.cloned !== "true") {
+    track.innerHTML += track.innerHTML;
+    track.dataset.cloned = "true";
+  }
+
+  track.addEventListener("pointerdown", () => track.classList.add("promo-paused"));
+  track.addEventListener("pointerup", () => {
+    setTimeout(() => track.classList.remove("promo-paused"), 800);
+  });
+  track.addEventListener("pointerleave", () => track.classList.remove("promo-paused"));
+});
+
+document.querySelectorAll("[data-service-toggle]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const text = button.nextElementSibling;
+    button.classList.toggle("active");
+    if (text) text.classList.toggle("open");
+  });
+});
+
+const modalData = {
+  tipoA: {
+    title: "Departamento Tipo II",
+    count: "8 departamentos disponibles",
+    area: "103.8 mÃ‚Â²",
+    normalPrice: "$134,000.00",
+    presalePrice: "$129,900.00",
+    text: "DistribuciÃƒÂ³n funcional para vivir o invertir, con ambientes optimizados y acabados modernos.",
+    images: [`${assetPrefix}imagenes/proyectos/depa interior 1.jpg`, `${assetPrefix}imagenes/proyectos/cocina 1.jpg`]
+  },
+  tipoB: {
+    title: "Departamento Tipo III",
+    count: "7 departamentos disponibles",
+    area: "113.7 mÃ‚Â²",
+    normalPrice: "$138,000.00",
+    presalePrice: "$133,900.00",
+    text: "OpciÃƒÂ³n familiar con mayor amplitud social, dormitorios bien iluminados y espacios adaptables.",
+    images: [`${assetPrefix}imagenes/proyectos/depa interior 2.jpg`, `${assetPrefix}imagenes/proyectos/interior 5.jpg`]
+  },
+  tipoC: {
+    title: "Departamento Tipo IV",
+    count: "4 departamentos disponibles",
+    area: "208.5 mÃ‚Â²",
+    normalPrice: "$200,000.00",
+    presalePrice: "$193,900.00",
+    text: "Formato premium con mayor ÃƒÂ¡rea ÃƒÂºtil, mejor amplitud y acabados superiores para una experiencia residencial mÃƒÂ¡s exclusiva.",
+    images: [`${assetPrefix}imagenes/proyectos/interior 6.jpg`, `${assetPrefix}imagenes/proyectos/depa interior 1.jpg`]
+  }
+};
+
+const modal = document.getElementById("infoModal");
+const modalBody = document.getElementById("modalBody");
+const modalClose = document.getElementById("modalClose");
+
+const promoData = {
+  promo1: { category: "Promociones venta de departamentos", title: "Promo 1", separation: "20%", benefit: "Gratis los accesorios para sus muebles bajos de cocina." },
+  promo2: { category: "Promociones venta de departamentos", title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavanderÃƒÂ­a con lavadora y mueble." },
+  promo3: { category: "Promociones venta de departamentos", title: "Promo 3", separation: "60%", benefit: "Gratis le damos el mueble de entretenimiento para la sala." },
+  promo4: { category: "Promociones venta de departamentos", title: "Promo 4", separation: "80%", benefit: "Gratis su cocina + campana empotrada." },
+  promo5: { category: "Promociones venta de departamentos", title: "Promo 5", separation: "100%", benefit: "Gratis refrigeradora + horno empotrado + horno microondas empotrado." },
+  office1: { category: "PromociÃƒÂ³n oficinas", title: "Oficina equipada", conditionLabel: "Incluye", separation: "ImplementaciÃƒÂ³n", benefit: "Primer mes con asesorÃƒÂ­a para distribuir mobiliario, puntos de trabajo y presentaciÃƒÂ³n corporativa." },
+  office2: { category: "PromociÃƒÂ³n oficinas", title: "Servicios incluidos", conditionLabel: "Incluye", separation: "Todo listo", benefit: "WiFi, luz, agua y limpieza de ÃƒÂ¡reas comunes incluidos para iniciar operaciones con mayor comodidad." },
+  office3: { category: "PromociÃƒÂ³n oficinas", title: "Plan trimestral", conditionLabel: "CondiciÃƒÂ³n", separation: "Ahorro", benefit: "Tarifa preferencial para empresas o profesionales que separen alquiler por tres meses anticipados." },
+  event1: { category: "PromociÃƒÂ³n SalÃƒÂ³n VIP", title: "Reserva tu fecha", conditionLabel: "Incluye", separation: "DecoraciÃƒÂ³n", benefit: "DecoraciÃƒÂ³n base y coordinaciÃƒÂ³n inicial incluida para reuniones privadas, familiares o presentaciones." },
+  event2: { category: "PromociÃƒÂ³n SalÃƒÂ³n VIP", title: "Evento corporativo", conditionLabel: "Incluye", separation: "Preferencial", benefit: "Tarifa especial para capacitaciones, reuniones empresariales y actividades institucionales." },
+  event3: { category: "PromociÃƒÂ³n SalÃƒÂ³n VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." },
+  pcbox1: { category: "PromociÃƒÂ³n PC Box", title: "Combo tecnolÃƒÂ³gico", conditionLabel: "Beneficio", separation: "Accesorios", benefit: "Combos referenciales para escritorio, estudio u oficina con asesorÃƒÂ­a para elegir accesorios compatibles." },
+  pcbox2: { category: "PromociÃƒÂ³n PC Box", title: "Compra con crÃƒÂ©dito", conditionLabel: "Beneficio", separation: "Financiamiento", benefit: "Opciones de crÃƒÂ©dito para financiar artÃƒÂ­culos tecnolÃƒÂ³gicos segÃƒÂºn evaluaciÃƒÂ³n, campaÃƒÂ±a y disponibilidad." },
+  pcbox3: { category: "PromociÃƒÂ³n PC Box", title: "Cliente Torre 89", conditionLabel: "Beneficio", separation: "Especial", benefit: "CampaÃƒÂ±as y atenciÃƒÂ³n preferencial para residentes, oficinas y visitantes de Torre 89." }
+};
+
+document.querySelectorAll("[data-modal]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const data = modalData[button.dataset.modal];
+    if (!modal || !modalBody || !data) return;
+    modalBody.innerHTML = `
+      <div class="modal-depa-header">
+        <span>Torre 89</span>
+        <h2>${data.title}</h2>
+        <p>${data.text}</p>
+      </div>
+      <div class="modal-depa-summary">
+        <div><small>Cantidad</small><strong>${data.count}</strong></div>
+        <div><small>ÃƒÂrea</small><strong>${data.area}</strong></div>
+      </div>
+      <div class="modal-price-grid">
+        <div class="price-card">
+          <small>Precio normal</small>
+          <strong>${data.normalPrice}</strong>
+        </div>
+        <div class="price-card price-card-featured">
+          <small>Precio preventa</small>
+          <strong>${data.presalePrice}</strong>
+        </div>
+      </div>
+      <div class="modal-gallery">
+        ${data.images.map((src) => `<img src="${src}" alt="${data.title}">`).join("")}
+      </div>
+      <a class="btn btn-primary modal-reserve" href="${contactHref}">Reserva ya</a>
+    `;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  });
+});
+
+document.querySelectorAll("[data-promo-modal]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const data = promoData[button.dataset.promoModal];
+    if (!modal || !modalBody || !data) return;
+    modalBody.innerHTML = `
+      <div class="modal-depa-header promo-modal-content">
+        <span>${data.category || "PromociÃƒÂ³n Torre 89"}</span>
+        <h2>${data.title}</h2>
+        <div class="modal-depa-summary">
+          <div><small>${data.conditionLabel || "SeparaciÃƒÂ³n"}</small><strong>${data.separation}</strong></div>
+          <div><small>Beneficio</small><strong>${data.benefit}</strong></div>
+        </div>
+        <p>PromociÃƒÂ³n sujeta a disponibilidad y validaciÃƒÂ³n comercial. IA Construcciones confirmarÃƒÂ¡ condiciones finales al momento de la reserva.</p>
+        <a class="btn btn-primary modal-reserve" href="${contactHref}">Quiero esta promociÃƒÂ³n</a>
+      </div>
+    `;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  });
+});
+
+
+// Abrir fotos de detalle en ventana modal.
+document.querySelectorAll("[data-image-modal]").forEach((image) => {
+  image.addEventListener("click", () => {
+    if (!modal || !modalBody) return;
+    const src = image.dataset.imageModal || image.currentSrc || image.src;
+    const alt = image.getAttribute("alt") || "Detalle del departamento";
+    modalBody.innerHTML = `<div class="image-modal-view"><img src="${src}" alt="${alt}"></div>`;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  });
+});
+function closeModal() {
+  if (!modal) return;
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
+}
+modalClose?.addEventListener("click", closeModal);
+modal?.addEventListener("click", (event) => {
+  if (event.target === modal) closeModal();
+  if (event.target.closest(".modal-reserve")) closeModal();
+});
+
+document.querySelectorAll(".gateway-card, .services-card, .vertical-photo, .stacked-photos img").forEach((item) => {
+  item.addEventListener("click", () => {
+    item.classList.add("image-active");
+    setTimeout(() => item.classList.remove("image-active"), 850);
+  });
+});
+
+const contactForm = document.getElementById("contactForm");
+async function sendLeadToSupabase(payload) {
+  if (!supabaseConfig.url || !supabaseConfig.anonKey) return false;
+
+  const leadRow = {
+    full_name: payload.nombre || payload.full_name || "",
+    age: payload.edad ? Number(payload.edad) : null,
+    phone: payload.telefono || payload.phone || "",
+    email: payload.correo || payload.email || null,
+    country: payload.pais || payload.country || null,
+    region: payload.region || null,
+    district: payload.distrito || payload.district || null,
+    interest: payload.tipo_proyecto || payload.interest || "Consulta web",
+    source_section: payload.pagina || payload.source_section || location.pathname,
+    message: [payload.edad ? `Edad: ${payload.edad}` : "", payload.mensaje || payload.message || ""].filter(Boolean).join(" | "),
+    accepted_terms: true,
+    status: "nuevo"
+  };
+
+  try {
+    const response = await fetch(`${supabaseRestUrl}/${supabaseConfig.leadsTable}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(leadRow)
+    });
+
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
+async function sendSupabaseRow(table, row) {
+  if (!supabaseConfig.url || !supabaseConfig.anonKey || !table) return false;
+  try {
+    const response = await fetch(`${supabaseRestUrl}/${table}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(row)
+    });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
+function buildWhatsAppMessage(data) {
+  return [
+    "Hola, quiero recibir informaciÃƒÂ³n sobre Torre 89 e IA Construcciones.",
+    data.nombre ? `Nombre: ${data.nombre}` : "",
+    data.edad ? `Edad: ${data.edad}` : "",
+    data.telefono ? `TelÃƒÂ©fono: ${data.telefono}` : "",
+    data.correo ? `Correo: ${data.correo}` : "",
+    data.pais ? `PaÃƒÂ­s: ${data.pais}` : "",
+    data.region ? `RegiÃƒÂ³n/Departamento: ${data.region}` : "",
+    data.distrito ? `Distrito: ${data.distrito}` : "",
+    data.tipo_proyecto ? `InterÃƒÂ©s: ${data.tipo_proyecto}` : "",
+    data.mensaje ? `Mensaje: ${data.mensaje}` : ""
+  ].filter(Boolean).join("\n");
+}
+
+contactForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const nombre = document.getElementById("nombre").value.trim();
+  const edad = document.getElementById("edad")?.value.trim() || "";
+  const telefono = document.getElementById("telefono").value.trim();
+  const correo = document.getElementById("correo").value.trim();
+  const pais = document.getElementById("paisContacto").value;
+  const region = document.getElementById("regionContacto").value.trim();
+  const distrito = document.getElementById("distritoContacto").value.trim();
+  const tipoProyecto = document.getElementById("tipoProyecto").value;
+  const mensaje = document.getElementById("mensaje").value.trim();
+  const leadPayload = {
+    nombre,
+    edad,
+    telefono,
+    correo,
+    pais,
+    region,
+    distrito,
+    tipo_proyecto: tipoProyecto,
+    mensaje,
+    pagina: location.pathname,
+    created_at: new Date().toISOString()
+  };
+
+  sendLeadToSupabase(leadPayload).catch(() => false);
+
+  const whatsappMessage = buildWhatsAppMessage(leadPayload);
+  window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+});
+
+const contactNumbers = {
+  departamentos: "955042736",
+  oficinas: "955042736",
+  local: "955042736",
+  "sala-vip": "955042736",
+  constructora: "955042736"
+};
+
+const contactReason = document.getElementById("contactReason");
+const contactReasonActions = document.getElementById("contactReasonActions");
+const contactReasonCall = document.getElementById("contactReasonCall");
+const contactReasonWhatsapp = document.getElementById("contactReasonWhatsapp");
+
+function updateContactReasonActions() {
+  if (!contactReason || !contactReasonActions || !contactReasonCall || !contactReasonWhatsapp) return;
+  const value = contactReason.value;
+  const number = contactNumbers[value];
+  if (!number) {
+    contactReasonActions.hidden = true;
+    return;
+  }
+  const label = contactReason.options[contactReason.selectedIndex]?.textContent || "consulta";
+  contactReasonCall.href = `tel:+51${number}`;
+  contactReasonWhatsapp.href = `https://wa.me/51${number}?text=${encodeURIComponent(`Hola, quiero contactar por ${label}.`)}`;
+  contactReasonActions.hidden = false;
+}
+
+contactReason?.addEventListener("change", updateContactReasonActions);
+updateContactReasonActions();
+
+document.querySelectorAll(".section-contact").forEach((box) => {
+  if (box.querySelector(".mini-contact-form")) return;
+  const title = box.querySelector("strong")?.textContent?.trim() || "Consulta";
+  const form = document.createElement("form");
+  form.className = "mini-contact-form";
+  form.innerHTML = `
+    <label class="mini-contact-reason">¿Para que nos contactas?
+      <select name="motivo" required>
+        <option value="">Selecciona una opción</option>
+        <option>Departamentos</option>
+        <option>Oficinas</option>
+        <option>Local comercial</option>
+        <option>Salón de eventos</option>
+        <option>Constructora</option>
+      </select>
+    </label>
+    <label>Nombre<input name="nombre" type="text" placeholder="Tu nombre" required></label>
+    <label>Edad<input name="edad" type="number" min="16" max="100" placeholder="Tu edad" required></label>
+    <label>Telefono<input name="telefono" type="tel" placeholder="Tu número" required></label>
+    <input name="mensaje" type="hidden" value="${title}">
+    <button class="btn btn-quote" type="submit">Enviar consulta</button>
+  `;
+  box.appendChild(form);
+});
+
+document.querySelectorAll(".mini-contact-form").forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const leadPayload = {
+      nombre: String(formData.get("nombre") || "").trim(),
+      edad: String(formData.get("edad") || "").trim(),
+      telefono: String(formData.get("telefono") || "").trim(),
+      tipo_proyecto: String(formData.get("motivo") || formData.get("mensaje") || "").trim(),
+      mensaje: "Formulario corto de secciÃƒÂ³n",
+      pagina: location.pathname,
+      created_at: new Date().toISOString()
+    };
+
+    sendLeadToSupabase(leadPayload).catch(() => false);
+    const whatsappMessage = buildWhatsAppMessage(leadPayload);
+    window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+    form.reset();
+  });
+});
+
+const floatingWhatsapp = document.getElementById("floatingWhatsapp");
+
+function makeDraggable(element, size = 68) {
+  if (!element) return;
+  let dragStart = null;
+  let moved = false;
+  let activePointerType = null;
+
+  function pointerDown(event) {
+    if (event.target.matches("input")) return;
+    const point = event.touches ? event.touches[0] : event;
+    const rect = element.getBoundingClientRect();
+    dragStart = { x: point.clientX, y: point.clientY, offsetX: point.clientX - rect.left, offsetY: point.clientY - rect.top };
+    moved = false;
+    activePointerType = event.touches ? "touch" : "mouse";
+    element.classList.add("dragging");
+
+    if (activePointerType === "touch") {
+      window.addEventListener("touchmove", pointerMove, { passive: false });
+      window.addEventListener("touchend", pointerUp, { once: true });
+    } else {
+      window.addEventListener("mousemove", pointerMove);
+      window.addEventListener("mouseup", pointerUp, { once: true });
+    }
+  }
+
+  function pointerMove(event) {
+    if (!dragStart) return;
+    const point = event.touches ? event.touches[0] : event;
+    const dx = Math.abs(point.clientX - dragStart.x);
+    const dy = Math.abs(point.clientY - dragStart.y);
+    if (dx + dy > 6) moved = true;
+    const x = Math.min(window.innerWidth - size, Math.max(8, point.clientX - dragStart.offsetX));
+    const y = Math.min(window.innerHeight - size, Math.max(8, point.clientY - dragStart.offsetY));
+    element.style.left = `${x}px`;
+    element.style.top = `${y}px`;
+    element.style.right = "auto";
+    element.style.bottom = "auto";
+    event.preventDefault();
+  }
+
+  function pointerUp() {
+    dragStart = null;
+    window.removeEventListener("mousemove", pointerMove);
+    window.removeEventListener("touchmove", pointerMove);
+    element.classList.remove("dragging");
+    activePointerType = null;
+  }
+
+  element.addEventListener("mousedown", pointerDown);
+  element.addEventListener("touchstart", pointerDown, { passive: true });
+  element.addEventListener("click", (event) => {
+    if (moved) {
+      event.preventDefault();
+      event.stopPropagation();
+      moved = false;
+    }
+  });
+}
+
+makeDraggable(floatingWhatsapp);
+makeDraggable(musicPlayer, 76);
+
+function emphasizeBrandNames() {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      if (!parent || ["SCRIPT", "STYLE", "TEXTAREA", "INPUT", "SELECT", "OPTION", "STRONG"].includes(parent.tagName)) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return /Torre 89|IA Construcciones/.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach((node) => {
+    const fragment = document.createDocumentFragment();
+    node.nodeValue.split(/(Torre 89|IA Construcciones)/g).forEach((part) => {
+      if (part === "Torre 89" || part === "IA Construcciones") {
+        const strong = document.createElement("strong");
+        strong.className = "brand-emphasis";
+        strong.textContent = part;
+        fragment.appendChild(strong);
+      } else {
+        fragment.appendChild(document.createTextNode(part));
+      }
+    });
+    node.parentNode.replaceChild(fragment, node);
+  });
+}
+
+function addReferenceLabels() {
+  // Desactivado: envolver imÃƒÂ¡genes alteraba proporciones en galerÃƒÂ­as y tarjetas.
+}
+
+function getTrackingSessionId() {
+  let sessionId = localStorage.getItem("torre89_session_id");
+  if (!sessionId) {
+    sessionId = window.crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    localStorage.setItem("torre89_session_id", sessionId);
+  }
+  return sessionId;
+}
+
+function getSectionKeyFromPath() {
+  const path = location.pathname.toLowerCase();
+  if (path.includes("departamento-tipo-ii")) return "departamento_tipo_ii";
+  if (path.includes("departamento-tipo-iii")) return "departamento_tipo_iii";
+  if (path.includes("departamento-tipo-iv")) return "departamento_tipo_iv";
+  if (path.includes("departamentos")) return "departamentos";
+  if (path.includes("oficinas")) return "oficinas";
+  if (path.includes("local")) return "local";
+  if (path.includes("sala-vip")) return "sala_vip";
+  return null;
+}
+
+const trackedSectionKey = getSectionKeyFromPath();
+const pageStartedAt = Date.now();
+if (trackedSectionKey) {
+  sendSupabaseRow("section_visits", {
+    section_key: trackedSectionKey,
+    page_path: location.pathname,
+    session_id: getTrackingSessionId(),
+    user_agent: navigator.userAgent,
+    referrer: document.referrer || null
+  }).catch(() => false);
+}
+
+function trackSessionDuration() {
+  const seconds = Math.max(1, Math.round((Date.now() - pageStartedAt) / 1000));
+  const payload = {
+    page_path: location.pathname,
+    session_id: getTrackingSessionId(),
+    duration_seconds: seconds,
+    section_key: trackedSectionKey,
+    user_agent: navigator.userAgent
+  };
+  if (supabaseConfig.url && supabaseConfig.anonKey) {
+    fetch(`${supabaseRestUrl}/session_durations`, {
+      method: "POST",
+      keepalive: true,
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseConfig.anonKey,
+        Authorization: `Bearer ${supabaseConfig.anonKey}`,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).catch(() => false);
+  }
+}
+
+window.addEventListener("pagehide", trackSessionDuration, { once: true });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") trackSessionDuration();
+}, { once: true });
+
+emphasizeBrandNames();
+
+document.querySelectorAll(".next-step").forEach((section) => {
+  if (section.querySelector(".back-step-btn") || section.querySelector(".next-step-back")) return;
+  const button = document.createElement("button");
+  button.className = "back-step-btn";
+  button.type = "button";
+  button.textContent = "Volver atras";
+  button.addEventListener("click", () => {
+    if (history.length > 1) history.back();
+    else location.href = isInsidePages ? "../index.html" : "index.html";
+  });
+  section.prepend(button);
+});
+
+const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
+const authMessage = document.getElementById("authMessage");
+const profileData = document.getElementById("profileData");
+const logoutBtn = document.getElementById("logoutBtn");
+const userStorageKey = "torre89_registered_user";
+const sessionStorageKey = "torre89_active_session";
+const supabaseSessionStorageKey = "torre89_supabase_session";
+
+if (registerForm && loginForm) {
+  loginForm.parentNode.insertBefore(loginForm, registerForm);
+  registerForm.classList.add("auth-card-hidden");
+
+  const showAuthForm = (mode) => {
+    const showRegister = mode === "register";
+    registerForm.classList.toggle("auth-card-hidden", !showRegister);
+    loginForm.classList.toggle("auth-card-hidden", showRegister);
+    setAuthMessage("");
+  };
+
+  const loginSwitch = document.createElement("p");
+  loginSwitch.className = "auth-switch";
+  loginSwitch.innerHTML = 'Ã‚Â¿No tienes cuenta? <a href="#registro" id="showRegisterForm">RegÃƒÂ­strese</a>';
+  loginForm.appendChild(loginSwitch);
+
+  const registerSwitch = document.createElement("p");
+  registerSwitch.className = "auth-switch";
+  registerSwitch.innerHTML = 'Ã‚Â¿Ya tienes cuenta? <a href="#inicio-sesion" id="showLoginForm">Inicie sesiÃƒÂ³n</a>';
+  registerForm.appendChild(registerSwitch);
+
+  document.getElementById("showRegisterForm")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    showAuthForm("register");
+  });
+
+  document.getElementById("showLoginForm")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    showAuthForm("login");
+  });
+}
+
+function setAuthMessage(message, isError = false) {
+  if (!authMessage) return;
+  if (registerForm && loginForm) {
+    const activeForm = registerForm.classList.contains("auth-card-hidden") ? loginForm : registerForm;
+    activeForm.appendChild(authMessage);
+  }
+  authMessage.textContent = message;
+  authMessage.style.color = isError ? "#b12b12" : "#2f7d32";
+}
+
+function getRegisteredUser() {
+  try {
+    return JSON.parse(localStorage.getItem(userStorageKey) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function hasSupabaseConfig() {
+  return Boolean(supabaseConfig.url && supabaseConfig.anonKey);
+}
+
+function getSupabaseSession() {
+  try {
+    return JSON.parse(localStorage.getItem(supabaseSessionStorageKey) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function setSupabaseSession(session) {
+  if (!session) return;
+  localStorage.setItem(supabaseSessionStorageKey, JSON.stringify(session));
+}
+
+async function supabaseAuthRequest(endpoint, body) {
+  if (!hasSupabaseConfig()) return null;
+
+  const response = await fetch(`${supabaseAuthUrl}${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: supabaseConfig.anonKey
+    },
+    body: JSON.stringify(body)
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error_description || data.msg || data.message || "No se pudo completar la autenticaciÃƒÂ³n.");
+  }
+  return data;
+}
+
+async function signUpWithSupabase(user) {
+  return supabaseAuthRequest("/signup", {
+    email: user.email,
+    password: user.password,
+    data: {
+      full_name: user.name,
+      phone: user.phone,
+      country: user.country,
+      occupation: user.occupation
+    }
+  });
+}
+
+async function signInWithSupabase(email, password) {
+  return supabaseAuthRequest("/token?grant_type=password", { email, password });
+}
+
+async function getProfileFromSupabase(session) {
+  if (!session?.access_token || !session?.user?.id) return null;
+
+  const response = await fetch(`${supabaseRestUrl}/${supabaseConfig.profilesTable}?select=full_name,email,phone,country,occupation&id=eq.${session.user.id}&limit=1`, {
+    headers: {
+      apikey: supabaseConfig.anonKey,
+      Authorization: `Bearer ${session.access_token}`
+    }
+  });
+
+  if (!response.ok) return null;
+  const rows = await response.json().catch(() => []);
+  const profile = rows[0];
+  if (profile) return profile;
+
+  return {
+    full_name: session.user.user_metadata?.full_name || "",
+    email: session.user.email || "",
+    phone: session.user.user_metadata?.phone || "",
+    country: session.user.user_metadata?.country || "",
+    occupation: session.user.user_metadata?.occupation || ""
+  };
+}
+
+async function getNoticesFromSupabase() {
+  if (!hasSupabaseConfig()) return [];
+
+  const response = await fetch(`${supabaseRestUrl}/${supabaseConfig.noticesTable}?select=title,body,notice_type&is_active=eq.true&order=created_at.desc&limit=6`, {
+    headers: {
+      apikey: supabaseConfig.anonKey,
+      Authorization: `Bearer ${supabaseConfig.anonKey}`
+    }
+  });
+
+  if (!response.ok) return [];
+  return response.json().catch(() => []);
+}
+
+function renderProfile(user) {
+  if (!profileData || !user) return;
+  profileData.innerHTML = `
+    <p><strong>Nombre:</strong> ${user.full_name || user.name || ""}</p>
+    <p><strong>Correo:</strong> ${user.email || ""}</p>
+    <p><strong>NÃƒÂºmero:</strong> ${user.phone || ""}</p>
+    <p><strong>PaÃƒÂ­s:</strong> ${user.country || ""}</p>
+    <p><strong>OcupaciÃƒÂ³n:</strong> ${user.occupation || ""}</p>
+  `;
+}
+
+function renderNotices(notices) {
+  const noticeList = document.querySelector(".notice-list");
+  if (!noticeList || !Array.isArray(notices) || !notices.length) return;
+
+  noticeList.innerHTML = notices.map((notice) => `
+    <p><strong>${notice.title || "Aviso"}:</strong> ${notice.body || ""}</p>
+  `).join("");
+}
+
+registerForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const user = {
+    name: document.getElementById("registerName").value.trim(),
+    email: document.getElementById("registerEmail").value.trim().toLowerCase(),
+    phone: document.getElementById("registerPhone").value.trim(),
+    country: document.getElementById("registerCountry").value,
+    occupation: document.getElementById("registerOccupation").value.trim(),
+    password: document.getElementById("registerPassword").value,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    const session = await signUpWithSupabase(user);
+    if (session?.access_token) {
+      setSupabaseSession(session);
+      location.href = "perfil.html";
+      return;
+    }
+
+    setAuthMessage("Registro creado. Si Supabase pide confirmaciÃƒÂ³n, revisa tu correo antes de iniciar sesiÃƒÂ³n.");
+    localStorage.setItem(userStorageKey, JSON.stringify(user));
+    return;
+  } catch (error) {
+    setAuthMessage("Estamos validando la conexiÃƒÂ³n. Tus datos quedaron guardados para continuar la prueba de acceso.", true);
+  }
+
+  localStorage.setItem(userStorageKey, JSON.stringify(user));
+  localStorage.setItem(sessionStorageKey, user.email);
+  location.href = "perfil.html";
+});
+
+loginForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const user = getRegisteredUser();
+  const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    const session = await signInWithSupabase(email, password);
+    setSupabaseSession(session);
+    location.href = "perfil.html";
+    return;
+  } catch (error) {
+    // Mantiene un respaldo temporal si la autenticaciÃƒÂ³n remota todavÃƒÂ­a no responde.
+  }
+
+  if (!user || user.email !== email || user.password !== password) {
+    setAuthMessage("No encontramos esa cuenta. Revisa correo y contraseÃƒÂ±a.", true);
+    return;
+  }
+
+  localStorage.setItem(sessionStorageKey, user.email);
+  location.href = "perfil.html";
+});
+
+if (profileData) {
+  (async () => {
+    const supabaseSession = getSupabaseSession();
+    if (supabaseSession?.access_token) {
+      const profile = await getProfileFromSupabase(supabaseSession);
+      if (profile) {
+        renderProfile(profile);
+        renderNotices(await getNoticesFromSupabase());
+        return;
+      }
+    }
+
+    const user = getRegisteredUser();
+    const activeSession = localStorage.getItem(sessionStorageKey);
+
+    if (!user || user.email !== activeSession) {
+      location.href = "registro.html";
+      return;
+    }
+
+    renderProfile(user);
+  })();
+}
+
+logoutBtn?.addEventListener("click", () => {
+  localStorage.removeItem(sessionStorageKey);
+  localStorage.removeItem(supabaseSessionStorageKey);
+  location.href = "registro.html";
+});
+
+

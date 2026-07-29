@@ -1,4 +1,4 @@
-@media (max-width: 1120px){
+﻿@media (max-width: 1120px){
   .nav-links{gap:14px;font-size:13px}.nav-social>a:not(.nav-whatsapp){display:none}.split-intro,.story-grid,.product-grid,.contact-panel,.finance-card{grid-template-columns:1fr}.gateway-grid{grid-template-columns:1fr 1fr}.team-grid{grid-template-columns:repeat(2,1fr)}.vertical-photo{min-height:420px}.stacked-photos{min-height:520px}.footer-grid{grid-template-columns:repeat(2,1fr)}
 }
 
@@ -1602,5 +1602,226 @@
 
   .nav-patriotic {
     padding: 6px;
+  }
+}
+
+/* Ajuste final desktop: navbar alineado y compacto */
+@media (min-width: 769px) {
+  .site-header {
+    min-height: 62px !important;
+  }
+
+  .site-header .nav,
+  .site-header .nav.container {
+    width: min(100% - 42px, 1240px) !important;
+    min-height: 62px !important;
+    height: 62px !important;
+    padding-block: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+  }
+
+  .site-header .brand {
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 58px !important;
+  }
+
+  .site-header .brand img {
+    width: 56px !important;
+    height: 56px !important;
+    display: block !important;
+    object-fit: contain !important;
+  }
+
+  .site-header .menu-toggle,
+  .site-header .mobile-menu-brand,
+  .site-header .nav-links .mobile-menu-cta,
+  .site-header .nav-links .mobile-register {
+    display: none !important;
+  }
+
+  .site-header .nav-links {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .site-header .nav-links::before,
+  .site-header .nav-links::after {
+    display: none !important;
+  }
+
+  .site-header .nav-links > a:not(.mobile-menu-cta):not(.mobile-register) {
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    height: 34px !important;
+    padding: 7px 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    white-space: nowrap !important;
+    border-radius: 999px !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+  }
+
+  .site-header .nav-links > a .menu-icon,
+  .site-header .nav-links > a .menu-icon-svg,
+  .site-header .nav-links > a small,
+  .site-header .nav-links > a em {
+    display: none !important;
+  }
+
+  .site-header .nav-links > a > span:not(.menu-icon):not(.menu-icon-svg) {
+    display: block !important;
+  }
+
+  .site-header .nav-links > a b {
+    display: block !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+  }
+
+  .site-header .nav-social {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 9px !important;
+    margin-left: 0 !important;
+  }
+
+  .site-header .nav-social > a {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    display: inline-grid !important;
+    place-items: center !important;
+  }
+
+  .site-header .nav-social > a img {
+    width: 24px !important;
+    height: 24px !important;
+    object-fit: contain !important;
+  }
+
+  .site-header .nav-patriotic {
+    width: auto !important;
+    max-width: 118px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 5px 9px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+  }
+
+  .site-header .nav-patriotic img {
+    width: 30px !important;
+    height: 22px !important;
+    object-fit: cover !important;
+    border-radius: 6px !important;
+  }
+
+  .site-header .nav-patriotic span {
+    max-width: 62px !important;
+    display: inline-block !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1120px) {
+  .site-header .nav,
+  .site-header .nav.container {
+    width: min(100% - 24px, 1120px) !important;
+    gap: 8px !important;
+  }
+
+  .site-header .brand img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .site-header .nav-links {
+    gap: 5px !important;
+  }
+
+  .site-header .nav-links > a:not(.mobile-menu-cta):not(.mobile-register) {
+    padding-inline: 10px !important;
+    font-size: 12px !important;
+  }
+
+  .site-header .nav-links > a b {
+    font-size: 12px !important;
+  }
+
+  .site-header .nav-patriotic span {
+    display: none !important;
+  }
+}
+
+/* Responsive Pannellum local */
+@media (max-width: 768px) {
+  .viewer-360.pannellum-viewer,
+  .torre-quick-360 .viewer-360.pannellum-viewer,
+  .contact-bottom-grid .viewer-360.pannellum-viewer,
+  .concept-contact-bottom .viewer-360.pannellum-viewer,
+  .contact-360 .viewer-360.pannellum-viewer,
+  .depa-inline-360 .viewer-360.pannellum-viewer {
+    height: 300px !important;
+    min-height: 300px !important;
+    margin: 18px 0;
+  }
+
+  .day-night-viewer.pannellum-viewer {
+    height: 320px !important;
+    min-height: 320px !important;
+  }
+
+  .viewer-pair .viewer-360.pannellum-viewer {
+    height: 280px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .viewer-360.pannellum-viewer,
+  .day-night-viewer.pannellum-viewer {
+    height: 270px !important;
+    min-height: 270px !important;
   }
 }

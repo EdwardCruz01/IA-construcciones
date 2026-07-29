@@ -19,8 +19,8 @@ const loaderPhrases = [
   "Preparando espacios modernos para vivir e invertir.",
   "Cargando detalles de Torre 89.",
   "Optimizando recorridos 360 para tu visita.",
-  "Conectando departamentos, oficinas y salÃƒÂ³n VIP.",
-  "La buena inversiÃƒÂ³n empieza con una buena vista."
+  "Conectando departamentos, oficinas y salón VIP.",
+  "La buena inversión empieza con una buena vista."
 ];
 
 const preloader = document.getElementById("preloader");
@@ -52,7 +52,7 @@ async function hidePreloader() {
       localStorage.setItem("torre89_music_playing", "1");
       player?.classList.remove("music-error");
       player?.classList.add("playing");
-      if (icon) icon.textContent = "Ã¢â€¦Â¡";
+      if (icon) icon.textContent = "II";
     } catch (error) {
       player?.classList.add("music-error");
       if (icon) icon.textContent = "!";
@@ -406,14 +406,14 @@ if (musicPlayer && backgroundAudio && musicToggle) {
     localStorage.setItem("torre89_music_playing", "1");
     localStorage.setItem("torre89_music_track", String(currentMusicTrack));
     musicPlayer.classList.add("playing");
-    musicToggle.setAttribute("aria-label", "Pausar mÃƒÂºsica");
-    if (musicIcon) musicIcon.textContent = "Ã¢â€¦Â¡";
+    musicToggle.setAttribute("aria-label", "Pausar música");
+    if (musicIcon) musicIcon.textContent = "II";
   });
 
   backgroundAudio.addEventListener("pause", () => {
     musicPlayer.classList.remove("playing");
-    musicToggle.setAttribute("aria-label", "Reproducir mÃƒÂºsica");
-    if (musicIcon) musicIcon.textContent = "Ã¢â€“Â¶";
+    musicToggle.setAttribute("aria-label", "Reproducir música");
+    if (musicIcon) musicIcon.textContent = "▶";
   });
 
   backgroundAudio.addEventListener("error", () => {
@@ -491,7 +491,7 @@ const techPanel = document.getElementById("techPanel");
 techButton?.addEventListener("click", () => {
   if (!techPanel) return;
   const isOpen = techPanel.classList.toggle("open");
-  techButton.textContent = isOpen ? "Ocultar detalles tÃƒÂ©cnicos" : "Ver detalles tÃƒÂ©cnicos";
+  techButton.textContent = isOpen ? "Ocultar detalles técnicos" : "Ver detalles técnicos";
 
   if (isOpen) {
     setTimeout(() => {
@@ -621,28 +621,28 @@ const modalData = {
   tipoA: {
     title: "Departamento Tipo II",
     count: "8 departamentos disponibles",
-    area: "103.8 mÃ‚Â²",
+    area: "103.8 m²",
     normalPrice: "$134,000.00",
     presalePrice: "$129,900.00",
-    text: "DistribuciÃƒÂ³n funcional para vivir o invertir, con ambientes optimizados y acabados modernos.",
+    text: "Distribución funcional para vivir o invertir, con ambientes optimizados y acabados modernos.",
     images: [`${assetPrefix}imagenes/proyectos/depa interior 1.jpg`, `${assetPrefix}imagenes/proyectos/cocina 1.jpg`]
   },
   tipoB: {
     title: "Departamento Tipo III",
     count: "7 departamentos disponibles",
-    area: "113.7 mÃ‚Â²",
+    area: "113.7 m²",
     normalPrice: "$138,000.00",
     presalePrice: "$133,900.00",
-    text: "OpciÃƒÂ³n familiar con mayor amplitud social, dormitorios bien iluminados y espacios adaptables.",
+    text: "Opción familiar con mayor amplitud social, dormitorios bien iluminados y espacios adaptables.",
     images: [`${assetPrefix}imagenes/proyectos/depa interior 2.jpg`, `${assetPrefix}imagenes/proyectos/interior 5.jpg`]
   },
   tipoC: {
     title: "Departamento Tipo IV",
     count: "4 departamentos disponibles",
-    area: "208.5 mÃ‚Â²",
+    area: "208.5 m²",
     normalPrice: "$200,000.00",
     presalePrice: "$193,900.00",
-    text: "Formato premium con mayor ÃƒÂ¡rea ÃƒÂºtil, mejor amplitud y acabados superiores para una experiencia residencial mÃƒÂ¡s exclusiva.",
+    text: "Formato premium con mayor área útil, mejor amplitud y acabados superiores para una experiencia residencial más exclusiva.",
     images: [`${assetPrefix}imagenes/proyectos/interior 6.jpg`, `${assetPrefix}imagenes/proyectos/depa interior 1.jpg`]
   }
 };
@@ -653,19 +653,19 @@ const modalClose = document.getElementById("modalClose");
 
 const promoData = {
   promo1: { category: "Promociones venta de departamentos", title: "Promo 1", separation: "20%", benefit: "Gratis los accesorios para sus muebles bajos de cocina." },
-  promo2: { category: "Promociones venta de departamentos", title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavanderÃƒÂ­a con lavadora y mueble." },
+  promo2: { category: "Promociones venta de departamentos", title: "Promo 2", separation: "40%", benefit: "Gratis equipamos la lavandería con lavadora y mueble." },
   promo3: { category: "Promociones venta de departamentos", title: "Promo 3", separation: "60%", benefit: "Gratis le damos el mueble de entretenimiento para la sala." },
   promo4: { category: "Promociones venta de departamentos", title: "Promo 4", separation: "80%", benefit: "Gratis su cocina + campana empotrada." },
   promo5: { category: "Promociones venta de departamentos", title: "Promo 5", separation: "100%", benefit: "Gratis refrigeradora + horno empotrado + horno microondas empotrado." },
-  office1: { category: "PromociÃƒÂ³n oficinas", title: "Oficina equipada", conditionLabel: "Incluye", separation: "ImplementaciÃƒÂ³n", benefit: "Primer mes con asesorÃƒÂ­a para distribuir mobiliario, puntos de trabajo y presentaciÃƒÂ³n corporativa." },
-  office2: { category: "PromociÃƒÂ³n oficinas", title: "Servicios incluidos", conditionLabel: "Incluye", separation: "Todo listo", benefit: "WiFi, luz, agua y limpieza de ÃƒÂ¡reas comunes incluidos para iniciar operaciones con mayor comodidad." },
-  office3: { category: "PromociÃƒÂ³n oficinas", title: "Plan trimestral", conditionLabel: "CondiciÃƒÂ³n", separation: "Ahorro", benefit: "Tarifa preferencial para empresas o profesionales que separen alquiler por tres meses anticipados." },
-  event1: { category: "PromociÃƒÂ³n SalÃƒÂ³n VIP", title: "Reserva tu fecha", conditionLabel: "Incluye", separation: "DecoraciÃƒÂ³n", benefit: "DecoraciÃƒÂ³n base y coordinaciÃƒÂ³n inicial incluida para reuniones privadas, familiares o presentaciones." },
-  event2: { category: "PromociÃƒÂ³n SalÃƒÂ³n VIP", title: "Evento corporativo", conditionLabel: "Incluye", separation: "Preferencial", benefit: "Tarifa especial para capacitaciones, reuniones empresariales y actividades institucionales." },
-  event3: { category: "PromociÃƒÂ³n SalÃƒÂ³n VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." },
-  pcbox1: { category: "PromociÃƒÂ³n PC Box", title: "Combo tecnolÃƒÂ³gico", conditionLabel: "Beneficio", separation: "Accesorios", benefit: "Combos referenciales para escritorio, estudio u oficina con asesorÃƒÂ­a para elegir accesorios compatibles." },
-  pcbox2: { category: "PromociÃƒÂ³n PC Box", title: "Compra con crÃƒÂ©dito", conditionLabel: "Beneficio", separation: "Financiamiento", benefit: "Opciones de crÃƒÂ©dito para financiar artÃƒÂ­culos tecnolÃƒÂ³gicos segÃƒÂºn evaluaciÃƒÂ³n, campaÃƒÂ±a y disponibilidad." },
-  pcbox3: { category: "PromociÃƒÂ³n PC Box", title: "Cliente Torre 89", conditionLabel: "Beneficio", separation: "Especial", benefit: "CampaÃƒÂ±as y atenciÃƒÂ³n preferencial para residentes, oficinas y visitantes de Torre 89." }
+  office1: { category: "Promoción oficinas", title: "Oficina equipada", conditionLabel: "Incluye", separation: "Implementación", benefit: "Primer mes con asesoría para distribuir mobiliario, puntos de trabajo y presentación corporativa." },
+  office2: { category: "Promoción oficinas", title: "Servicios incluidos", conditionLabel: "Incluye", separation: "Todo listo", benefit: "WiFi, luz, agua y limpieza de áreas comunes incluidos para iniciar operaciones con mayor comodidad." },
+  office3: { category: "Promoción oficinas", title: "Plan trimestral", conditionLabel: "Condición", separation: "Ahorro", benefit: "Tarifa preferencial para empresas o profesionales que separen alquiler por tres meses anticipados." },
+  event1: { category: "Promoción Salón VIP", title: "Reserva tu fecha", conditionLabel: "Incluye", separation: "Decoración", benefit: "Decoración base y coordinación inicial incluida para reuniones privadas, familiares o presentaciones." },
+  event2: { category: "Promoción Salón VIP", title: "Evento corporativo", conditionLabel: "Incluye", separation: "Preferencial", benefit: "Tarifa especial para capacitaciones, reuniones empresariales y actividades institucionales." },
+  event3: { category: "Promoción Salón VIP", title: "Horas adicionales", conditionLabel: "Incluye", separation: "Paquete VIP", benefit: "Horas extra con precio preferencial para eventos que necesiten extender la reserva." },
+  pcbox1: { category: "Promoción PC Box", title: "Combo tecnológico", conditionLabel: "Beneficio", separation: "Accesorios", benefit: "Combos referenciales para escritorio, estudio u oficina con asesoría para elegir accesorios compatibles." },
+  pcbox2: { category: "Promoción PC Box", title: "Compra con crédito", conditionLabel: "Beneficio", separation: "Financiamiento", benefit: "Opciones de crédito para financiar artículos tecnológicos según evaluación, campaña y disponibilidad." },
+  pcbox3: { category: "Promoción PC Box", title: "Cliente Torre 89", conditionLabel: "Beneficio", separation: "Especial", benefit: "Campañas y atención preferencial para residentes, oficinas y visitantes de Torre 89." }
 };
 
 document.querySelectorAll("[data-modal]").forEach((button) => {
@@ -680,7 +680,7 @@ document.querySelectorAll("[data-modal]").forEach((button) => {
       </div>
       <div class="modal-depa-summary">
         <div><small>Cantidad</small><strong>${data.count}</strong></div>
-        <div><small>ÃƒÂrea</small><strong>${data.area}</strong></div>
+        <div><small>Área</small><strong>${data.area}</strong></div>
       </div>
       <div class="modal-price-grid">
         <div class="price-card">
@@ -708,14 +708,14 @@ document.querySelectorAll("[data-promo-modal]").forEach((button) => {
     if (!modal || !modalBody || !data) return;
     modalBody.innerHTML = `
       <div class="modal-depa-header promo-modal-content">
-        <span>${data.category || "PromociÃƒÂ³n Torre 89"}</span>
+        <span>${data.category || "Promoción Torre 89"}</span>
         <h2>${data.title}</h2>
         <div class="modal-depa-summary">
-          <div><small>${data.conditionLabel || "SeparaciÃƒÂ³n"}</small><strong>${data.separation}</strong></div>
+          <div><small>${data.conditionLabel || "Separación"}</small><strong>${data.separation}</strong></div>
           <div><small>Beneficio</small><strong>${data.benefit}</strong></div>
         </div>
-        <p>PromociÃƒÂ³n sujeta a disponibilidad y validaciÃƒÂ³n comercial. IA Construcciones confirmarÃƒÂ¡ condiciones finales al momento de la reserva.</p>
-        <a class="btn btn-primary modal-reserve" href="${contactHref}">Quiero esta promociÃƒÂ³n</a>
+        <p>Promoción sujeta a disponibilidad y validación comercial. IA Construcciones confirmará condiciones finales al momento de la reserva.</p>
+        <a class="btn btn-primary modal-reserve" href="${contactHref}">Quiero esta promoción</a>
       </div>
     `;
     modal.classList.add("open");
@@ -811,15 +811,15 @@ async function sendSupabaseRow(table, row) {
 
 function buildWhatsAppMessage(data) {
   return [
-    "Hola, quiero recibir informaciÃƒÂ³n sobre Torre 89 e IA Construcciones.",
+    "Hola, quiero recibir información sobre Torre 89 e IA Construcciones.",
     data.nombre ? `Nombre: ${data.nombre}` : "",
     data.edad ? `Edad: ${data.edad}` : "",
-    data.telefono ? `TelÃƒÂ©fono: ${data.telefono}` : "",
+    data.telefono ? `Teléfono: ${data.telefono}` : "",
     data.correo ? `Correo: ${data.correo}` : "",
-    data.pais ? `PaÃƒÂ­s: ${data.pais}` : "",
-    data.region ? `RegiÃƒÂ³n/Departamento: ${data.region}` : "",
+    data.pais ? `País: ${data.pais}` : "",
+    data.region ? `Región/Departamento: ${data.region}` : "",
     data.distrito ? `Distrito: ${data.distrito}` : "",
-    data.tipo_proyecto ? `InterÃƒÂ©s: ${data.tipo_proyecto}` : "",
+    data.tipo_proyecto ? `Interés: ${data.tipo_proyecto}` : "",
     data.mensaje ? `Mensaje: ${data.mensaje}` : ""
   ].filter(Boolean).join("\n");
 }
@@ -919,7 +919,7 @@ document.querySelectorAll(".mini-contact-form").forEach((form) => {
       edad: String(formData.get("edad") || "").trim(),
       telefono: String(formData.get("telefono") || "").trim(),
       tipo_proyecto: String(formData.get("motivo") || formData.get("mensaje") || "").trim(),
-      mensaje: "Formulario corto de secciÃƒÂ³n",
+      mensaje: "Formulario corto de sección",
       pagina: location.pathname,
       created_at: new Date().toISOString()
     };
@@ -1023,7 +1023,7 @@ function emphasizeBrandNames() {
 }
 
 function addReferenceLabels() {
-  // Desactivado: envolver imÃƒÂ¡genes alteraba proporciones en galerÃƒÂ­as y tarjetas.
+  // Desactivado: envolver imágenes alteraba proporciones en galerías y tarjetas.
 }
 
 function getTrackingSessionId() {
@@ -1125,12 +1125,12 @@ if (registerForm && loginForm) {
 
   const loginSwitch = document.createElement("p");
   loginSwitch.className = "auth-switch";
-  loginSwitch.innerHTML = 'Ã‚Â¿No tienes cuenta? <a href="#registro" id="showRegisterForm">RegÃƒÂ­strese</a>';
+  loginSwitch.innerHTML = '¿No tienes cuenta? <a href="#registro" id="showRegisterForm">Regístrese</a>';
   loginForm.appendChild(loginSwitch);
 
   const registerSwitch = document.createElement("p");
   registerSwitch.className = "auth-switch";
-  registerSwitch.innerHTML = 'Ã‚Â¿Ya tienes cuenta? <a href="#inicio-sesion" id="showLoginForm">Inicie sesiÃƒÂ³n</a>';
+  registerSwitch.innerHTML = '¿Ya tienes cuenta? <a href="#inicio-sesion" id="showLoginForm">Inicie sesión</a>';
   registerForm.appendChild(registerSwitch);
 
   document.getElementById("showRegisterForm")?.addEventListener("click", (event) => {
@@ -1193,7 +1193,7 @@ async function supabaseAuthRequest(endpoint, body) {
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.error_description || data.msg || data.message || "No se pudo completar la autenticaciÃƒÂ³n.");
+    throw new Error(data.error_description || data.msg || data.message || "No se pudo completar la autenticación.");
   }
   return data;
 }
@@ -1258,9 +1258,9 @@ function renderProfile(user) {
   profileData.innerHTML = `
     <p><strong>Nombre:</strong> ${user.full_name || user.name || ""}</p>
     <p><strong>Correo:</strong> ${user.email || ""}</p>
-    <p><strong>NÃƒÂºmero:</strong> ${user.phone || ""}</p>
-    <p><strong>PaÃƒÂ­s:</strong> ${user.country || ""}</p>
-    <p><strong>OcupaciÃƒÂ³n:</strong> ${user.occupation || ""}</p>
+    <p><strong>Número:</strong> ${user.phone || ""}</p>
+    <p><strong>País:</strong> ${user.country || ""}</p>
+    <p><strong>Ocupación:</strong> ${user.occupation || ""}</p>
   `;
 }
 
@@ -1293,11 +1293,11 @@ registerForm?.addEventListener("submit", async (event) => {
       return;
     }
 
-    setAuthMessage("Registro creado. Si Supabase pide confirmaciÃƒÂ³n, revisa tu correo antes de iniciar sesiÃƒÂ³n.");
+    setAuthMessage("Registro creado. Si Supabase pide confirmación, revisa tu correo antes de iniciar sesión.");
     localStorage.setItem(userStorageKey, JSON.stringify(user));
     return;
   } catch (error) {
-    setAuthMessage("Estamos validando la conexiÃƒÂ³n. Tus datos quedaron guardados para continuar la prueba de acceso.", true);
+    setAuthMessage("Estamos validando la conexión. Tus datos quedaron guardados para continuar la prueba de acceso.", true);
   }
 
   localStorage.setItem(userStorageKey, JSON.stringify(user));
@@ -1317,11 +1317,11 @@ loginForm?.addEventListener("submit", async (event) => {
     location.href = "perfil.html";
     return;
   } catch (error) {
-    // Mantiene un respaldo temporal si la autenticaciÃƒÂ³n remota todavÃƒÂ­a no responde.
+    // Mantiene un respaldo temporal si la autenticación remota todavía no responde.
   }
 
   if (!user || user.email !== email || user.password !== password) {
-    setAuthMessage("No encontramos esa cuenta. Revisa correo y contraseÃƒÂ±a.", true);
+    setAuthMessage("No encontramos esa cuenta. Revisa correo y contraseña.", true);
     return;
   }
 
@@ -1360,3 +1360,72 @@ logoutBtn?.addEventListener("click", () => {
 });
 
 
+
+const pannellumViewerInstances = new WeakMap();
+
+function createPannellumViewer(element) {
+  if (!element || !window.pannellum || !element.dataset.panorama || pannellumViewerInstances.has(element)) return null;
+
+  const viewer = window.pannellum.viewer(element, {
+    type: "equirectangular",
+    panorama: element.dataset.panorama,
+    title: element.dataset.pannellumTitle || "Recorrido 360",
+    autoLoad: true,
+    showControls: true,
+    showZoomCtrl: true,
+    showFullscreenCtrl: true,
+    compass: false,
+    hfov: Number(element.dataset.hfov || 100),
+    minHfov: 55,
+    maxHfov: 120,
+    pitch: Number(element.dataset.pitch || 0),
+    yaw: Number(element.dataset.yaw || 0),
+    mouseZoom: true,
+    draggable: true
+  });
+
+  pannellumViewerInstances.set(element, viewer);
+  element.classList.add("pannellum-ready");
+  return viewer;
+}
+
+function setPannellumPanorama(element, panorama) {
+  if (!element || !panorama) return;
+  element.dataset.panorama = panorama;
+
+  const currentViewer = pannellumViewerInstances.get(element);
+  if (currentViewer && typeof currentViewer.destroy === "function") {
+    try {
+      currentViewer.destroy();
+    } catch (error) {
+      // Pannellum puede lanzar si el visor se destruye mientras carga; se recrea limpio abajo.
+    }
+  }
+
+  pannellumViewerInstances.delete(element);
+  element.classList.remove("pannellum-ready");
+  element.innerHTML = "";
+  createPannellumViewer(element);
+}
+
+function initPannellumViewers() {
+  const viewers = document.querySelectorAll(".pannellum-viewer[data-panorama]");
+  if (!viewers.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    viewers.forEach(createPannellumViewer);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      createPannellumViewer(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "260px 0px", threshold: 0.01 });
+
+  viewers.forEach((viewer) => observer.observe(viewer));
+}
+
+initPannellumViewers();

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -14,10 +14,10 @@
   <meta property="og:image" content="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_1500/v1783350980/depa_13_w2evhc.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://panoraven.com">
   <link rel="stylesheet" href="../style/style.css">
   <link rel="stylesheet" href="../style/responsive.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../vendor/pannellum/pannellum.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-contact-href="contacto.html#contacto">
   <div class="music-player" id="musicPlayer" aria-label="Reproductor de musica"><audio id="backgroundAudio" src="../musicas/recepcion audio.MP3" preload="none" autoplay></audio><button class="music-toggle" id="musicToggle" type="button" aria-label="Reproducir musica"><span class="music-icon">&#9654;</span></button><div class="music-controls"><label class="volume-control" aria-label="Volumen de musica"><span></span><input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.2"></label></div></div>
@@ -49,7 +49,7 @@
 
     <section class="section" id="resumen">
       <div class="container sales-layout">
-        <div class="sales-copy reveal"><span class="eyebrow">Torre 89</span><h2>Pensando en cada detalle</h2><p>La propuesta residencial combina espacios eficientes, acabados modernos y acceso a un edificio con servicios complementarios.</p><div class="feature-grid visual-feature-grid"><article class="feature-card visual-title-card"><img src="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_900/v1783350974/depa_1_bbqfs3.heic" loading="lazy" decoding="async" alt="Luz natural Torre 89"><strong>Luz natural</strong></article><article class="feature-card visual-title-card"><img src="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_900/v1783350974/depa_2_cly9df.heic" loading="lazy" decoding="async" alt="Distribución Torre 89"><strong>Distribución</strong></article><article class="feature-card visual-title-card"><img src="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_900/v1783350980/depa_14_d0qk5c.jpg" loading="lazy" decoding="async" alt="Preventa Torre 89"><strong>Preventa</strong></article></div></div><aside class="sales-card reveal"><div class="viewer-360 day-night-viewer"><iframe id="dayNightViewer" src="https://panoraven.com/es/embed/eDhS0bZgjU" data-day="https://panoraven.com/es/embed/eDhS0bZgjU" data-night="https://panoraven.com/es/embed/XOkbj598hG" loading="lazy" allowfullscreen="true" allow="accelerometer; magnetometer; gyroscope; xr-spatial-tracking"></iframe></div><button class="view-toggle" id="dayNightToggle" type="button" aria-pressed="false">Vista de noche</button><a class="btn btn-primary" href="contacto.html#contacto">Solicitar disponibilidad</a></aside>
+        <div class="sales-copy reveal"><span class="eyebrow">Torre 89</span><h2>Pensando en cada detalle</h2><p>La propuesta residencial combina espacios eficientes, acabados modernos y acceso a un edificio con servicios complementarios.</p><div class="feature-grid visual-feature-grid"><article class="feature-card visual-title-card"><img src="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_900/v1783350974/depa_1_bbqfs3.heic" loading="lazy" decoding="async" alt="Luz natural Torre 89"><strong>Luz natural</strong></article><article class="feature-card visual-title-card"><img src="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_900/v1783350974/depa_2_cly9df.heic" loading="lazy" decoding="async" alt="Distribución Torre 89"><strong>Distribución</strong></article><article class="feature-card visual-title-card"><img src="https://res.cloudinary.com/izy4w2rs/image/upload/f_auto,q_auto,w_900/v1783350980/depa_14_d0qk5c.jpg" loading="lazy" decoding="async" alt="Preventa Torre 89"><strong>Preventa</strong></article></div></div><aside class="sales-card reveal"><div class="viewer-360 day-night-viewer pannellum-viewer" id="dayNightViewer" data-panorama="../imagenes/360/modo día.jpg" data-day="../imagenes/360/modo día.jpg" data-night="../imagenes/360/modo noche.jpg" data-pannellum-title="Vista dia y noche"></div><button class="view-toggle" id="dayNightToggle" type="button" aria-pressed="false">Vista de noche</button><a class="btn btn-primary" href="contacto.html#contacto">Solicitar disponibilidad</a></aside>
       </div>
     </section>
 
@@ -68,12 +68,13 @@
       <a class="next-step-btn" href="departamento-tipo-ii.html"><span>Elige tu tipo</span><strong>Ver Tipo II</strong></a>
     </section>
   
-    <section class="section section-contact-bottom" id="contacto-comercial"><div class="container contact-bottom-grid"><div class="section-contact"><strong>Contacto de departamentos</strong><p>Encargado comercial de ventas residenciales. Atención comercial para disponibilidad, precios, visitas y separación.</p><div class="contact-actions"><a class="btn btn-quote" href="tel:+51955042736">Llamar asesor</a><a class="btn btn-primary" href="contacto.html#contacto">Enviar consulta</a></div></div><div class="viewer-360"><iframe src="https://panoraven.com/es/embed/48RO5zL7EJ" loading="lazy" allowfullscreen="true"></iframe></div></div></section>
+    <section class="section section-contact-bottom" id="contacto-comercial"><div class="container contact-bottom-grid"><div class="section-contact"><strong>Contacto de departamentos</strong><p>Encargado comercial de ventas residenciales. Atención comercial para disponibilidad, precios, visitas y separación.</p><div class="contact-actions"><a class="btn btn-quote" href="tel:+51955042736">Llamar asesor</a><a class="btn btn-primary" href="contacto.html#contacto">Enviar consulta</a></div></div><div class="viewer-360 pannellum-viewer" data-panorama="../imagenes/360/torre 89.JPG" data-pannellum-title="Torre 89"></div></div></section>
   </main>
 
   <footer class="footer"><div class="container footer-grid"><div><img class="footer-logo" src="../imagenes/logos/logo oficial ia.png" alt="IA Construcciones"><p>Departamentos, oficinas y espacios comerciales con IA Construcciones.</p></div><div><h3>Secciones</h3><a href="torre-89.html">Torre 89</a><a href="oficinas.html">Oficinas</a><a href="local.html">Local comercial</a><a href="contacto.html">Contacto</a></div><div><h3>Legal</h3><a class="claim-book" href="contacto.html#contacto">Libro de reclamaciones</a><p>© 2026 IA Construcciones.</p></div><div class="edu-box"><h3>edu edu</h3><img src="../imagenes/logos/logo oficial ia.png" alt="edu edu"></div></div></footer>
   <a class="floating-whatsapp shine" id="floatingWhatsapp" href="https://wa.me/955042736" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="../imagenes/logos/logo whatsapp.png" alt="WhatsApp"></a>
   <div class="modal" id="infoModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose" type="button" aria-label="Cerrar ventana">&times;</button><div id="modalBody"></div></div></div>
+    <script src="../vendor/pannellum/pannellum.js"></script>
   <script src="../js/script.js"></script>
 </body>
 </html>

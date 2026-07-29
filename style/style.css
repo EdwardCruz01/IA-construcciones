@@ -1,4 +1,4 @@
-:root{
+﻿:root{
   --green:#C85A17;--green-2:#E1782B;--gold:#f2b544;--gold-2:#ffd06a;--ink:#1f1f1d;--muted:#746f68;--bone:#f4f0e7;--bone-2:#e9e2d7;--white:#fff;--dark:#343434;--graphite:#3f3f3d;--shadow:0 24px 70px rgba(31,31,29,.13);--radius:22px;--t:.3s ease
 }
 *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:Poppins,Arial,sans-serif;background:var(--bone);color:var(--ink);line-height:1.6;overflow-x:hidden}img{display:block;width:100%;object-fit:cover}a{text-decoration:none;color:inherit}.container{width:min(1180px,calc(100% - 40px));margin:auto}.section{padding:94px 0;scroll-margin-top:86px}.eyebrow{display:inline-block;color:var(--gold);font-weight:800;margin-bottom:12px}.section-heading{max-width:760px;text-align:center;margin:auto auto 42px}.section-heading h2,.split-intro h2,.story-copy h2,.product-copy h2,.finance-card h2,.office-panel h2,.soon-card h2{font-family:Montserrat,Arial,sans-serif;font-size:42px;line-height:1.12;color:var(--green);margin-bottom:14px}.section-heading p,.split-intro p,.story-copy p,.product-copy p,.finance-card p{color:var(--muted);font-size:17px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:50px;padding:13px 24px;border:0;border-radius:999px;font-weight:800;cursor:pointer;transition:transform var(--t),background var(--t),color var(--t),box-shadow var(--t)}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--gold);color:var(--ink);box-shadow:0 14px 30px rgba(217,165,33,.28)}.btn-primary:hover{background:var(--green);color:var(--white)}.btn-ghost{border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.08);color:var(--white)}.btn-whatsapp{background:#18a957;color:var(--white)}.btn img,.nav-whatsapp img{width:21px;height:21px;object-fit:contain}.shine{position:relative;overflow:hidden;isolation:isolate;animation:pulseGlow 2.1s ease-in-out infinite}.shine:after{content:"";position:absolute;inset:-70% -40%;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.7),transparent 65%);transform:translateX(-120%) rotate(18deg);animation:shineMove 2.8s infinite;pointer-events:none;z-index:-1}@keyframes shineMove{0%{transform:translateX(-120%) rotate(18deg)}45%,100%{transform:translateX(120%) rotate(18deg)}}@keyframes pulseGlow{0%,100%{box-shadow:0 12px 28px rgba(24,169,87,.24)}50%{box-shadow:0 18px 42px rgba(24,169,87,.46),0 0 0 8px rgba(24,169,87,.1)}}
@@ -15,7 +15,7 @@
 .footer{background:#071a14;color:rgba(255,255,255,.76);padding:58px 0 24px}.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}.footer-logo{width:90px;height:90px;object-fit:contain;margin-bottom:14px}.footer h3{color:var(--white);margin-bottom:14px}.footer a,.footer p{display:block;margin-bottom:9px}.claim-book{color:var(--gold);font-weight:800}.edu-box img{width:54px;height:54px;border-radius:50%;object-fit:cover}
 .floating-whatsapp{position:fixed;right:22px;bottom:22px;z-index:70;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#18a957;box-shadow:0 18px 38px rgba(24,169,87,.38);touch-action:none;cursor:grab}.floating-whatsapp.dragging{cursor:grabbing}.floating-whatsapp img{width:38px;height:38px;object-fit:contain;z-index:1}.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.58)}.modal.open{display:flex}.modal-card{position:relative;width:min(820px,100%);max-height:88vh;overflow:auto;padding:28px;border-radius:24px;background:var(--white);box-shadow:var(--shadow)}.modal-close{position:absolute;right:16px;top:14px;width:36px;height:36px;border:0;border-radius:50%;background:var(--green);color:var(--white);font-size:24px;cursor:pointer}.modal-gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.modal-gallery img{height:260px}.reveal{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s ease}.reveal.visible{opacity:1;transform:translateY(0)}
 
-/* CorrecciÃƒÂ³n especÃƒÂ­fica: WhatsApp del header no debe heredar tamaÃƒÂ±o de redes */
+/* Corrección específica: WhatsApp del header no debe heredar tamaño de redes */
 .nav-social .nav-whatsapp img,
 .nav-whatsapp img {
   width: 20px;
@@ -756,7 +756,7 @@ body.night-view .day-night-photo {
   max-width: 100%;
 }
 
-/* Ajuste visual solicitado: barra completa, secciones mÃƒÂ¡s cÃƒÂ¡lidas y tÃƒÂ­tulos ejecutivos */
+/* Ajuste visual solicitado: barra completa, secciones más cálidas y títulos ejecutivos */
 :root {
   --executive-yellow: #f5c451;
   --executive-orange: #C85A17;
@@ -2140,7 +2140,7 @@ body.night-view .day-night-photo {
   box-shadow: 0 30px 72px rgba(31,31,29,.22);
 }
 
-/* CorrecciÃƒÂ³n final WhatsApp: evita que el logo se infle dentro de botones */
+/* Corrección final WhatsApp: evita que el logo se infle dentro de botones */
 a.btn-whatsapp img,
 .btn.btn-whatsapp img,
 .page-actions .btn-whatsapp img,
@@ -2454,7 +2454,7 @@ body.night-view .section-nav a {
   72%, 100% { transform: translateX(120%) rotate(14deg); }
 }
 
-/* Mayor lectura para tÃƒÂ­tulos naranja */
+/* Mayor lectura para títulos naranja */
 .section-heading h2,
 .split-intro h2,
 .story-copy h2,
@@ -2613,7 +2613,7 @@ body.night-view .section-nav a {
   display: none;
 }
 
-/* Capa final: navbar estable y sin compresiÃƒÂ³n */
+/* Capa final: navbar estable y sin compresión */
 .site-header .nav {
   width: min(1320px, calc(100% - 40px));
   max-width: 1320px;
@@ -2791,7 +2791,7 @@ body.night-view .section-nav a {
   display: none !important;
 }
 
-/* Pulido final de publicaciÃƒÂ³n */
+/* Pulido final de publicación */
 .site-header .nav-register {
   position: relative;
   min-height: 42px;
@@ -2877,7 +2877,7 @@ body.night-view .section-nav a {
   }
 }
 
-/* Ajustes especÃƒÂ­ficos finales */
+/* Ajustes específicos finales */
 .brand-emphasis {
   font-weight: 900;
 }
@@ -3110,11 +3110,11 @@ body.home-page .hero {
   font-size: 22px;
 }
 
-#smart .timeline-step:nth-child(1)::before { content: "Ã¢â€ â€¢"; }
-#smart .timeline-step:nth-child(2)::before { content: "Ã°Å¸â€™Â§"; }
-#smart .timeline-step:nth-child(3)::before { content: "Ã¢â€”â€°"; }
-#smart .timeline-step:nth-child(4)::before { content: "Ã¢Å’Â"; }
-#smart .timeline-step:nth-child(5)::before { content: "Ã¢Å¡Â¡"; }
+#smart .timeline-step:nth-child(1)::before { content: "↕"; }
+#smart .timeline-step:nth-child(2)::before { content: "💧"; }
+#smart .timeline-step:nth-child(3)::before { content: "◉"; }
+#smart .timeline-step:nth-child(4)::before { content: "⌁"; }
+#smart .timeline-step:nth-child(5)::before { content: "⚡"; }
 
 .timeline-step:hover {
   transform: translateY(-7px);
@@ -4580,4 +4580,83 @@ body.night-view .page-hero::after {
   .volume-control input {
     width: 84px;
   }
+}
+
+/* Ajuste Pannellum local: mantiene proporciones de los visores 360 anteriores */
+.viewer-360.pannellum-viewer {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 380px;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(49, 49, 46, .08), rgba(200, 90, 23, .10));
+  box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
+  transition: opacity .24s ease, transform .3s ease;
+}
+
+.viewer-360.pannellum-viewer::before {
+  content: "Cargando recorrido 360...";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--orange, #C85A17);
+  font-weight: 800;
+  background: rgba(255, 247, 233, .82);
+  z-index: 0;
+}
+
+.viewer-360.pannellum-viewer.pannellum-ready::before {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.viewer-360.pannellum-viewer .pnlm-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  background: transparent;
+}
+
+.viewer-360.pannellum-viewer .pnlm-load-box,
+.viewer-360.pannellum-viewer .pnlm-error-msg {
+  border-radius: 14px;
+  font-family: inherit;
+}
+
+.viewer-360.pannellum-viewer .pnlm-controls-container {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.viewer-360.pannellum-viewer .pnlm-about-msg {
+  display: none !important;
+}
+
+.viewer-pair .viewer-360.pannellum-viewer {
+  height: 300px;
+}
+
+.torre-quick-360 .viewer-360.pannellum-viewer {
+  height: clamp(380px, 54vh, 560px);
+  margin: 0;
+}
+
+.contact-bottom-grid .viewer-360.pannellum-viewer,
+.concept-contact-bottom .viewer-360.pannellum-viewer,
+.contact-360 .viewer-360.pannellum-viewer {
+  height: 360px;
+}
+
+.depa-inline-360 .viewer-360.pannellum-viewer {
+  height: 440px;
+}
+
+.day-night-viewer.pannellum-viewer {
+  height: clamp(340px, 44vw, 500px);
 }
