@@ -2,8 +2,6 @@
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.getElementById("navMenu");
 const navLinks = document.querySelectorAll(".nav-links a");
-const mobileNavFold = document.querySelector(".mobile-nav-fold");
-const mobileNavFoldToggle = document.getElementById("mobileNavFoldToggle");
 const isInsidePages = location.pathname.replace(/\\/g, "/").includes("/pages/");
 const assetPrefix = isInsidePages ? "../" : "";
 const contactHref = document.body.dataset.contactHref || (isInsidePages ? "contacto.html#contacto" : "pages/contacto.html#contacto");
@@ -90,14 +88,7 @@ function closeMenu() {
   navMenu.classList.remove("active");
   document.body.classList.remove("menu-open");
   menuToggle.setAttribute("aria-expanded", "false");
-  mobileNavFold?.classList.remove("is-open");
-  mobileNavFoldToggle?.setAttribute("aria-expanded", "false");
 }
-
-mobileNavFoldToggle?.addEventListener("click", () => {
-  const isOpen = mobileNavFold?.classList.toggle("is-open") || false;
-  mobileNavFoldToggle.setAttribute("aria-expanded", String(isOpen));
-});
 
 let scrollTicking = false;
 window.addEventListener("scroll", () => {
@@ -763,22 +754,6 @@ document.querySelectorAll(".gateway-card, .services-card, .vertical-photo, .stac
 });
 
 const contactForm = document.getElementById("contactForm");
-const contactNumbers = {
-  departamentos: "955042736",
-  oficinas: "933515318",
-  local: "905445108",
-  "sala-vip": "933515318",
-  constructora: "975862207"
-};
-
-function getContactNumber(value = "") {
-  const normalized = value.toLowerCase();
-  if (normalized.includes("oficin")) return contactNumbers.oficinas;
-  if (normalized.includes("salón") || normalized.includes("salon") || normalized.includes("evento")) return contactNumbers["sala-vip"];
-  if (normalized.includes("local") || normalized.includes("tienda") || normalized.includes("comercial")) return contactNumbers.local;
-  if (normalized.includes("constructora") || normalized.includes("obra") || normalized.includes("proyecto de construcción")) return contactNumbers.constructora;
-  return contactNumbers.departamentos;
-}
 async function sendLeadToSupabase(payload) {
   if (!supabaseConfig.url || !supabaseConfig.anonKey) return false;
 
@@ -877,8 +852,16 @@ contactForm?.addEventListener("submit", async (event) => {
   sendLeadToSupabase(leadPayload).catch(() => false);
 
   const whatsappMessage = buildWhatsAppMessage(leadPayload);
-  window.open(`https://wa.me/51${getContactNumber(tipoProyecto)}?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+  window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
 });
+
+const contactNumbers = {
+  departamentos: "955042736",
+  oficinas: "955042736",
+  local: "955042736",
+  "sala-vip": "955042736",
+  constructora: "955042736"
+};
 
 const contactReason = document.getElementById("contactReason");
 const contactReasonActions = document.getElementById("contactReasonActions");
@@ -888,7 +871,7 @@ const contactReasonWhatsapp = document.getElementById("contactReasonWhatsapp");
 function updateContactReasonActions() {
   if (!contactReason || !contactReasonActions || !contactReasonCall || !contactReasonWhatsapp) return;
   const value = contactReason.value;
-  const number = contactNumbers[value] || getContactNumber(value);
+  const number = contactNumbers[value];
   if (!number) {
     contactReasonActions.hidden = true;
     return;
@@ -943,7 +926,7 @@ document.querySelectorAll(".mini-contact-form").forEach((form) => {
 
     sendLeadToSupabase(leadPayload).catch(() => false);
     const whatsappMessage = buildWhatsAppMessage(leadPayload);
-    window.open(`https://wa.me/51${getContactNumber(String(formData.get("motivo") || ""))}?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+    window.open(`https://wa.me/955042736?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
     form.reset();
   });
 });
