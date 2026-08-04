@@ -1569,7 +1569,7 @@
   }
 
   .mixed-carousel-track {
-    grid-template-columns: repeat(6, 78vw);
+    grid-template-columns: repeat(8, 78vw);
     gap: 12px;
     animation-duration: 22s;
   }
@@ -1823,28 +1823,6 @@
   .day-night-viewer.pannellum-viewer {
     height: 270px !important;
     min-height: 270px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .mixed-carousel-link {
-    width: 78vw;
-  }
-
-  .depa-360-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .depa-360-grid .viewer-360,
-  .depa-360-grid .viewer-360:last-child {
-    grid-column: auto;
-    width: 100%;
-    height: 300px !important;
-    min-height: 300px !important;
-  }
-
-  .smart-feature-visual img {
-    max-height: 320px;
   }
 }
 
