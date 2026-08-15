@@ -1979,30 +1979,3 @@
     height: 260px;
   }
 }
-
-@media (max-width: 768px) {
-  .builder-page-hero {
-    min-height: 58vh;
-  }
-
-  .builder-page-hero .page-hero-content {
-    padding: 112px 0 56px;
-  }
-
-  .builder-hero-logo {
-    width: clamp(82px, 25vw, 124px) !important;
-    margin-bottom: 16px;
-  }
-
-  .services-image-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .service-carousel-image {
-    aspect-ratio: 16 / 10;
-  }
-
-  .nav-celebration-mark {
-    display: grid !important;
-  }
-}

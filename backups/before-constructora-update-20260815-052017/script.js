@@ -744,47 +744,6 @@ document.querySelectorAll("[data-image-modal]").forEach((image) => {
     modal.setAttribute("aria-hidden", "false");
   });
 });
-
-// Carruseles de imágenes de servicios: cambian automáticamente y permiten abrir la imagen en grande.
-document.querySelectorAll("[data-service-carousel]").forEach((carousel) => {
-  const image = carousel.querySelector(".service-carousel-image");
-  const previous = carousel.querySelector(".service-carousel-prev");
-  const next = carousel.querySelector(".service-carousel-next");
-  const images = (carousel.dataset.images || "").split("|").filter(Boolean);
-  if (!image || images.length < 2) return;
-
-  let index = 0;
-  let timer;
-
-  const render = (nextIndex) => {
-    index = (nextIndex + images.length) % images.length;
-    image.src = images[index];
-    image.dataset.imageModal = images[index];
-    image.classList.remove("service-carousel-image-changing");
-    void image.offsetWidth;
-    image.classList.add("service-carousel-image-changing");
-  };
-
-  const start = () => {
-    window.clearInterval(timer);
-    timer = window.setInterval(() => render(index + 1), 4800);
-  };
-
-  previous?.addEventListener("click", () => {
-    render(index - 1);
-    start();
-  });
-  next?.addEventListener("click", () => {
-    render(index + 1);
-    start();
-  });
-  carousel.addEventListener("mouseenter", () => window.clearInterval(timer));
-  carousel.addEventListener("mouseleave", start);
-  carousel.addEventListener("focusin", () => window.clearInterval(timer));
-  carousel.addEventListener("focusout", start);
-  start();
-});
-
 function closeModal() {
   if (!modal) return;
   modal.classList.remove("open");
